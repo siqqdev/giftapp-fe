@@ -10,6 +10,7 @@ import Gifts from "@/pages/gifts/Gifts.tsx";
 import Leaderboard from "@/pages/leaderboard/Leaderboard.tsx";
 import Profile from "@/pages/profile/Profile.tsx";
 
+
 function Layout() {
     const location = useLocation()
     const navigate = useNavigate()
