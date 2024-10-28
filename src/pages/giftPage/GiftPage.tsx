@@ -22,9 +22,9 @@ const GiftPage = () => {
         onClick: async () => {}
     });
 
-    useEffect(() => {
-        show()
-    }, [])
+    // useEffect(() => {
+    //     show()
+    // }, [])
 
     return (
         <>
