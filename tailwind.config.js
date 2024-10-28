@@ -7,7 +7,18 @@ module.exports = {
     extend: {
       colors: {
         'blue': '#007AFF',
-        'icons-gray': '#959595'
+        'icons-gray': '#959595',
+        'accent-cyan': '#5AC8FA',
+        'accent-gold': '#F1AA05',
+        'accent-purple': '#AF51DE',
+        'accent-green': '#35C759',
+        'separator': '#3C3C435C',
+        'label-secondary': '#8E8E93',
+        'label-tabbar': '#545458A6',
+        'label-date': '#6D6D71',
+        'bg-secondary': '#EFEFF3',
+        'bg-notification': '#2D2D2DCC',
+        'bg-tabbar': '#F1F1F2BF',
       },
       padding: {
         'safe': 'env(safe-area-inset-bottom)'

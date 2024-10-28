@@ -70,10 +70,6 @@ body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
-/* Styles for tab bar if needed (tab-bar in className)*/
-.tab-bar {
-    padding-bottom: env(safe-area-inset-bottom);
-}
 
 .safe-area-bottom {
     padding-bottom: calc(var(--safe-area-inset-bottom) + 1rem);

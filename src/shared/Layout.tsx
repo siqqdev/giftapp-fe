@@ -9,7 +9,11 @@ import Store from "@/pages/store/Store.tsx";
 import Gifts from "@/pages/gifts/Gifts.tsx";
 import Leaderboard from "@/pages/leaderboard/Leaderboard.tsx";
 import Profile from "@/pages/profile/Profile.tsx";
+import GiftPage from "@/pages/giftPage/GiftPage.tsx";
 
+const ROUTES_WITHOUT_TAB_BAR = [
+    '/gift',
+];
 
 function Layout() {
     const location = useLocation()
@@ -38,6 +42,10 @@ function Layout() {
 
     useBackButton()
 
+    const shouldShowTabBar = !ROUTES_WITHOUT_TAB_BAR.some(route =>
+        location.pathname.startsWith(route)
+    );
+
     return (
         <div className='h-screen flex flex-col safe-area-bottom'>
             <div className='flex-1 overflow-y-scroll relative content-wrapper'>
@@ -47,9 +55,10 @@ function Layout() {
                     <Route path='/gifts' element={<Gifts />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />
+                    <Route path='/gift/:id' element={<GiftPage />} />
                 </AnimatedRoutes>
             </div>
-            <TabBar />
+            {shouldShowTabBar && <TabBar />}
         </div>
     )
 }
