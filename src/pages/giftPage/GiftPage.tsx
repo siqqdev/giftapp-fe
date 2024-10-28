@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import TgPattern from "@/assets/tg-pattern.png";
 import {TransparentCurrencyIcon, getGiftById, gradientClassNames, FilledCurrencyIcon} from "@/shared/consts.ts";
 import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
+import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 
 const GiftPage = () => {
     const { id } = useParams();
@@ -12,6 +13,18 @@ const GiftPage = () => {
     if (!gift) return null;
 
     const Icon = FilledCurrencyIcon[gift.currency];
+
+    const { show, hide, setParams } = useTelegramButton({
+        initialParams: {
+            text: 'Buy a Gift',
+            color: '#007AFF',
+        },
+        onClick: async () => {}
+    });
+
+    useEffect(() => {
+        show()
+    }, [])
 
     return (
         <>
