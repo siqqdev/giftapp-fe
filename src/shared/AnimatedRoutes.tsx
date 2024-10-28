@@ -32,27 +32,49 @@ const pageTransition = {
 const AnimatedRoutes = ({ children }) => {
     const location = useLocation();
 
+    const isGiftTransition = (pathname) => {
+        return pathname.includes('/store') || pathname.includes('/product/');
+    };
+
+    // Если это переход между store и product/:id, отключаем анимацию
+    const shouldAnimate = !isGiftTransition(location.pathname);
+
     return (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
             <LayoutGroup>
                 <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                        key={location.pathname}
-                        initial="initial"
-                        animate="in"
-                        exit="out"
-                        variants={pageVariants}
-                        transition={pageTransition}
-                        style={{
-                            overflow: 'auto',
-                            height: '100%',
-                            willChange: 'opacity, transform'
-                        }}
-                    >
-                        <Routes location={location}>
-                            {children}
-                        </Routes>
-                    </motion.div>
+                    {shouldAnimate ? (
+                        <motion.div
+                            key={location.pathname}
+                            initial="initial"
+                            animate="in"
+                            exit="out"
+                            variants={pageVariants}
+                            transition={pageTransition}
+                            style={{
+                                overflow: 'auto',
+                                height: '100%',
+                                willChange: 'opacity, transform'
+                            }}
+                        >
+                            <Routes location={location}>
+                                {children}
+                            </Routes>
+                        </motion.div>
+                    ) : (
+                        // Для переходов между store и product просто рендерим без анимации
+                        <div
+                            key={location.pathname}
+                            style={{
+                                height: '100%',
+                                overflow: 'auto'
+                            }}
+                        >
+                            <Routes location={location}>
+                                {children}
+                            </Routes>
+                        </div>
+                    )}
                 </AnimatePresence>
             </LayoutGroup>
         </div>

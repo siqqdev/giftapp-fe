@@ -12,7 +12,7 @@ import Profile from "@/pages/profile/Profile.tsx";
 import GiftPage from "@/pages/giftPage/GiftPage.tsx";
 
 const ROUTES_WITHOUT_TAB_BAR = [
-    '/gift',
+    '/product',
 ];
 
 function Layout() {
@@ -47,7 +47,7 @@ function Layout() {
     );
 
     return (
-        <div className='h-screen flex flex-col safe-area-bottom'>
+        <div className='h-screen flex flex-col safe-area-bottom bg-white'>
             <div className='flex-1 overflow-y-scroll relative content-wrapper'>
                 <AnimatedRoutes >
                     <Route path="/" element={<Navigate to="/store" replace />} />
@@ -55,7 +55,7 @@ function Layout() {
                     <Route path='/gifts' element={<Gifts />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />
-                    <Route path='/gift/:id' element={<GiftPage />} />
+                    <Route path='/product/:id' element={<GiftPage />} />
                 </AnimatedRoutes>
             </div>
             {shouldShowTabBar && <TabBar />}

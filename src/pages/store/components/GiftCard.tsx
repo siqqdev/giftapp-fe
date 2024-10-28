@@ -10,7 +10,7 @@ const GiftCard = ({ id }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="relative w-full overflow-hidden rounded-2xl py-8" onClick={() => navigate(`/gift/${id}`)}>
+        <div className="relative w-full overflow-hidden rounded-2xl py-8" onClick={() => navigate(`/product/${id}`)}>
             <div className="absolute inset-0">
                 <div
                     className="absolute inset-0 w-full h-full bg-cover bg-center"
