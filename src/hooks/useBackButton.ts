@@ -1,6 +1,14 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+const ROUTES_WITHOUT_BACK_BUTTON = [
+    '/',
+    '/store',
+    '/gifts',
+    '/leaderboard',
+    '/profile'
+];
+
 const useBackButton = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -14,7 +22,9 @@ const useBackButton = () => {
             return;
         }
 
-        if (location.pathname !== '/') {
+        const shouldShowBackButton = !ROUTES_WITHOUT_BACK_BUTTON.includes(location.pathname);
+
+        if (shouldShowBackButton) {
             tg.BackButton.show();
             tg.BackButton.onClick(handleBackButton);
         } else {
