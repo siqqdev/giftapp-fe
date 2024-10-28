@@ -33,10 +33,9 @@ const AnimatedRoutes = ({ children }) => {
     const location = useLocation();
 
     const isGiftTransition = (pathname) => {
-        return pathname.includes('/store') || pathname.includes('/product/');
+        return pathname.includes('/store') || pathname.includes('/product');
     };
 
-    // Если это переход между store и product/:id, отключаем анимацию
     const shouldAnimate = !isGiftTransition(location.pathname);
 
     return (
@@ -62,7 +61,6 @@ const AnimatedRoutes = ({ children }) => {
                             </Routes>
                         </motion.div>
                     ) : (
-                        // Для переходов между store и product просто рендерим без анимации
                         <div
                             key={location.pathname}
                             style={{

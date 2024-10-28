@@ -1,13 +1,17 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import TgPattern from "@/assets/tg-pattern.png";
-import Cake from "@/assets/animations/gift-delicious-cake.json";
-import Button from "@/shared/ui/Button.tsx";
-import USDT from '@/assets/icons/currencies/filled/usdt.svg?react';
-import AnimatedLottie from "@/shared/components/AnimatedLottie.tsx";
+import {TransparentCurrencyIcon, getGiftById, gradientClassNames, FilledCurrencyIcon} from "@/shared/consts.ts";
+import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
 
 const GiftPage = () => {
     const { id } = useParams();
+    const gift = getGiftById(Number(id));
+
+    if (!gift) return null;
+
+    const Icon = FilledCurrencyIcon[gift.currency];
 
     return (
         <>
@@ -18,28 +22,31 @@ const GiftPage = () => {
                             className="absolute inset-0 w-full h-full bg-cover bg-center"
                             style={{backgroundImage: `url(${TgPattern})`}}
                         />
-                        <div
-                            className="absolute inset-0 bg-opacity-10 bg-gradient-to-b from-accent-gold/20 to-accent-gold/5"
-                        />
+                        <div className={classNames(
+                            'absolute inset-0 bg-opacity-10',
+                            gradientClassNames[gift.color]
+                        )}/>
                     </div>
 
                     <div className="relative flex items-center justify-center w-full h-full">
                         <AnimatedLottie
-                            layoutId={`gift-animation-${id}`}
-                            animationData={Cake}
+                            layoutId={`gift-animation-${gift.id}`}
+                            animationData={gift.animationData}
                             className="w-64 h-64"
                         />
                     </div>
                 </div>
             </div>
             <div className='flex flex-col gap-2 px-4'>
-                <p className='font-semibold text-2xl'>Delicious Cake</p>
-                <p className='text-label-secondary text-lg tracking-normal'>
-                    Purchase this gift for the opportunity to give it to another user.
-                </p>
+                <p className='font-semibold text-2xl'>{gift.name}</p>
+                {gift.description && (
+                    <p className='text-label-secondary text-lg tracking-normal'>
+                        {gift.description}
+                    </p>
+                )}
                 <span className='flex gap-2 items-center'>
-                    <USDT className='w-6 h-6' />
-                    <p className='text-lg font-medium'>10 USDT</p>
+                    <Icon className='w-6 h-6' />
+                    <p className='text-lg font-medium'>{gift.price} {gift.currency}</p>
                 </span>
             </div>
         </>

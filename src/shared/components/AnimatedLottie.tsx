@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Lottie from "lottie-react";
 import { motion } from 'framer-motion';
 
-const AnimatedLottie = ({ animationData, className, layoutId }) => {
+export const AnimatedLottie = memo(({ animationData, className, layoutId }) => {
     return (
         <motion.div
             layoutId={layoutId}
@@ -22,9 +22,10 @@ const AnimatedLottie = ({ animationData, className, layoutId }) => {
                     progressiveLoad: true,
                     hideOnTransparent: true,
                 }}
+                className={className}
             />
         </motion.div>
     );
-};
+});
 
-export default AnimatedLottie;
+AnimatedLottie.displayName = 'AnimatedLottie';

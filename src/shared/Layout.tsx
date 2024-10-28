@@ -47,7 +47,7 @@ function Layout() {
     );
 
     return (
-        <div className='h-screen flex flex-col safe-area-bottom bg-white'>
+        <div className='h-screen flex flex-col overflow-y-scroll bg-white'>
             <div className='flex-1 overflow-y-scroll relative content-wrapper'>
                 <AnimatedRoutes >
                     <Route path="/" element={<Navigate to="/store" replace />} />
