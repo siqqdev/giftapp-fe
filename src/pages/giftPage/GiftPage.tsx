@@ -17,9 +17,15 @@ const GiftPage = () => {
     });
 
     useEffect(() => {
-        show();
-        return () => hide();
-    }, [])
+        const timer = setTimeout(() => {
+            show();
+        }, 300);
+
+        return () => {
+            clearTimeout(timer);
+            hide();
+        };
+    }, []);
 
     const { id } = useParams();
     const gift = getGiftById(Number(id));
