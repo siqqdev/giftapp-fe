@@ -7,12 +7,6 @@ import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
 import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 
 const GiftPage = () => {
-    const { id } = useParams();
-    const gift = getGiftById(Number(id));
-
-    if (!gift) return null;
-
-    const Icon = FilledCurrencyIcon[gift.currency];
 
     const { show, hide, setParams } = useTelegramButton({
         initialParams: {
@@ -22,9 +16,17 @@ const GiftPage = () => {
         onClick: async () => {}
     });
 
-    // useEffect(() => {
-    //     show()
-    // }, [])
+    useEffect(() => {
+        show();
+        return () => hide();
+    }, [])
+
+    const { id } = useParams();
+    const gift = getGiftById(Number(id));
+
+    if (!gift) return null;
+
+    const Icon = FilledCurrencyIcon[gift.currency];
 
     return (
         <>
