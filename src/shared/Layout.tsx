@@ -10,34 +10,31 @@ import Gifts from "@/pages/gifts/Gifts.tsx";
 import Leaderboard from "@/pages/leaderboard/Leaderboard.tsx";
 import Profile from "@/pages/profile/Profile.tsx";
 import GiftPage from "@/pages/giftPage/GiftPage.tsx";
+import RecentActions from "@/pages/recentActions/RecentActions.tsx";
 
 const ROUTES_WITHOUT_TAB_BAR = [
     '/product',
+    '/recent-actions'
 ];
 
 function Layout() {
     const location = useLocation()
-    const navigate = useNavigate()
-    // func to change app theme based on time (if needed)
-    const setThemeBasedOnTimeAndPreference = () => {
-        const currentHour = new Date().getHours()
-        // Set time
-        const isNightTime = currentHour >= 22 || currentHour < 5
+
+    const setThemeBasedOnPreference = () => {
         const isTelegramDarkTheme = window.Telegram.WebApp.colorScheme === 'dark'
 
-        if (isTelegramDarkTheme || isNightTime) {
+        if (isTelegramDarkTheme) {
             document.documentElement.classList.add('dark')
-            TelegramProvider.setColor('#2D2F30')
+            TelegramProvider.setDarkTheme()
         } else {
             document.documentElement.classList.remove('dark')
-            TelegramProvider.setColor('#FDFAFA')
+            TelegramProvider.setLightTheme()
         }
     }
 
     useEffect(() => {
         TelegramProvider.initializeApp()
-
-        setThemeBasedOnTimeAndPreference()
+        setThemeBasedOnPreference()
     }, [])
 
     useBackButton()
@@ -56,6 +53,7 @@ function Layout() {
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/product/:id' element={<GiftPage />} />
+                    <Route path='/recent-actions' element={<RecentActions />} />
                 </AnimatedRoutes>
             </div>
             {shouldShowTabBar && <TabBar />}

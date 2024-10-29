@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
@@ -20,6 +21,7 @@ module.exports = {
         'bg-secondary': '#EFEFF3',
         'bg-notification': '#2D2D2DCC',
         'bg-tabbar': '#F1F1F2BF',
+        'bg-dark': '#1C1C1E'
       },
       padding: {
         'safe': 'env(safe-area-inset-bottom)'

@@ -11,10 +11,22 @@ export const TelegramProvider = {
         }
     },
 
-    setColor: (color: string) => {
-        const tg = window.Telegram.WebApp;
+    setDarkTheme: () => {
+        const tg = window?.Telegram?.WebApp;
+        const darkColor = '#1C1C1E';
+
         if (tg) {
-            tg.setHeaderColor(color);
+            tg.setHeaderColor(darkColor);
+            tg.setBackgroundColor(darkColor);
         }
-    }
+    },
+
+    setLightTheme: () => {
+        const tg = window?.Telegram?.WebApp;
+
+        if (tg) {
+            tg.setHeaderColor('#fff');
+            tg.setBackgroundColor('#fff');
+        }
+    },
 };
