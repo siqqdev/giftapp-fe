@@ -1,10 +1,12 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
 import classNames from 'classnames';
 import TgPattern from '@/assets/tg-pattern.png';
 import Button from "@/shared/ui/Button.tsx";
 import {TransparentCurrencyIcon, gradientClassNames} from "@/shared/consts.ts";
 import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
+import {motion, useReducedMotion} from 'framer-motion'
+import {useAppDispatch} from "@/store/hooks.ts";
+import {setTabBarVisibility} from "@/store/slices/tabBarSlice.ts";
 
 interface Props {
     id: number;
@@ -14,14 +16,38 @@ interface Props {
     price: number;
     currency: 'TON' | 'USDT' | 'ETH';
     amount: number;
+    onSelect: (gift: Omit<Props, 'onSelect'>) => void;
 }
 
-const GiftCard = ({ id, animationData, color, name, price, currency, amount }: Props) => {
-    const navigate = useNavigate();
+
+const GiftCard = ({ id, animationData, color, name, price, currency, amount, onSelect }: GiftCardProps) => {
+    const dispatch = useAppDispatch();
     const Icon = TransparentCurrencyIcon[currency];
+    const cardRef = React.useRef<HTMLDivElement>(null);
+
+    const handleClick = () => {
+        if (cardRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            dispatch(setTabBarVisibility(false));
+            onSelect({
+                id,
+                animationData,
+                color,
+                name,
+                price,
+                currency,
+                amount,
+                rect
+            });
+        }
+    };
 
     return (
-        <div className="relative w-full overflow-hidden rounded-2xl py-8" onClick={() => navigate(`/product/${id}`)}>
+        <div
+            ref={cardRef}
+            className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer"
+            onClick={handleClick}
+        >
             <div className="absolute inset-0">
                 <div
                     className="absolute inset-0 w-full h-full bg-cover bg-center"
@@ -33,13 +59,8 @@ const GiftCard = ({ id, animationData, color, name, price, currency, amount }: P
                 )}/>
             </div>
 
-            <div className="absolute top-4 right-4 text-black font-medium opacity-50 tracking-tighter">
-                {amount} of 500
-            </div>
-
             <div className='relative flex flex-col gap-3 justify-center items-center w-full rounded-xl'>
                 <AnimatedLottie
-                    layoutId={`gift-animation-${id}`}
                     animationData={animationData}
                     className='w-36 h-36'
                 />

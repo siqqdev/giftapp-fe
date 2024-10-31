@@ -9,9 +9,10 @@ export const AnimatedLottie = memo(({ animationData, className, layoutId }) => {
             className={className}
             transition={{
                 type: "spring",
-                stiffness: 300,
-                damping: 30,
-                duration: 0.2
+                stiffness: 200,
+                damping: 25,
+                duration: 0.4,
+                ease: "easeInOut"
             }}
         >
             <Lottie
@@ -19,8 +20,8 @@ export const AnimatedLottie = memo(({ animationData, className, layoutId }) => {
                 loop={true}
                 cacheInstance={true}
                 rendererSettings={{
-                    progressiveLoad: true,
-                    hideOnTransparent: true,
+                    preserveAspectRatio: 'xMidYMid slice',
+                    progressiveLoad: true
                 }}
                 className={className}
             />

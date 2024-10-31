@@ -9,11 +9,22 @@ const ROUTES_WITHOUT_BACK_BUTTON = [
     '/profile'
 ];
 
-const useBackButton = () => {
+interface UseBackButtonProps {
+    isModal?: boolean;
+    onModalClose?: () => void;
+}
+
+const useBackButton = ({ isModal = false, onModalClose }: UseBackButtonProps = {}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleBackButton = useCallback(() => navigate(-1), [navigate]);
+    const handleBackButton = useCallback(() => {
+        if (isModal && onModalClose) {
+            onModalClose();
+        } else {
+            navigate(-1);
+        }
+    }, [isModal, onModalClose, navigate]);
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
@@ -22,7 +33,7 @@ const useBackButton = () => {
             return;
         }
 
-        const shouldShowBackButton = !ROUTES_WITHOUT_BACK_BUTTON.includes(location.pathname);
+        const shouldShowBackButton = isModal || !ROUTES_WITHOUT_BACK_BUTTON.includes(location.pathname);
 
         if (shouldShowBackButton) {
             tg.BackButton.show();
@@ -33,8 +44,11 @@ const useBackButton = () => {
 
         return () => {
             tg.BackButton.offClick(handleBackButton);
+            if (isModal) {
+                tg.BackButton.hide();
+            }
         };
-    }, [location.pathname, navigate]);
+    }, [location.pathname, handleBackButton, isModal]);
 };
 
 export default useBackButton;

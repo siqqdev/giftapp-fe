@@ -56,7 +56,6 @@ body {
     height: 100vh;
     height: -webkit-fill-available;
     overflow: hidden;
-    padding: var(--sat) var(--sar) var(--sab) var(--sal);
 }
 
 #root {
@@ -69,8 +68,4 @@ body {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-}
-
-.safe-area-bottom {
-    padding-bottom: calc(var(--safe-area-inset-bottom) + 1rem);
 }

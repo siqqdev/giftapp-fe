@@ -11,14 +11,19 @@ import Leaderboard from "@/pages/leaderboard/Leaderboard.tsx";
 import Profile from "@/pages/profile/Profile.tsx";
 import GiftPage from "@/pages/giftPage/GiftPage.tsx";
 import RecentActions from "@/pages/recentActions/RecentActions.tsx";
+import BuyGiftSuccess from "@/pages/StatusPages/Success/BuyGiftSuccess.tsx";
+import {useAppSelector} from "@/store/hooks.ts";
 
 const ROUTES_WITHOUT_TAB_BAR = [
     '/product',
-    '/recent-actions'
+    '/recent-actions',
+    '/gift-bought-success',
+    '/store/gift',
 ];
 
 function Layout() {
     const location = useLocation()
+    const isTabBarVisible = useAppSelector(state => state.tabBar.isVisible)
 
     const setThemeBasedOnPreference = () => {
         const isTelegramDarkTheme = window.Telegram.WebApp.colorScheme === 'dark'
@@ -45,18 +50,20 @@ function Layout() {
 
     return (
         <div className='h-screen flex flex-col overflow-y-scroll bg-white'>
-            <div className='flex-1 overflow-y-scroll relative content-wrapper'>
+            <div className='flex-1 overflow-y-scroll relative content-wrapper h-screen'>
                 <AnimatedRoutes >
                     <Route path="/" element={<Navigate to="/store" replace />} />
                     <Route path='/store' element={<Store />} />
+                    <Route path='/store/gift' element={<Store />} />
                     <Route path='/gifts' element={<Gifts />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/product/:id' element={<GiftPage />} />
                     <Route path='/recent-actions' element={<RecentActions />} />
+                    <Route path='/gift-bought-success' element={<BuyGiftSuccess />} />
                 </AnimatedRoutes>
             </div>
-            {shouldShowTabBar && <TabBar />}
+            {isTabBarVisible && shouldShowTabBar && <TabBar />}
         </div>
     )
 }

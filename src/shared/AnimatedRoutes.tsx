@@ -41,7 +41,7 @@ const AnimatedRoutes = ({ children }) => {
     return (
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
             <LayoutGroup>
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
                     {shouldAnimate ? (
                         <motion.div
                             key={location.pathname}

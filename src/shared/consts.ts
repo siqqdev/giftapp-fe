@@ -12,17 +12,7 @@ import CakeImg from '@/assets/gifts/delicious-cake.png'
 import BlueStarImg from '@/assets/gifts/blue-star.png'
 import GreenStarImg from '@/assets/gifts/green-star.png'
 import RedStarImg from '@/assets/gifts/red-star.png'
-
-export interface Gift {
-    id: number;
-    animationData: string;
-    color: 'gold' | 'red' | 'green' | 'blue';
-    name: string;
-    price: number;
-    currency: 'TON' | 'USDT' | 'ETH';
-    amount: number;
-    description?: string;
-}
+import {IGift} from "@/inerfaces/interfaces.ts";
 
 export const giftsMockData = [
     {
@@ -63,7 +53,7 @@ export const giftsMockData = [
     },
 ] as const;
 
-export const getGiftById = (id: number): Gift | undefined => {
+export const getGiftById = (id: number): IGift | undefined => {
     return giftsMockData.find(gift => gift.id === id);
 };
 

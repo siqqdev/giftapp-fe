@@ -1,18 +1,10 @@
 import React from 'react';
-import Cake from '@/assets/gifts/delicious-cake.png'
 import BoughtIcon from '@/assets/icons/actions/bought.svg?react'
 import ReceivedIcon from '@/assets/icons/actions/received.svg?react'
 import SentIcon from '@/assets/icons/actions/sent.svg?react'
+import {IActionHistoryItem} from "@/inerfaces/interfaces.ts";
 
-interface ActionHistoryItemProps {
-    action: 'bought' | 'received' | 'sent'
-    user?: string
-    amount?: number
-    giftName: string
-    giftImg: string
-}
-
-const ActionHistoryItem = ({ action, user, amount, giftName, giftImg }: ActionHistoryItemProps) => {
+const ActionHistoryItem = ({ action, user, amount, giftName, giftImg }: IActionHistoryItem) => {
     const getActionIcon = () => {
         switch (action) {
             case 'bought':

@@ -1,10 +1,12 @@
 import React from 'react';
 import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 import {useNavigate} from "react-router-dom";
+import BoughtGiftCard from "@/pages/gifts/components/BoughtGiftCard.tsx";
+import BoughtGiftsList from "@/pages/gifts/components/BoughtGiftsList.tsx";
 
 const Gifts = () => {
     const navigate = useNavigate();
-    const hasItems = false;
+    const hasItems = true;
 
     return (
         <div className='flex flex-col gap-6 pt-10 px-4'>
@@ -23,8 +25,8 @@ const Gifts = () => {
                     </>
                 </BalloonsPlaceholder>
             ) : (
-                <div>
-                    items
+                <div className='pb-20'>
+                    <BoughtGiftsList />
                 </div>
             )}
         </div>
