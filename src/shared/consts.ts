@@ -14,12 +14,12 @@ import GreenStarImg from '@/assets/gifts/green-star.png'
 import RedStarImg from '@/assets/gifts/red-star.png'
 import {IGift} from "@/inerfaces/interfaces.ts";
 
-export const giftsMockData: IGift[] = [
+export const giftsMockData = [
     {
         id: 1,
         name: 'Delicious Cake',
         color: 'gold',
-        animationName: 'gift-delicious-cake',
+        animationData: Cake,
         price: 10,
         currency: 'USDT',
         amount: 3,
@@ -28,7 +28,7 @@ export const giftsMockData: IGift[] = [
         id: 2,
         name: 'Blue Star',
         color: 'blue',
-        animationName: 'gift-blue-star',
+        animationData: BlueStar,
         price: 15,
         currency: 'TON',
         amount: 7,
@@ -37,7 +37,7 @@ export const giftsMockData: IGift[] = [
         id: 3,
         name: 'Green Star',
         color: 'green',
-        animationName: 'gift-green-star',
+        animationData: GreenStar,
         price: 12,
         currency: 'ETH',
         amount: 5,
@@ -46,7 +46,7 @@ export const giftsMockData: IGift[] = [
         id: 4,
         name: 'Red Star',
         color: 'red',
-        animationName: 'gift-red-star',
+        animationData: RedStar,
         price: 20,
         currency: 'USDT',
         amount: 2,

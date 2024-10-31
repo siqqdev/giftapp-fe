@@ -6,15 +6,21 @@ import { TransparentCurrencyIcon, gradientClassNames } from "@/shared/consts.ts"
 import { AnimatedLottie } from "@/shared/components/AnimatedLottie.tsx";
 import { useAppDispatch } from "@/store/hooks.ts";
 import { setTabBarVisibility } from "@/store/slices/tabBarSlice.ts";
-import {IGift} from "@/inerfaces/interfaces.ts";
 
-interface Props extends IGift {
+interface Props {
+    id: number;
+    animationData: string;
+    color: 'gold' | 'red' | 'green' | 'blue';
+    name: string;
+    price: number;
+    currency: 'TON' | 'USDT' | 'ETH';
+    amount: number;
     onSelect: (gift: Omit<Props, 'onSelect'>) => void;
 }
 
 const GiftCard = ({
                       id,
-                      animationName, // Изменили тип на animationName
+                      animationData,
                       color,
                       name,
                       price,
@@ -27,6 +33,7 @@ const GiftCard = ({
     const cardRef = useRef<HTMLDivElement>(null);
     const rectRef = useRef<DOMRect | null>(null);
 
+    // Pre-calculate and cache the DOMRect
     useEffect(() => {
         if (cardRef.current) {
             rectRef.current = cardRef.current.getBoundingClientRect();
@@ -54,7 +61,7 @@ const GiftCard = ({
         dispatch(setTabBarVisibility(false));
         onSelect({
             id,
-            animationName,
+            animationData,
             color,
             name,
             price,
@@ -62,7 +69,7 @@ const GiftCard = ({
             amount,
             rect
         });
-    }, [id, animationName, color, name, price, currency, amount, dispatch, onSelect]);
+    }, [id, animationData, color, name, price, currency, amount, dispatch, onSelect]);
 
     return (
         <div
@@ -111,7 +118,7 @@ const GiftCard = ({
                 }}
             >
                 <AnimatedLottie
-                    name={animationName}
+                    animationData={animationData}
                     className="w-36 h-36"
                 />
                 <p className="font-bold text-center text-lg">{name}</p>

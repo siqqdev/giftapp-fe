@@ -13,7 +13,7 @@ import {IGift} from "@/inerfaces/interfaces.ts";
 interface GiftPortalProps {
     from: DOMRect;
     onComplete: () => void;
-    gift: IGift;
+    gift: IGift
     isClosing: boolean;
     onClose: () => void;
 }
@@ -159,7 +159,7 @@ const GiftPortal = ({
                                         }}
                                     >
                                         <AnimatedLottie
-                                            name={gift.animationName}
+                                            animationData={gift.animationData}
                                             className="w-full h-full"
                                         />
                                     </motion.div>
