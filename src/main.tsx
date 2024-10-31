@@ -7,6 +7,7 @@ import PreventZoom from "./shared/PreventZoom.tsx";
 import Modal from "react-modal";
 import {Provider} from "react-redux";
 import {store} from "@/store/store.ts";
+import {LottiePreloader} from "@/store/lottieStore.ts";
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
           <Provider store={store}>
               <PreventZoom />
+              <LottiePreloader />
               <Layout />
           </Provider>
       </BrowserRouter>

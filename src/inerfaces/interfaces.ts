@@ -12,15 +12,22 @@ type ExclusiveUserOrAmount =
 
 export type IActionHistoryItem = ExclusiveUserOrAmount & Omit<IActionHistoryItemProps, 'user' | 'amount'>;
 
+export type GiftColor = 'gold' | 'red' | 'green' | 'blue';
+export type Currency = 'TON' | 'USDT' | 'ETH';
+export type AnimationName =
+    | 'gift-delicious-cake'
+    | 'gift-blue-star'
+    | 'gift-green-star'
+    | 'gift-red-star';
+
 export interface IGift {
     id: number;
-    animationData: string;
-    color: 'gold' | 'red' | 'green' | 'blue';
     name: string;
+    color: GiftColor;
+    animationName: AnimationName;
     price: number;
-    currency: 'TON' | 'USDT' | 'ETH';
+    currency: Currency;
     amount: number;
-    maxAmount: number;
 }
 
 export interface IUser {

@@ -1,31 +1,32 @@
 import React, { memo } from 'react';
 import Lottie from "lottie-react";
-import { motion } from 'framer-motion';
+import {AnimationName, getAnimation} from "@/store/lottieStore.ts";
 
-export const AnimatedLottie = memo(({ animationData, className, layoutId }) => {
+interface AnimatedLottieProps {
+    name: AnimationName;
+    className?: string;
+}
+
+export const AnimatedLottie = memo(({ name, className }: AnimatedLottieProps) => {
+    const animationData = getAnimation(name);
+
+    const rendererSettings = {
+        preserveAspectRatio: 'xMidYMid slice',
+        progressiveLoad: false,
+        hideOnTransparent: true,
+        clearCanvas: false,
+    };
+
     return (
-        <motion.div
-            layoutId={layoutId}
-            className={className}
-            transition={{
-                type: "spring",
-                stiffness: 200,
-                damping: 25,
-                duration: 0.4,
-                ease: "easeInOut"
-            }}
-        >
+        <div className={className} style={{ willChange: 'transform' }}>
             <Lottie
                 animationData={animationData}
                 loop={true}
                 cacheInstance={true}
-                rendererSettings={{
-                    preserveAspectRatio: 'xMidYMid slice',
-                    progressiveLoad: true
-                }}
+                rendererSettings={rendererSettings}
                 className={className}
             />
-        </motion.div>
+        </div>
     );
 });
 

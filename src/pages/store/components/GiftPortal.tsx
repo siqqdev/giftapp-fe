@@ -7,19 +7,13 @@ import { FilledCurrencyIcon, gradientClassNames } from "@/shared/consts.ts";
 import RecentlyActionsList from "@/pages/giftPage/components/RecentlyActionsList.tsx";
 import useBackButton from "@/hooks/useBackButton.ts";
 import classNames from 'classnames';
-import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
+import { useTelegramButton } from "@/hooks/useTelegramButton.ts";
+import {IGift} from "@/inerfaces/interfaces.ts";
 
 interface GiftPortalProps {
     from: DOMRect;
     onComplete: () => void;
-    gift: {
-        id: number;
-        animationData: string;
-        color: string;
-        name: string;
-        price: number;
-        currency: string;
-    };
+    gift: IGift;
     isClosing: boolean;
     onClose: () => void;
 }
@@ -55,35 +49,38 @@ const GiftPortal = ({
     }, []);
 
     return createPortal(
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode='popLayout'>
             <div className="fixed inset-0 z-50">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute inset-0 bg-white"
+                    transition={{
+                        duration: 0.3,
+                        ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="absolute inset-0 bg-white will-change-opacity"
+                    style={{
+                        WebkitBackfaceVisibility: 'hidden',
+                        WebkitPerspective: 1000,
+                        WebkitTransform: 'translateZ(0)',
+                    }}
                 />
 
                 <motion.div
                     variants={{
                         initial: {
-                            position: 'absolute',
-                            top: from.top,
-                            left: from.left,
+                            transform: `translate3d(${from.left}px, ${from.top}px, 0)`,
                             width: from.width,
                             height: from.height,
-                            zIndex: 51
                         },
                         animate: {
-                            top: 0,
-                            left: 0,
+                            transform: 'translate3d(0, 0, 0)',
                             width: '100%',
-                            height: '100vh'
+                            height: '100vh',
                         },
                         exit: {
-                            top: from.top,
-                            left: from.left,
+                            transform: `translate3d(${from.left}px, ${from.top}px, 0)`,
                             width: from.width,
                             height: from.height,
                         }
@@ -91,7 +88,15 @@ const GiftPortal = ({
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    transition={{
+                        duration: 0.4,
+                        ease: [0.4, 0, 0.2, 1]
+                    }}
+                    className="absolute z-51 will-change-transform"
+                    style={{
+                        WebkitBackfaceVisibility: 'hidden',
+                        WebkitPerspective: 1000,
+                    }}
                     onAnimationComplete={() => {
                         if (isClosing) {
                             onComplete();
@@ -103,26 +108,58 @@ const GiftPortal = ({
                             <div className="relative w-full aspect-square rounded-2xl overflow-hidden">
                                 <div className="absolute inset-0">
                                     <div
-                                        className="absolute inset-0 w-full h-full bg-cover bg-center"
-                                        style={{backgroundImage: `url(${TgPattern})`}}
+                                        className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
+                                        style={{
+                                            backgroundImage: `url(${TgPattern})`,
+                                            WebkitBackfaceVisibility: 'hidden',
+                                            WebkitPerspective: 1000,
+                                            WebkitTransform: 'translateZ(0)',
+                                        }}
                                     />
-                                    <div className={classNames(
-                                        'absolute inset-0 bg-opacity-10',
-                                        gradientClassNames[gift.color]
-                                    )}/>
+                                    <div
+                                        className={classNames(
+                                            'absolute inset-0 bg-opacity-10',
+                                            gradientClassNames[gift.color]
+                                        )}
+                                        style={{
+                                            WebkitBackfaceVisibility: 'hidden',
+                                            WebkitTransform: 'translateZ(0)',
+                                        }}
+                                    />
                                 </div>
 
                                 <div className="relative flex items-center justify-center w-full h-full">
                                     <motion.div
                                         variants={{
-                                            initial: { width: '9rem', height: '9rem' },
-                                            animate: { width: '16rem', height: '16rem' },
-                                            exit: { width: '9rem', height: '9rem' }
+                                            initial: {
+                                                width: '9rem',
+                                                height: '9rem',
+                                                scale: 1
+                                            },
+                                            animate: {
+                                                width: '16rem',
+                                                height: '16rem',
+                                                scale: 1
+                                            },
+                                            exit: {
+                                                width: '9rem',
+                                                height: '9rem',
+                                                scale: 1
+                                            }
                                         }}
-                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                        transition={{
+                                            duration: 0.5,
+                                            ease: [0.4, 0, 0.2, 1]
+                                        }}
+                                        className="will-change-transform"
+                                        style={{
+                                            WebkitBackfaceVisibility: 'hidden',
+                                            WebkitPerspective: 1000,
+                                            WebkitTransform: 'translateZ(0)',
+                                        }}
                                     >
                                         <AnimatedLottie
-                                            animationData={gift.animationData}
+                                            name={gift.animationName}
                                             className="w-full h-full"
                                         />
                                     </motion.div>
@@ -131,21 +168,40 @@ const GiftPortal = ({
                         </div>
 
                         <motion.div
-                            variants={{
-                                initial: { opacity: 0, y: 20 },
-                                animate: { opacity: 1, y: 0 },
-                                exit: { opacity: 0, y: 20 }
+                            initial={{
+                                opacity: 0,
+                                y: 20,
+                                filter: 'blur(10px)',
                             }}
-                            transition={{ duration: 0.2, delay: isClosing ? 0 : 0.2 }}
-                            className='flex flex-col gap-1 px-4 pb-4'
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                                filter: 'blur(0px)',
+                            }}
+                            exit={{
+                                opacity: 0,
+                                y: 20,
+                                filter: 'blur(10px)',
+                            }}
+                            transition={{
+                                duration: 0.7,
+                                delay: isClosing ? 0 : 0.2,
+                                ease: [0.4, 0, 0.2, 1]
+                            }}
+                            className="flex flex-col gap-1 px-4 pb-4 will-change-transform"
+                            style={{
+                                WebkitBackfaceVisibility: 'hidden',
+                                WebkitPerspective: 1000,
+                                WebkitTransform: 'translateZ(0)',
+                            }}
                         >
-                            <p className='font-semibold text-2xl'>{gift.name}</p>
-                            <p className='text-label-secondary tracking-normal'>
+                            <p className="font-semibold text-2xl">{gift.name}</p>
+                            <p className="text-label-secondary tracking-normal">
                                 Purchase this gift for the opportunity to give it to another user.
                             </p>
-                            <span className='flex gap-2 items-center mt-2'>
-                                <CurrencyIcon className='w-6 h-6'/>
-                                <p className='text-lg font-medium'>{gift.price} {gift.currency}</p>
+                            <span className="flex gap-2 items-center mt-2">
+                                <CurrencyIcon className="w-6 h-6"/>
+                                <p className="text-lg font-medium">{gift.price} {gift.currency}</p>
                             </span>
 
                             <RecentlyActionsList/>

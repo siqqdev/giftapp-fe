@@ -1,9 +1,10 @@
 import React from 'react';
 import GiftCard from "@/pages/store/components/GiftCard.tsx";
-import {giftsMockData} from "@/shared/consts.ts";
+import { giftsMockData } from "@/shared/consts.ts";
+import {IGift} from "@/inerfaces/interfaces.ts";
 
 interface GiftsListProps {
-    onSelectGift: (gift: any) => void;
+    onSelectGift: (gift: IGift & { rect: DOMRect }) => void;
 }
 
 const GiftsList = ({ onSelectGift }: GiftsListProps) => {
