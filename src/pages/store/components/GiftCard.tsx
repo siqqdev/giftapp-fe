@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, {useCallback, useRef, useEffect, memo} from 'react';
 import classNames from 'classnames';
 import TgPattern from '@/assets/tg-pattern.png';
 import Button from "@/shared/ui/Button.tsx";
@@ -18,32 +18,81 @@ interface Props {
     onSelect: (gift: Omit<Props, 'onSelect'>) => void;
 }
 
-const GiftCard = ({
-                      id,
-                      animationData,
-                      color,
-                      name,
-                      price,
-                      currency,
-                      amount,
-                      onSelect
-                  }: Props) => {
-    const dispatch = useAppDispatch();
+const AnimationContainer = memo(({ children }: { children: React.ReactNode }) => (
+    <div
+        style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            perspective: '1000px',
+            contain: 'paint size layout',
+            '-webkit-mask-image': '-webkit-radial-gradient(white, black)'
+        }}
+    >
+        {children}
+    </div>
+));
+
+// Выносим статичные компоненты в отдельные мемоизированные компоненты
+const Background = React.memo(({ color }: { color: Props['color'] }) => (
+    <div className="absolute inset-0">
+        <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${TgPattern})` }}
+        />
+        <div className={classNames('absolute inset-0 bg-opacity-10', gradientClassNames[color])} />
+    </div>
+));
+
+const GiftContent = React.memo(({
+                                    animationData,
+                                    name,
+                                    price,
+                                    currency
+                                }: Pick<Props, 'animationData' | 'name' | 'price' | 'currency'>) => {
     const Icon = TransparentCurrencyIcon[currency];
+
+    return (
+        <div className="relative flex flex-col gap-3 justify-center items-center w-full rounded-xl">
+            <div className='w-40 h-40'>
+                <AnimatedLottie
+                    animationData={animationData}
+                    className='w-full h-full'
+                />
+            </div>
+            <p className="font-bold text-center text-lg">{name}</p>
+            <Button>
+                <Icon className="w-4 h-4" />
+                {price} {currency}
+            </Button>
+        </div>
+    );
+});
+
+const GiftCard = (props: Props) => {
+    const {
+        id,
+        animationData,
+        color,
+        name,
+        price,
+        currency,
+        amount,
+        onSelect
+    } = props;
+
+    const dispatch = useAppDispatch();
     const cardRef = useRef<HTMLDivElement>(null);
     const rectRef = useRef<DOMRect | null>(null);
 
-    // Pre-calculate and cache the DOMRect
     useEffect(() => {
-        if (cardRef.current) {
-            rectRef.current = cardRef.current.getBoundingClientRect();
-        }
-
-        const resizeObserver = new ResizeObserver(() => {
+        const updateRect = () => {
             if (cardRef.current) {
                 rectRef.current = cardRef.current.getBoundingClientRect();
             }
-        });
+        };
+
+        updateRect();
+        const resizeObserver = new ResizeObserver(updateRect);
 
         if (cardRef.current) {
             resizeObserver.observe(cardRef.current);
@@ -54,9 +103,7 @@ const GiftCard = ({
 
     const handleClick = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-
-        const rect = rectRef.current;
-        if (!rect) return;
+        if (!rectRef.current) return;
 
         dispatch(setTabBarVisibility(false));
         onSelect({
@@ -67,7 +114,7 @@ const GiftCard = ({
             price,
             currency,
             amount,
-            rect
+            rect: rectRef.current
         });
     }, [id, animationData, color, name, price, currency, amount, dispatch, onSelect]);
 
@@ -75,58 +122,15 @@ const GiftCard = ({
         <div
             ref={cardRef}
             onClick={handleClick}
-            className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer will-change-transform"
-            style={{
-                WebkitBackfaceVisibility: 'hidden',
-                WebkitPerspective: 1000,
-                WebkitTransform: 'translateZ(0)',
-                touchAction: 'manipulation'
-            }}
+            className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer"
         >
-            <div
-                className="absolute inset-0"
-                style={{
-                    WebkitBackfaceVisibility: 'hidden',
-                    WebkitTransform: 'translateZ(0)',
-                }}
-            >
-                <div
-                    className="absolute inset-0 w-full h-full bg-cover bg-center will-change-transform"
-                    style={{
-                        backgroundImage: `url(${TgPattern})`,
-                        WebkitBackfaceVisibility: 'hidden',
-                        WebkitTransform: 'translateZ(0)',
-                    }}
-                />
-                <div
-                    className={classNames(
-                        'absolute inset-0 bg-opacity-10',
-                        gradientClassNames[color]
-                    )}
-                    style={{
-                        WebkitBackfaceVisibility: 'hidden',
-                        WebkitTransform: 'translateZ(0)',
-                    }}
-                />
-            </div>
-
-            <div
-                className="relative flex flex-col gap-3 justify-center items-center w-full rounded-xl"
-                style={{
-                    WebkitBackfaceVisibility: 'hidden',
-                    WebkitTransform: 'translateZ(0)',
-                }}
-            >
-                <AnimatedLottie
-                    animationData={animationData}
-                    className="w-36 h-36"
-                />
-                <p className="font-bold text-center text-lg">{name}</p>
-                <Button>
-                    <Icon className="w-4 h-4" />
-                    {price} {currency}
-                </Button>
-            </div>
+            <Background color={color} />
+            <GiftContent
+                animationData={animationData}
+                name={name}
+                price={price}
+                currency={currency}
+            />
         </div>
     );
 };

@@ -1,25 +1,56 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useRef, useEffect } from 'react';
 import Lottie from "lottie-react";
 
-export const AnimatedLottie = memo(({ animationData, className }) => {
-    const rendererSettings = useMemo(() => ({
-        preserveAspectRatio: 'xMidYMid slice',
-        progressiveLoad: true,
-        hideOnTransparent: true,
-        clearCanvas: false,
-    }), []);
+interface AnimatedLottieProps {
+    animationData: any;
+    className?: string;
+    [key: string]: any;
+}
 
-    const lottieOptions = useMemo(() => ({
+export const AnimatedLottie = memo(({ animationData, className, ...props }: AnimatedLottieProps) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    useEffect(() => {
+        if (isIOS && containerRef.current) {
+            containerRef.current.style.transform = 'translateZ(0)';
+            containerRef.current.style.backfaceVisibility = 'hidden';
+        }
+    }, [isIOS]);
+
+    const lottieOptions = {
         animationData,
         loop: true,
-        cacheInstance: true,
-        rendererSettings,
-        className,
-    }), [animationData, className, rendererSettings]);
+        renderer: 'canvas',
+        rendererSettings: {
+            clearCanvas: true,
+            progressiveLoad: false,
+            hideOnTransparent: true,
+            preserveAspectRatio: 'xMidYMid slice',
+            context: {
+                alpha: true,
+                willReadFrequently: true
+            }
+        },
+        ...props
+    };
 
     return (
-        <div className={className} style={{ willChange: 'transform' }}>
-            <Lottie {...lottieOptions} />
+        <div
+            ref={containerRef}
+            className={className}
+            style={{
+                position: 'relative',
+                overflow: 'hidden',
+            }}
+        >
+            <Lottie
+                {...lottieOptions}
+                style={{
+                    width: '100%',
+                    height: '100%'
+                }}
+            />
         </div>
     );
 });

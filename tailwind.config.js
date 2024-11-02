@@ -21,7 +21,8 @@ module.exports = {
         'bg-secondary': '#EFEFF3',
         'bg-notification': '#2D2D2DCC',
         'bg-tabbar': '#F1F1F2BF',
-        'bg-dark': '#1C1C1E'
+        'bg-dark': '#1C1C1E',
+        'bg-dark-placeholder': '#2C2C2E'
       },
       padding: {
         'safe': 'env(safe-area-inset-bottom)'

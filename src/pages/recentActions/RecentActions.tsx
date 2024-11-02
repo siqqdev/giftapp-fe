@@ -37,7 +37,7 @@ const RecentActions = () => {
     const groupedActions = groupActionsByDate(mockActions);
 
     if (!hasItems) return (
-        <BalloonsPlaceholder>
+        <BalloonsPlaceholder className='text-black dark:text-white'>
             <>
                 <p className='font-semibold text-2xl tracking-tighter text-center mt-2'>History is Empty</p>
                 <p className='text-xl tracking-tighter text-center mt-1'>
@@ -48,7 +48,7 @@ const RecentActions = () => {
     );
 
     return (
-        <div className='flex flex-col gap-6 pt-10 px-4 pb-safe'>
+        <div className='flex flex-col gap-6 pt-10 px-4 pb-4 text-black dark:text-white'>
             <div className='flex flex-col gap-4'>
                 <p className='tracking-tighter font-semibold text-2xl text-center'>Recent actions</p>
                 <p className='text-label-secondary text-center text-xl'>Here is your actions history.</p>

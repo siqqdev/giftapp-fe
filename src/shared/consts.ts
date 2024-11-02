@@ -76,6 +76,19 @@ export const gradientClassNames = {
     red: 'bg-gradient-to-b from-red/20 to-red/5',
 } as const;
 
+export const getPlaceEmoji = (place) => {
+    switch (place) {
+        case 1:
+            return '🥇';
+        case 2:
+            return '🥈';
+        case 3:
+            return '🥉';
+        default:
+            return `#${place}`;
+    }
+};
+
 export const mockActions = [
     {
         action: 'bought',
@@ -160,5 +173,68 @@ export const mockActions = [
         giftImg: GreenStarImg,
         user: 'Alex',
         timestamp: '2024-10-17T12:30:00Z'
+    }
+];
+
+export const mockLeaderboardData = [
+    {
+        id: 1,
+        name: "John Smith",
+        amount: 156,
+        place: 1
+    },
+    {
+        id: 2,
+        name: "Emma Wilson",
+        amount: 142,
+        place: 2
+    },
+    {
+        id: 3,
+        name: "Michael Brown",
+        amount: 128,
+        place: 3
+    },
+    {
+        id: 4,
+        name: "Sarah Davis",
+        amount: 115,
+        place: 4
+    },
+    {
+        id: 5,
+        name: "James Johnson",
+        amount: 98,
+        place: 5
+    },
+    {
+        id: 6,
+        name: "Lisa Anderson",
+        amount: 87,
+        place: 6
+    },
+    {
+        id: 7,
+        name: "Robert Taylor",
+        amount: 76,
+        place: 7
+    },
+    {
+        id: 8,
+        name: "Emily White",
+        amount: 65,
+        place: 8
+    },
+    {
+        id: 9,
+        name: "David Miller",
+        amount: 54,
+        place: 9
+    },
+    {
+        id: 10,
+        name: "Jessica Brown",
+        amount: 43,
+        place: 10
     }
 ];

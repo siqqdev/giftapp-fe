@@ -67,9 +67,9 @@ const ActionHistoryItem = ({ action, user, amount, giftName, giftImg }: IActionH
                         <img
                             src={giftImg}
                             alt=""
-                            className="w-12 h-12 bg-bg-secondary p-1 rounded-xl"
+                            className="w-12 h-12 bg-bg-secondary dark:bg-bg-dark-placeholder p-1 rounded-xl"
                         />
-                        <span className={`absolute -bottom-1 -right-1 ${bgColor} rounded-full p-1 border-2 border-white`}>
+                        <span className={`absolute -bottom-1 -right-1 ${bgColor} rounded-full p-1 border-2 border-white dark:border-bg-dark`}>
                             {icon}
                         </span>
                     </div>

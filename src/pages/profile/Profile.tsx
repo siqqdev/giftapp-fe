@@ -13,7 +13,7 @@ const Profile = () => {
     const navigate = useNavigate()
     return (
         <AnimatePresence>
-            <div className='flex flex-col gap-4 items-center pt-4 pb-20'>
+            <div className='flex flex-col gap-4 items-center pt-4 pb-20 text-black dark:text-white'>
                 <div className='relative w-full flex justify-center items-start'>
                     <div className='absolute left-4 top-0'>
                         <ThemeSwitch />

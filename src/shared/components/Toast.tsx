@@ -12,7 +12,7 @@ const Toast = ({ message, subMessage, onClose }) => (
                 stiffness: 500,
                 damping: 40
             }}
-            className="fixed bottom-0 left-0 right-0 bg-bg-notification text-white px-4 py-2 flex items-center justify-between m-4 rounded-2xl"
+            className="fixed bottom-0 left-0 right-0 bg-bg-notification dark:bg-black text-white px-4 py-2 flex items-center justify-between m-4 rounded-2xl"
         >
             <div className="flex items-center gap-3">
                 <img src={Gift} alt="" className='w-8 h-8 rounded-full'/>

@@ -14,10 +14,10 @@ const BoughtGiftCard = () => {
     return (
         <>
             <div
-                className='flex flex-col gap-2 px-2 py-4 bg-bg-secondary rounded-2xl w-auto justify-center items-center cursor-pointer'
+                className='flex flex-col gap-2 px-2 py-4 bg-bg-secondary dark:bg-bg-dark-placeholder rounded-2xl w-auto justify-center items-center cursor-pointer'
                 onClick={() => setIsOpen(true)}
             >
-                <p className='text-label-secondary text-xs tracking-wide'>Delicious Cake</p>
+                <p className='text-label-secondary text-sm tracking-wide'>Delicious Cake</p>
                 <img src={Cake} alt="" className='w-20 h-20'/>
                 <Button className='px-6'>
                     Send

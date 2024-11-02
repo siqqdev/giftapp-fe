@@ -1,5 +1,5 @@
-import { memo, useCallback } from 'react';
-import Modal from 'react-modal';
+import { memo, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import X from '@/assets/icons/xicon.svg?react'
 
@@ -9,15 +9,22 @@ const overlayVariants = {
 };
 
 const drawerVariants = {
-    hidden: { y: "100%" },
-    visible: { y: 0 },
-};
-
-const transitionConfig = {
-    type: "spring",
-    damping: 40,
-    stiffness: 400,
-    mass: 0.8
+    hidden: {
+        y: "100%",
+        transition: {
+            type: "tween",
+            duration: 0.2,
+            ease: [0.4, 0, 1, 1], // быстрый старт, плавное окончание
+        }
+    },
+    visible: {
+        y: 0,
+        transition: {
+            type: "tween",
+            duration: 0.35,
+            ease: [0.2, 0, 0, 1], // плавное ускорение и очень плавное замедление
+        }
+    }
 };
 
 export const Drawer = memo(({ isOpen, onClose, className, children }) => {
@@ -27,18 +34,36 @@ export const Drawer = memo(({ isOpen, onClose, className, children }) => {
         }
     }, [onClose]);
 
-    return (
+    const dragConfig = useMemo(() => ({
+        constraints: { top: 0 },
+        dragElastic: 0.05,
+        dragTransition: {
+            bounceStiffness: 400,
+            bounceDamping: 40
+        }
+    }), []);
+
+    const content = useMemo(() => (
+        <div className="relative">
+            <button
+                onClick={onClose}
+                className="absolute right-4 top-4 p-1 bg-gray-100 dark:bg-gray-700 rounded-full transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
+                aria-label="Close drawer"
+            >
+                <X size={20} />
+            </button>
+
+            <div className="p-4">
+                <div className="w-12 h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full mb-6 mx-auto"/>
+                {children}
+            </div>
+        </div>
+    ), [children, onClose]);
+
+    return createPortal(
         <AnimatePresence mode="wait">
             {isOpen && (
-                <Modal
-                    isOpen={isOpen}
-                    onRequestClose={onClose}
-                    className="fixed bottom-0 left-0 right-0 bg-transparent outline-none"
-                    overlayClassName="fixed inset-0 bg-transparent"
-                    style={{ content: { padding: 0 } }}
-                    ariaHideApp={false}
-                    shouldCloseOnOverlayClick={true}
-                >
+                <div className="fixed inset-0 z-50">
                     <motion.div
                         key="overlay"
                         variants={overlayVariants}
@@ -56,39 +81,28 @@ export const Drawer = memo(({ isOpen, onClose, className, children }) => {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        transition={transitionConfig}
                         drag="y"
-                        dragConstraints={{ top: 0 }}
-                        dragElastic={0.1}
+                        dragDirectionLock
+                        {...dragConfig}
                         onDragEnd={handleDragEnd}
-                        className={`rounded-t-xl w-full outline-none relative will-change-transform ${className}`}
+                        className={`fixed bottom-0 left-0 right-0 rounded-t-xl bg-white dark:bg-bg-dark shadow-lg outline-none ${className}`}
                         style={{
                             maxHeight: '70vh',
                             touchAction: 'none',
                             overscrollBehavior: 'contain',
-                            transform: 'translateZ(0)'
+                            WebkitOverflowScrolling: 'touch',
+                            willChange: 'transform',
+                            transform: 'translate3d(0,0,0)',
+                            backfaceVisibility: 'hidden'
                         }}
                     >
-                        <div className="relative">
-                            <button
-                                onClick={onClose}
-                                className="absolute right-4 top-4 p-1 bg-[#E3E3E8] rounded-full transition-colors"
-                                aria-label="Close drawer"
-                            >
-                                <X size={20} />
-                            </button>
-
-                            <div className="p-4">
-                                <div className="w-12 h-1.5 bg-gray-200 rounded-full mb-6 mx-auto"/>
-                                {children}
-                            </div>
-                        </div>
+                        {content}
                     </motion.div>
-                </Modal>
+                </div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 });
 
 Drawer.displayName = 'Drawer';
-

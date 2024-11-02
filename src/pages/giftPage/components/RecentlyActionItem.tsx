@@ -9,10 +9,10 @@ const RecentlyActionItem = () => {
                 <img
                     src={MockAvatar}
                     alt=""
-                    className="w-12 h-12 bg-bg-secondary p-1 rounded-full"
+                    className="w-12 h-12 p-1 rounded-full"
                 />
                 <span
-                    className={`absolute -bottom-0 -right-1 bg-blue rounded-full p-1 border-2 border-white`}>
+                    className={`absolute -bottom-0 -right-1 bg-blue rounded-full p-1 border-2 border-white dark:border-bg-dark`}>
                             {<Bought className="w-2.5 h-2.5"/>}
                             </span>
             </div>

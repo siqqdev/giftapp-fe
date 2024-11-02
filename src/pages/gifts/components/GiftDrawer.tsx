@@ -26,7 +26,7 @@ const GiftDrawer = ({ isOpen, onClose, giftData }) => {
     }, [isOpen, show, hide]);
 
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary">
+        <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white">
             <div className="flex flex-col items-center gap-4 relative">
                 <div className="relative">
                     <Sparkles />

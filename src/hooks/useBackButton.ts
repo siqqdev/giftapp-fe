@@ -12,9 +12,14 @@ const ROUTES_WITHOUT_BACK_BUTTON = [
 interface UseBackButtonProps {
     isModal?: boolean;
     onModalClose?: () => void;
+    hideOnClose?: boolean;
 }
 
-const useBackButton = ({ isModal = false, onModalClose }: UseBackButtonProps = {}) => {
+const useBackButton = ({
+                           isModal = false,
+                           onModalClose,
+                           hideOnClose = true
+                       }: UseBackButtonProps = {}) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -44,11 +49,12 @@ const useBackButton = ({ isModal = false, onModalClose }: UseBackButtonProps = {
 
         return () => {
             tg.BackButton.offClick(handleBackButton);
-            if (isModal) {
+
+            if (isModal && hideOnClose) {
                 tg.BackButton.hide();
             }
         };
-    }, [location.pathname, handleBackButton, isModal]);
+    }, [location.pathname, handleBackButton, isModal, hideOnClose]);
 };
 
 export default useBackButton;

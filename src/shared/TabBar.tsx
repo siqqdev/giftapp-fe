@@ -76,7 +76,7 @@ const TabBar = () => {
     };
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 pb-safe">
+        <div className="fixed bottom-0 left-0 right-0 backdrop-blur-md border-t border-bg-tabbar dark:border-[#1E1E1EBF] pb-safe bg-white/75 dark:bg-bg-dark/95">
             <div className="flex justify-around items-center h-16">
                 {tabs.map((tab) => {
                     const isActive = location.pathname === tab.path;
