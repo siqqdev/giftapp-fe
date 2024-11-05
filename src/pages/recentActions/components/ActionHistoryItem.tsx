@@ -4,7 +4,7 @@ import ReceivedIcon from '@/assets/icons/actions/received.svg?react'
 import SentIcon from '@/assets/icons/actions/sent.svg?react'
 import {IActionHistoryItem} from "@/inerfaces/interfaces.ts";
 
-const ActionHistoryItem = ({ action, user, amount, giftName, giftImg }: IActionHistoryItem) => {
+const ActionHistoryItem: React.FC<IActionHistoryItem> = ({ action, amount, user, giftName, giftImg }) => {
     const getActionIcon = () => {
         switch (action) {
             case 'bought':
@@ -56,8 +56,6 @@ const ActionHistoryItem = ({ action, user, amount, giftName, giftImg }: IActionH
     }
 
     const { icon, bgColor } = getActionIcon()
-
-    // TODO: add separator
 
     return (
         <div className="flex flex-col gap-2 items-start">

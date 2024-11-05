@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import Toast from "@/shared/components/Toast.tsx";
+import Toast from "@/shared/ui/Toast.tsx";
 
 const useNotification = () => {
     const [notification, setNotification] = useState(null);

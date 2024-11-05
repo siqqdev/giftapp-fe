@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FilledCurrencyIcon } from "@/shared/consts.ts";
 import RecentlyActionsList from "@/pages/giftPage/components/RecentlyActionsList.tsx";
-import { IGift } from "@/inerfaces/interfaces.ts";
+import {IGift, SVGProps} from "@/inerfaces/interfaces.ts";
 
 interface GiftInfoProps {
     gift: IGift;
@@ -10,7 +10,7 @@ interface GiftInfoProps {
 }
 
 const GiftInfo = ({ gift, isClosing }: GiftInfoProps) => {
-    const CurrencyIcon = FilledCurrencyIcon[gift.currency];
+    const CurrencyIcon = FilledCurrencyIcon[gift.currency] as React.FC<SVGProps>;
 
     return (
         <motion.div

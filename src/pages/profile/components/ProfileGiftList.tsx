@@ -94,7 +94,6 @@ const ProfileGiftList = () => {
         <div className="grid grid-cols-3 gap-3 w-full">
             {mockGifts.map((gift) => (
                 <ProfileGiftCard
-                    key={gift.id}
                     avatar={gift.avatar}
                     amountMin={gift.amountMin}
                     amountMax={gift.amountMax}

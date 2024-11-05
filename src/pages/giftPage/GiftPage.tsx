@@ -6,6 +6,7 @@ import {TransparentCurrencyIcon, getGiftById, gradientClassNames, FilledCurrency
 import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
 import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 import RecentlyActionsList from "@/pages/giftPage/components/RecentlyActionsList.tsx";
+import {SVGProps} from "@/inerfaces/interfaces.ts";
 
 const GiftPage = () => {
     const navigate = useNavigate()
@@ -14,7 +15,7 @@ const GiftPage = () => {
 
     if (!gift) return null;
 
-    const Icon = FilledCurrencyIcon[gift.currency];
+    const Icon = FilledCurrencyIcon[gift.currency] as React.FC<SVGProps>;
 
     const handleBuyGift = () => {
         navigate('/gift-bought-success')
@@ -52,8 +53,7 @@ const GiftPage = () => {
 
                     <div className="relative flex items-center justify-center w-full h-full">
                         <AnimatedLottie
-                            layoutId={`gift-animation-${gift.id}`}
-                            animationData={gift.animationData}
+                            animationName='gift-delicious-cake'
                             className="w-64 h-64"
                         />
                     </div>

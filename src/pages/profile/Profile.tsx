@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from "@/shared/components/Avatar.tsx";
+import Avatar from "@/shared/ui/Avatar.tsx";
 import PremiumStar from '@/assets/icons/premiumStar.svg?react'
 import MockAvatar from '@/assets/mockAvatar.png'
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";

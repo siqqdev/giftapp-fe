@@ -1,73 +1,71 @@
 import Star from '@/assets/icons/star.svg?react'
-import {useMemo} from "react";
-import {motion} from 'framer-motion'
+import { useMemo } from "react";
+import { motion } from 'framer-motion'
 
 const Sparkles = () => {
     const sparklePositions = useMemo(() => {
         const positions = [];
-        for (let i = 0; i < 50; i++) {
-            const position = i % 4;
-            let x, y;
+        for (let i = 0; i < 100; i++) {
+            const angle = (Math.PI * 2 * i) / 60 + (Math.random() * 0.5 - 0.25);
 
-            switch (position) {
-                case 0:
-                    x = Math.random() * -150 - 50;
-                    y = Math.random() * 200 - 150;
-                    break;
-                case 1:
-                    x = Math.random() * 150 + 50;
-                    y = Math.random() * 200 - 150;
-                    break;
-                case 2:
-                    x = Math.random() * -150 - 50;
-                    y = Math.random() * 200 - 150;
-                    break;
-                case 3:
-                    x = Math.random() * 160 - 80;
-                    y = Math.random() * -40 - 40;
-                    break;
+            let distance;
+            const isMoreHorizontal = Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle));
+
+            if (isMoreHorizontal) {
+                distance = 40 + Math.random() * 140;
+            } else {
+                distance = 20 + Math.random() * 80;
             }
 
-            const isGold = Math.random() > 0.7;
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+
+            const isLarge = Math.random() > 0.3;
 
             positions.push({
                 x,
                 y,
-                scale: Math.random() * 0.4 + 0.2,
-                delay: Math.random() * 3,
-                duration: 1.5 + Math.random(),
-                repeatDelay: Math.random() * 3,
-                color: isGold ? 'text-gold' : '#FECC13'
+                initialX: 0,
+                initialY: 0,
+                scale: isLarge ? (Math.random() * 0.3 + 0.4) : (Math.random() * 0.15 + 0.15),
+                delay: Math.random() * 0.8,
+                duration: 1.2 + Math.random() * 0.6,
+                repeatDelay: Math.random() * 1.5,
+                color: Math.random() > 0.7 ? 'text-gold' : '#FECC13',
+                size: isLarge ? 'w-6 h-6' : 'w-3 h-3'
             });
         }
         return positions;
     }, []);
 
     return (
-        <div className="absolute w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute inset-0">
             {sparklePositions.map((pos, index) => (
                 <motion.div
                     key={index}
                     className="absolute left-1/2 top-1/2"
-                    initial={{ opacity: 0, scale: 0 }}
+                    initial={{
+                        opacity: 0,
+                        scale: 0,
+                        x: pos.initialX,
+                        y: pos.initialY
+                    }}
                     animate={{
-                        opacity: [0, 1, 0],
-                        scale: [0, pos.scale, 0],
+                        opacity: [0, 1, 0.8, 0],
+                        scale: [0, pos.scale, pos.scale * 0.9, 0],
+                        x: [pos.initialX, pos.x],
+                        y: [pos.initialY, pos.y]
                     }}
                     transition={{
                         duration: pos.duration,
                         delay: pos.delay,
                         repeat: Infinity,
                         repeatDelay: pos.repeatDelay,
-                        ease: "easeInOut"
-                    }}
-                    style={{
-                        x: pos.x,
-                        y: pos.y,
+                        ease: "easeOut"
                     }}
                 >
                     <Star
-                        className={`w-7 h-7 ${pos.color.startsWith('text') ? pos.color : ''}`}
+                        className={`${pos.size} ${pos.color.startsWith('text') ? pos.color : ''}`}
                         style={!pos.color.startsWith('text') ? { color: pos.color } : undefined}
                     />
                 </motion.div>

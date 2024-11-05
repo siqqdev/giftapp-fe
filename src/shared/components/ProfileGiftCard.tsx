@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from "@/shared/components/Avatar.tsx";
+import Avatar from "@/shared/ui/Avatar.tsx";
 
 interface props {
     avatar: string

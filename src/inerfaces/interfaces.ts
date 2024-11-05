@@ -1,3 +1,6 @@
+import {AnimationNameType} from "@/shared/components/AnimatedLottie.tsx";
+import React from "react";
+
 export interface IActionHistoryItemProps {
     action: 'bought' | 'received' | 'sent'
     giftName: string
@@ -12,21 +15,18 @@ type ExclusiveUserOrAmount =
 
 export type IActionHistoryItem = ExclusiveUserOrAmount & Omit<IActionHistoryItemProps, 'user' | 'amount'>;
 
-export type GiftColor = 'gold' | 'red' | 'green' | 'blue';
-export type Currency = 'TON' | 'USDT' | 'ETH';
-export type AnimationName =
-    | 'gift-delicious-cake'
-    | 'gift-blue-star'
-    | 'gift-green-star'
-    | 'gift-red-star';
+export type SVGProps = React.ComponentProps<'svg'>;
+
+export type GiftColorType = 'gold' | 'red' | 'green' | 'blue';
+export type CurrencyType = 'TON' | 'USDT' | 'ETH';
 
 export interface IGift {
     id: number;
     name: string;
-    color: GiftColor;
-    animationName: AnimationName;
+    color: GiftColorType;
+    animationName: AnimationNameType;
     price: number;
-    currency: Currency;
+    currency: CurrencyType;
     amount: number;
 }
 

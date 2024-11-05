@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AnimatedLottie } from "@/shared/components/AnimatedLottie.tsx";
+import {AnimatedLottie, AnimationNameType} from "@/shared/components/AnimatedLottie.tsx";
 
 interface GiftAnimationProps {
-    animationData: string;
+    animationData: AnimationNameType;
 }
 
-const GiftAnimation = ({ animationData }: GiftAnimationProps) => (
+const GiftAnimation = ({ animationName }: GiftAnimationProps) => (
     <motion.div
         variants={{
             initial: { width: '9rem', height: '9rem', scale: 1 },
@@ -17,7 +17,7 @@ const GiftAnimation = ({ animationData }: GiftAnimationProps) => (
         className="will-change-transform"
     >
         <AnimatedLottie
-            animationData={animationData}
+            animationName={animationName}
             className="w-full h-full"
         />
     </motion.div>

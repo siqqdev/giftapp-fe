@@ -58,13 +58,13 @@ const BuyGiftSuccess = () => {
                 <div className="relative w-60 h-60">
                     <div className="absolute inset-0 flex items-center justify-center">
                         <AnimatedLottie
-                            animationData={Cake}
+                            animationName='gift-delicious-cake'
                             className='w-24 h-24 z-0'
                         />
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center">
                         <AnimatedLottie
-                            animationData={SuccessGift}
+                            animationName='effect-gift-purchased'
                             className='w-48 h-48 z-10'
                             loop={false}
                         />

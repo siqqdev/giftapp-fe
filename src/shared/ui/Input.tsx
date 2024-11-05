@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import SearchIcon from '@/assets/icons/search.svg?react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Search from '@/assets/icons/search.svg?react';
 
-const SearchInput = ({ value, onChange }) => {
+const SearchInput = () => {
     const [isFocused, setIsFocused] = useState(false);
+    const [value, setValue] = useState('');
 
     return (
         <div className="relative w-full">
             <input
                 type="text"
                 value={value}
-                onChange={onChange}
+                onChange={(e) => setValue(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Search"
@@ -21,18 +21,16 @@ const SearchInput = ({ value, onChange }) => {
                     ${isFocused ? 'text-left pl-10' : 'text-center placeholder:text-center'}
                 `}
             />
-            <motion.div
-                animate={{
-                    x: isFocused ? 16 : 'calc(50% - 50px)',
-                }}
-                transition={{
-                    duration: 0.3,
-                    ease: "easeInOut"
-                }}
-                className="absolute top-1/2 -translate-y-1/2"
+            <div
+                className={`
+                    absolute top-1/2 -translate-y-1/2
+                    transition-all duration-300 ease-in-out
+                    pointer-events-none text-label-secondary text-lg
+                    ${isFocused ? 'left-3' : 'left-1/2 -translate-x-14'}
+                `}
             >
-                <SearchIcon className="w-4 h-4 pointer-events-none text-label-secondary" />
-            </motion.div>
+                <Search className="w-5 h-5 text-zinc-500" />
+            </div>
         </div>
     );
 };

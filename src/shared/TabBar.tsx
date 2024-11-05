@@ -2,19 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Lottie from 'lottie-react';
 
-// Animations
 import StoreAnim from '@/assets/animations/tab-store.json';
 import GiftsAnim from '@/assets/animations/tab-gifts.json';
 import LeaderboardAnim from '@/assets/animations/tab-leaderboard.json';
 import ProfileAnim from '@/assets/animations/tab-profile.json';
 
-// Icons
 import StoreIcon from '@/assets/icons/tabbar/store.svg?react';
 import GiftsIcon from '@/assets/icons/tabbar/gifts.svg?react';
 import LeaderboardIcon from '@/assets/icons/tabbar/leaderboard.svg?react';
 import ProfileIcon from '@/assets/icons/tabbar/profile.svg?react';
+import {SVGProps} from "@/inerfaces/interfaces.ts";
 
-const TabIcon = ({ Icon, isActive }) => (
+const TabIcon = ({ Icon, isActive }: {Icon: React.FC<SVGProps>, isActive: boolean}) => (
     <Icon
         className={`w-full h-full ${isActive ? 'fill-blue' : 'fill-icons-gray'}`}
     />
@@ -23,25 +22,25 @@ const TabIcon = ({ Icon, isActive }) => (
 const tabs = [
     {
         name: 'Store',
-        Icon: StoreIcon,
+        Icon: StoreIcon as React.FC<SVGProps>,
         animation: StoreAnim,
         path: '/store'
     },
     {
         name: 'Gifts',
-        Icon: GiftsIcon,
+        Icon: GiftsIcon as React.FC<SVGProps>,
         animation: GiftsAnim,
         path: '/gifts'
     },
     {
         name: 'Leaderboard',
-        Icon: LeaderboardIcon,
+        Icon: LeaderboardIcon as React.FC<SVGProps>,
         animation: LeaderboardAnim,
         path: '/leaderboard'
     },
     {
         name: 'Profile',
-        Icon: ProfileIcon,
+        Icon: ProfileIcon as React.FC<SVGProps>,
         animation: ProfileAnim,
         path: '/profile'
     }

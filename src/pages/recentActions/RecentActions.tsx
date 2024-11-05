@@ -60,7 +60,6 @@ const RecentActions = () => {
                     <div className="flex flex-col gap-4">
                         {actions.map((action, index) => (
                             <ActionHistoryItem
-                                key={`${date}-${index}`}
                                 date={date}
                                 action={action.action}
                                 amount={action.amount}
