@@ -24,7 +24,12 @@ const GiftInfo = ({ gift, isClosing }: GiftInfoProps) => {
             }}
             className="flex flex-col gap-1 px-4 pb-4"
         >
-            <p className="font-semibold text-2xl">{gift.name}</p>
+            <div className='flex gap-2 items-center'>
+                <p className="font-semibold text-2xl">{gift.name}</p>
+                <span className='rounded-full bg-[#007AFF1F] font-medium text-sm text-center3 text-blue px-2 py-1'>
+                    4 of 500
+                </span>
+            </div>
             <p className="text-label-secondary tracking-normal">
                 Purchase this gift for the opportunity to give it to another user.
             </p>

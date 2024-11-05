@@ -74,7 +74,10 @@ const GiftCard = (props: Props) => {
             onClick={handleClick}
             className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer"
         >
-            <Background color={color} />
+            <div className="absolute top-4 right-4 text-black opacity-50 text-sm z-10">
+                4 of 500
+            </div>
+            <Background color={color}/>
             <GiftContent
                 animationName={animationName}
                 name={name}

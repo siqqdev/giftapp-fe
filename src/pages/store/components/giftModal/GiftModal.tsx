@@ -94,7 +94,7 @@ const GiftModal = ({
                         <div className="relative w-full aspect-square rounded-2xl overflow-hidden">
                             <Background color={gift.color} />
                             <div className="relative flex items-center justify-center w-full h-full">
-                                <GiftAnimation animationData={gift.animationData} />
+                                <GiftAnimation animationName={gift.animationName} />
                             </div>
                         </div>
                     </div>

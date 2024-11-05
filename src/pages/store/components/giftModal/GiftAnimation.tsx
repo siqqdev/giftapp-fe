@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {AnimatedLottie, AnimationNameType} from "@/shared/components/AnimatedLottie.tsx";
 
 interface GiftAnimationProps {
-    animationData: AnimationNameType;
+    animationName: AnimationNameType;
 }
 
 const GiftAnimation = ({ animationName }: GiftAnimationProps) => (
