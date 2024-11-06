@@ -4,15 +4,16 @@ import { giftsMockData } from "@/shared/consts.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
 
 interface GiftsListProps {
-    onSelectGift: (gift: IGift & { rect: DOMRect }) => void;
+    onSelectGift: ({gift: IGift, rect: DOMRect}) => void;
+    gifts: IGift[]
 }
 
-const GiftsList = ({ onSelectGift }: GiftsListProps) => {
+const GiftsList = ({ onSelectGift, gifts }: GiftsListProps) => {
     return (
         <div className='grid grid-cols-2 w-full px-4 mt-4 gap-2'>
-            {giftsMockData.map((gift) => (
+            {gifts?.map((gift) => (
                 <GiftCard
-                    {...gift}
+                    gift={gift}
                     onSelect={onSelectGift}
                 />
             ))}

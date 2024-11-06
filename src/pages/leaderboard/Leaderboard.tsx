@@ -4,9 +4,12 @@ import SearchInput from "@/shared/ui/Input.tsx";
 import { mockLeaderboardData } from "@/shared/consts.ts";
 import UserProfileModal from "@/pages/leaderboard/components/UserProfileModal.tsx";
 import LeaderboardItem from "@/pages/leaderboard/components/LeaderboardItem.tsx";
+import {useGetLeaderboardQuery} from "@/api/endpoints/leaderBoardApi.ts";
+import {IUser} from "@/inerfaces/interfaces.ts";
 
 const Leaderboard = () => {
-    const [selectedItem, setSelectedItem] = useState(null);
+    const {data: leaderboard, isLoading, isFetching} = useGetLeaderboardQuery()
+    const [selectedItem, setSelectedItem] = useState<{user: IUser, rect: DOMRect}>(null);
     const [isClosing, setIsClosing] = useState(false);
 
     const handleSelectItem = (item) => {
@@ -22,9 +25,9 @@ const Leaderboard = () => {
     return (
         <div className="flex flex-col gap-2 px-4 pt-4 pb-20">
             <SearchInput />
-            {mockLeaderboardData.map((item) => (
+            {leaderboard?.users?.map((user) => (
                 <LeaderboardItem
-                    {...item}
+                    user={user}
                     onSelect={handleSelectItem}
                 />
             ))}
@@ -38,7 +41,7 @@ const Leaderboard = () => {
                                 setIsClosing(false);
                             }
                         }}
-                        userData={selectedItem}
+                        user={selectedItem.user}
                         isClosing={isClosing}
                         onClose={closeModal}
                     />

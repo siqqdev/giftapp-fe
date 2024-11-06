@@ -9,6 +9,7 @@ import Background from './Background';
 import PortalBackground from './PortalBackground';
 import GiftAnimation from './GiftAnimation';
 import GiftInfo from './GiftInfo';
+import {useBuyGiftMutation, useGetGiftActionsQuery} from "@/api/endpoints/giftApi.ts";
 
 interface GiftPortalProps {
     from: DOMRect;
@@ -25,11 +26,14 @@ const GiftModal = ({
                        isClosing,
                        onClose,
                    }: GiftPortalProps) => {
+    const [buyGiftReq] = useBuyGiftMutation()
     const navigate = useNavigate();
     const [hideBackButtonOnClose, setHideBackButtonOnClose] = useState(true);
     const [isButtonVisible, setIsButtonVisible] = useState(true);
 
-    const handleBuyClick = () => {
+    const handleBuyClick = async () => {
+        const res = await buyGiftReq({id: gift._id}).unwrap()
+        console.log(res)
         onClose();
         setHideBackButtonOnClose(false);
         navigate('/gift-bought-success');
@@ -92,9 +96,9 @@ const GiftModal = ({
                 <div className="w-full h-full">
                     <div className="w-full p-4">
                         <div className="relative w-full aspect-square rounded-2xl overflow-hidden">
-                            <Background color={gift.color} />
+                            <Background name={gift.name} />
                             <div className="relative flex items-center justify-center w-full h-full">
-                                <GiftAnimation animationName={gift.animationName} />
+                                <GiftAnimation animationName={gift.name} />
                             </div>
                         </div>
                     </div>

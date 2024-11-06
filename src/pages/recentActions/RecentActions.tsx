@@ -2,6 +2,7 @@ import React from 'react';
 import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 import ActionHistoryItem from "@/pages/recentActions/components/ActionHistoryItem.tsx";
 import {mockActions} from "@/shared/consts.ts";
+import {useGetUserActionsQuery} from "@/api/endpoints/userApi.ts";
 
 interface ActionItem {
     action: 'bought' | 'received' | 'sent';
@@ -17,6 +18,7 @@ interface GroupedActions {
 }
 
 const RecentActions = () => {
+    const {data: actions, isLoading, isFetching} = useGetUserActionsQuery()
     const groupActionsByDate = (actions: ActionItem[]): GroupedActions => {
         return actions.reduce((groups, action) => {
             const date = new Date(action.timestamp);
@@ -33,7 +35,7 @@ const RecentActions = () => {
         }, {} as GroupedActions);
     };
 
-    const hasItems = mockActions.length > 0;
+    const hasItems = actions?.items?.length > 0;
     const groupedActions = groupActionsByDate(mockActions);
 
     if (!hasItems) return (

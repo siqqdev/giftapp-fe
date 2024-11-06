@@ -1,5 +1,5 @@
-import React, { memo, useRef, useEffect } from 'react';
-import Lottie from "lottie-react";
+import React, {memo, useRef, useEffect, useState} from 'react';
+import Lottie, {LottieRefCurrentProps} from "lottie-react";
 
 import effectGiftPurchased from '@/assets/animations/effect-gift-purchased.json';
 import giftBlueStar from '@/assets/animations/gift-blue-star.json';
@@ -10,10 +10,10 @@ import emojiBalloons from '@/assets/animations/emoji-balloons.json';
 
 const ANIMATIONS = {
     'effect-gift-purchased': effectGiftPurchased,
-    'gift-blue-star': giftBlueStar,
-    'gift-delicious-cake': giftDeliciousCake,
-    'gift-green-star': giftGreenStar,
-    'gift-red-star': giftRedStar,
+    'Blue Star': giftBlueStar,
+    'Delicious Cake': giftDeliciousCake,
+    'Green Star': giftGreenStar,
+    'Red Star': giftRedStar,
     'emoji-balloons': emojiBalloons,
 } as const;
 
@@ -44,22 +44,34 @@ interface AnimatedLottieProps extends Omit<LottieOptions, 'animationData'> {
 
 export const AnimatedLottie = memo(({ animationName, className, ...props }: AnimatedLottieProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const lottieRef = useRef<LottieRefCurrentProps | null>(null);
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const [playDirection, setPlayDirection] = useState<1 | -1>(1);
+    const isStarAnimation = animationName.includes('Star');
 
     useEffect(() => {
         if (isIOS && containerRef.current) {
             if ("style" in containerRef.current) {
                 containerRef.current.style.transform = 'translateZ(0)';
-            }
-            if ("style" in containerRef.current) {
                 containerRef.current.style.backfaceVisibility = 'hidden';
             }
         }
     }, [isIOS]);
 
+    const handleComplete = () => {
+        if (!isStarAnimation || !lottieRef.current) return;
+
+        setPlayDirection(prev => prev === 1 ? -1 : 1);
+
+        if (lottieRef.current) {
+            lottieRef.current.setDirection(playDirection);
+            lottieRef.current.play();
+        }
+    };
+
     const lottieOptions: LottieOptions = {
         animationData: ANIMATIONS[animationName],
-        loop: true,
+        loop: !isStarAnimation,
         renderer: 'canvas',
         rendererSettings: {
             clearCanvas: true,
@@ -84,6 +96,8 @@ export const AnimatedLottie = memo(({ animationName, className, ...props }: Anim
             }}
         >
             <Lottie
+                lottieRef={lottieRef}
+                onComplete={handleComplete}
                 {...lottieOptions}
                 style={{
                     width: '100%',

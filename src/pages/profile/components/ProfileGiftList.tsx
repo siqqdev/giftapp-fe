@@ -5,6 +5,8 @@ import GreenStar from '@/assets/gifts/green-star.png';
 import BlueStar from '@/assets/gifts/blue-star.png';
 import RedStar from '@/assets/gifts/red-star.png';
 import MockAvatar from '@/assets/mockAvatar.png';
+import {useGetReceivedGiftsQuery} from "@/api/endpoints/giftApi.ts";
+import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 
 const mockGifts = [
     {
@@ -90,9 +92,17 @@ const mockGifts = [
 ];
 
 const ProfileGiftList = () => {
+    const id = window.Telegram?.WebApp.initDataUnsafe.user?.id || '272324534'
+    const {data: gifts, isLoading, isFetching} = useGetReceivedGiftsQuery(id)
+
+    if (gifts?.length === 0 || gifts?.items?.length === 0) return (
+        <BalloonsPlaceholder>
+            There are no received gifts here.
+        </BalloonsPlaceholder>
+    )
     return (
         <div className="grid grid-cols-3 gap-3 w-full">
-            {mockGifts.map((gift) => (
+            {gifts?.items?.length > 0 && gifts.items.map((gift) => (
                 <ProfileGiftCard
                     avatar={gift.avatar}
                     amountMin={gift.amountMin}

@@ -1,33 +1,16 @@
-import React, {useCallback, useRef, useEffect, memo} from 'react';
-import {AnimationNameType} from "@/shared/components/AnimatedLottie.tsx";
+import React, {useCallback, useRef, useEffect} from 'react';
 import { useAppDispatch } from "@/store/hooks.ts";
 import { setTabBarVisibility } from "@/store/slices/tabBarSlice.ts";
-import {Background} from "@/pages/store/components/giftCard/BackGround.tsx";
 import {GiftContent} from "@/pages/store/components/giftCard/GiftContent.tsx";
+import {IGift} from "@/inerfaces/interfaces.ts";
+import {Background} from "@/pages/store/components/giftCard/BackGround.tsx";
 
-interface Props {
-    id: number;
-    animationName: AnimationNameType;
-    color: 'gold' | 'red' | 'green' | 'blue';
-    name: string;
-    price: number;
-    currency: 'TON' | 'USDT' | 'ETH';
-    amount: number;
-    onSelect: (gift: Omit<Props, 'onSelect'>) => void;
+interface props {
+    gift: IGift
+    onSelect: ({gift: IGift, rect: DOMRect}) => void;
 }
 
-const GiftCard = (props: Props) => {
-    const {
-        id,
-        animationName,
-        color,
-        name,
-        price,
-        currency,
-        amount,
-        onSelect
-    } = props;
-
+const GiftCard = ({gift, onSelect}: props) => {
     const dispatch = useAppDispatch();
     const cardRef = useRef<HTMLDivElement | null>(null);
     const rectRef = useRef<DOMRect | null>(null);
@@ -45,7 +28,7 @@ const GiftCard = (props: Props) => {
         const resizeObserver = new ResizeObserver(updateRect);
 
         if (cardRef.current) {
-            resizeObserver.observe(cardRef.current);
+            resizeObserver.observe(cardRef.current as Element);
         }
 
         return () => resizeObserver.disconnect();
@@ -57,16 +40,10 @@ const GiftCard = (props: Props) => {
 
         dispatch(setTabBarVisibility(false));
         onSelect({
-            id,
-            animationName,
-            color,
-            name,
-            price,
-            currency,
-            amount,
+            gift,
             rect: rectRef.current
         });
-    }, [id, animationName, color, name, price, currency, amount, dispatch, onSelect]);
+    }, [dispatch, onSelect]);
 
     return (
         <div
@@ -74,15 +51,14 @@ const GiftCard = (props: Props) => {
             onClick={handleClick}
             className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer"
         >
-            <div className="absolute top-4 right-4 text-black opacity-50 text-sm z-10">
-                4 of 500
+            <div className="absolute top-4 right-4 text-black opacity-50 text-sm z-10 dark:text-white">
+                {gift.soldAmount} of {gift.totalAmount}
             </div>
-            <Background color={color}/>
+            <Background animationName={gift.name}/>
             <GiftContent
-                animationName={animationName}
-                name={name}
-                price={price}
-                currency={currency}
+                name={gift.name}
+                price={gift.price}
+                currency={gift.asset}
             />
         </div>
     );

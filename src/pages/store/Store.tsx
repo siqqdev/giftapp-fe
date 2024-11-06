@@ -5,10 +5,13 @@ import { AnimatePresence } from "framer-motion";
 import { setTabBarVisibility } from "@/store/slices/tabBarSlice.ts";
 import { useAppDispatch } from "@/store/hooks.ts";
 import GiftModal from "@/pages/store/components/giftModal/GiftModal.tsx";
+import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
+import {IGift} from "@/inerfaces/interfaces.ts";
 
 const Store = () => {
+    const {data: gifts, isLoading, isFetching} = useGetGiftsQuery()
     const dispatch = useAppDispatch();
-    const [selectedGift, setSelectedGift] = useState(null);
+    const [selectedGift, setSelectedGift] = useState<{ gift: IGift; rect: DOMRect }>(null);
     const [isClosing, setIsClosing] = useState(false);
 
     const handleSelectGift = (gift) => {
@@ -28,7 +31,7 @@ const Store = () => {
             <GiftIcon className='fill-blue w-12 h-12' />
             <p className='font-semibold text-center text-2xl tracking-tighter'>Buy and Send Gifts</p>
             <p className='text-label-secondary'>Unique gifts for everyone by Crypto Pay.</p>
-            <GiftsList onSelectGift={handleSelectGift}/>
+            <GiftsList onSelectGift={handleSelectGift} gifts={gifts}/>
             <AnimatePresence mode="wait">
                 {selectedGift && (
                     <GiftModal
@@ -40,7 +43,7 @@ const Store = () => {
                                 dispatch(setTabBarVisibility(true));
                             }
                         }}
-                        gift={selectedGift}
+                        gift={selectedGift.gift}
                         isClosing={isClosing}
                         onClose={closeModal}
                     />

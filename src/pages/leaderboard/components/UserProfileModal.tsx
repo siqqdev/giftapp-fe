@@ -6,6 +6,8 @@ import useBackButton from "@/hooks/useBackButton.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import PremiumStar from '@/assets/icons/premiumStar.svg?react';
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";
+import {IUser} from "@/inerfaces/interfaces.ts";
+import {getGiftsText} from "@/shared/utils.ts";
 
 const PortalBackground = () => (
     <motion.div
@@ -47,7 +49,7 @@ const FlyingAvatar = ({ from, pfp, place }) => (
     </motion.div>
 );
 
-const ProfileContent = ({ userData }) => (
+const ProfileContent = ({ user }: {user: IUser}) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -55,23 +57,22 @@ const ProfileContent = ({ userData }) => (
         className="flex flex-col gap-1 items-center justify-center"
     >
         <div className="flex gap-2 items-center mt-4">
-            <p className="text-2xl font-semibold">{userData.name}</p>
+            <p className="text-2xl font-semibold">{user?.id}</p>
             <PremiumStar className="w-4 h-4"/>
         </div>
         <p className="text-lg tracking-tighter text-label-secondary">
-            {userData.amount} gifts received
+            {user?.giftsReceived} {getGiftsText(user?.giftsReceived)} received
         </p>
     </motion.div>
 );
 
 const UserProfileModal = ({
                               from,
-                              userData,
+                              user,
                               isClosing,
                               onClose,
                               onComplete,
                           }) => {
-    const navigate = useNavigate();
     const [hideBackButtonOnClose, setHideBackButtonOnClose] = useState(true);
 
     useBackButton({
@@ -98,8 +99,8 @@ const UserProfileModal = ({
 
                 <FlyingAvatar
                     from={from}
-                    pfp={userData.pfp}
-                    place={userData.place}
+                    pfp={user?.id}
+                    place={user?.rank}
                 />
 
                 <motion.div
@@ -108,7 +109,7 @@ const UserProfileModal = ({
                     transition={{ duration: 0.3 }}
                     className="relative w-full h-full pt-4"
                 >
-                    <ProfileContent userData={userData} />
+                    <ProfileContent user={user} />
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -116,7 +117,7 @@ const UserProfileModal = ({
                         transition={{ delay: 0.3 }}
                         className="px-2 w-full mt-4"
                     >
-                        <ProfileGiftList />
+                        <ProfileGiftList gifts={user?.gifts}/>
                     </motion.div>
                 </motion.div>
             </div>

@@ -70,10 +70,10 @@ export const FilledCurrencyIcon = {
 } as const;
 
 export const gradientClassNames = {
-    gold: 'bg-gradient-to-b from-gold/20 to-gold/5',
-    green: 'bg-gradient-to-b from-green/20 to-green/5',
-    blue: 'bg-gradient-to-b from-blue/20 to-blue/5',
-    red: 'bg-gradient-to-b from-red/20 to-red/5',
+    'Delicious Cake': 'bg-gradient-to-b from-gold/20 to-gold/5',
+    'Green Star': 'bg-gradient-to-b from-green/20 to-green/5',
+    'Blue Star': 'bg-gradient-to-b from-blue/20 to-blue/5',
+    'Red Star': 'bg-gradient-to-b from-red/20 to-red/5',
 } as const;
 
 export const getPlaceEmoji = (place) => {

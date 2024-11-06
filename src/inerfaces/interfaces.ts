@@ -20,25 +20,25 @@ export type SVGProps = React.ComponentProps<'svg'>;
 export type GiftColorType = 'gold' | 'red' | 'green' | 'blue';
 export type CurrencyType = 'TON' | 'USDT' | 'ETH';
 
+export type GiftAnimationName = 'Blue Star' | 'Delicious Cake' | 'Green Star' | 'Red Star'
+
 export interface IGift {
-    id: number;
-    name: string;
-    color: GiftColorType;
-    animationName: AnimationNameType;
-    price: number;
-    currency: CurrencyType;
-    amount: number;
+    _id: string;
+    name: GiftAnimationName;
+    price: string;
+    asset: CurrencyType;
+    totalAmount: number;
+    soldAmount: number;
 }
 
 export interface IUser {
-    id: number;
-    user_id: number;
+    id: string;
     name: string;
-    gifts_received: number;
+    giftsReceived: number;
     pfp: string;
     place: number;
-    language: 'ru' | 'en'
-    is_premium: boolean
+    is_premium: boolean;
+    rank: number;
 }
 
 export interface IUserGift extends IGift{
@@ -47,4 +47,9 @@ export interface IUserGift extends IGift{
     amount_max: number
     bought_at: string
     sent_to: number
+}
+
+export interface IGiftAction {
+    type: 'BuyAction' | 'SendAction';
+    user: string
 }

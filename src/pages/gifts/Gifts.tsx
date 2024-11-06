@@ -1,12 +1,13 @@
 import React from 'react';
 import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 import {useNavigate} from "react-router-dom";
-import BoughtGiftCard from "@/pages/gifts/components/BoughtGiftCard.tsx";
+import {useGetBoughtGiftsQuery, useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import BoughtGiftsList from "@/pages/gifts/components/BoughtGiftsList.tsx";
 
 const Gifts = () => {
+    const {data: gifts, isLoading, isFetching} = useGetBoughtGiftsQuery()
     const navigate = useNavigate();
-    const hasItems = true;
+    const hasItems = gifts?.length > 0;
 
     return (
         <div className='flex flex-col gap-6 pt-10 px-4 text-black dark:text-white'>
@@ -26,7 +27,7 @@ const Gifts = () => {
                 </BalloonsPlaceholder>
             ) : (
                 <div className='pb-20'>
-                    <BoughtGiftsList />
+                    {/*<BoughtGiftsList gifts={gifts} />*/}
                 </div>
             )}
         </div>

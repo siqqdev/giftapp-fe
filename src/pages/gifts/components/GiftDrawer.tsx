@@ -1,51 +1,54 @@
-import {Drawer} from "@/shared/ui/Drawer.tsx";
-import GiftInfoTable from "@/pages/gifts/components/GiftInfoTable.tsx";
-import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
-import Sparkles from "@/pages/gifts/components/Sparkles.tsx";
-import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
-import {useEffect, useCallback} from "react";
+import React from 'react';
+import Avatar from "@/shared/ui/Avatar.tsx";
+import MockAvatar from '@/assets/mockAvatar.png';
 
-const GiftDrawer = ({ isOpen, onClose, giftData }) => {
-    const shareUrl = 'https://t.me/share/url?url=https://example.com/gift';
+type BaseProps = {
+    date: string;
+    price: string;
+    availability: string;
+}
 
-    const handleShare = useCallback(() => {
-        window.Telegram?.WebApp?.openTelegramLink?.(shareUrl);
-    }, [shareUrl]);
+type props = BaseProps & (
+    | { giftName: string; user?: never }
+    | { user: { name: string; pfp: string }; giftName?: never }
+    );
 
-    const {show, hide} = useTelegramButton({
-        onClick: handleShare,
-        initialParams: {
-            text: 'Share Gift'
-        }
-    });
-
-    useEffect(() => {
-        if (isOpen) show();
-        return () => hide();
-    }, [isOpen, show, hide]);
-
+const GiftInfoTable = ({ giftName, user, date, price, availability }: props) => {
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white">
-            <div className="flex flex-col items-center gap-4">
-                <div className="relative w-40 h-40">
-                    <div className="absolute inset-0">
-                        <Sparkles />
-                    </div>
-                    <AnimatedLottie
-                        animationName='gift-delicious-cake'
-                        className="w-full h-full relative z-10"
-                    />
-                </div>
-                <h2 className="text-xl font-semibold">Send Gift</h2>
-                <GiftInfoTable
-                    gift="Delicious Cake"
-                    date="23 october"
-                    price="100"
-                    availability="3 of 100"
-                />
-            </div>
-        </Drawer>
+        <div className="w-full flex flex-col items-center bg-white dark:bg-bg-dark-placeholder rounded-2xl">
+            <table className="w-full">
+                <tbody>
+                <tr>
+                    <td className="px-4 py-2 text-label-secondary border-r border-separator/36 dark:border-white/20 w-1/2">
+                        {giftName ? 'Gift' : 'From'}
+                    </td>
+                    <td className="px-4 py-2 font-normal flex">
+                        {giftName ? (
+                            giftName
+                        ) : (
+                            <span className='flex items-center gap-2 text-blue'>
+                                <Avatar pfp={user.pfp} className='w-4 h-4'/>
+                                {user.name}
+                            </span>
+                        )}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="px-4 py-2 text-label-secondary border-r border-t border-separator/36 dark:border-white/20 w-1/2">Date</td>
+                    <td className="px-4 py-2 font-normal border-t border-separator/36 dark:border-white/20">{date}</td>
+                </tr>
+                <tr>
+                    <td className="px-4 py-2 text-label-secondary border-r border-t border-separator/36 dark:border-white/20 w-1/2">Price</td>
+                    <td className="px-4 py-2 font-normal border-t border-separator/36 dark:border-white/20">{price} USDT</td>
+                </tr>
+                <tr>
+                    <td className="px-4 py-2 text-label-secondary border-r border-t border-separator/36 dark:border-white/20 w-1/2">Availability</td>
+                    <td className="px-4 py-2 font-normal border-t border-separator/36 dark:border-white/20">{availability}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     );
 };
 
-export default GiftDrawer;
+export default GiftInfoTable;
