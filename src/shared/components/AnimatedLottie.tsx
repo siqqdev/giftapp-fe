@@ -37,7 +37,7 @@ interface AnimatedLottieProps extends Omit<LottieOptions, 'animationData'> {
     className?: string;
 }
 
-export const AnimatedLottie = memo(({ animationName, className, ...props }: AnimatedLottieProps) => {
+export const AnimatedLottie = memo(({ animationName='Delicious Cake', className, ...props }: AnimatedLottieProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const lottieRef = useRef<LottieRefCurrentProps | null>(null);
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);

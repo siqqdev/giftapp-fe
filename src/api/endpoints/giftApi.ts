@@ -25,10 +25,16 @@ export const giftApi = baseApi.injectEndpoints({
             })
         }),
         buyGift: build.mutation<{ success: boolean }, BuyGiftRequest>({
-            query: (body) => ({
+            query: (id) => ({
                 url: `buy`,
                 method: 'POST',
-                body
+                body: {giftId: id}
+            })
+        }),
+        checkGiftPayment: build.mutation<{ success: boolean }, string>({
+            query: (id) => ({
+                url: `buy/complete/${id}`,
+                method: 'POST',
             })
         }),
         getGiftActions: build.query<IActionHistoryItem[], string>({
@@ -37,10 +43,10 @@ export const giftApi = baseApi.injectEndpoints({
             })
         }),
         sendGift: build.mutation<{ success: boolean }, SendGiftRequest>({
-            query: (body) => ({
+            query: (id) => ({
                 url: `transfer`,
                 method: 'POST',
-                body
+                body: {boughtGiftId: id}
             })
         }),
         getReceivedGifts: build.query<IReceivedGift[], void>({
@@ -48,6 +54,13 @@ export const giftApi = baseApi.injectEndpoints({
                 url: `users/${id}/received-gifts`,
             })
         }),
+        receiveGift: build.mutation<{ success: boolean }, string>({
+            query: (id) => ({
+                url: `transfer/complete`,
+                method: 'POST',
+                body: {actionIdHash: id}
+            })
+        })
     })
 });
 
@@ -57,5 +70,7 @@ export const {
     useBuyGiftMutation,
     useGetGiftActionsQuery,
     useSendGiftMutation,
-    useGetReceivedGiftsQuery
+    useGetReceivedGiftsQuery,
+    useCheckGiftPaymentMutation,
+    useReceiveGiftMutation
 } = giftApi;

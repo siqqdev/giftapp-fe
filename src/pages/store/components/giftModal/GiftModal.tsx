@@ -9,7 +9,7 @@ import Background from './Background';
 import PortalBackground from './PortalBackground';
 import GiftAnimation from './GiftAnimation';
 import GiftInfo from './GiftInfo';
-import {useBuyGiftMutation, useGetGiftActionsQuery} from "@/api/endpoints/giftApi.ts";
+import {useBuyGiftMutation, useCheckGiftPaymentMutation, useGetGiftActionsQuery} from "@/api/endpoints/giftApi.ts";
 
 interface GiftPortalProps {
     from: DOMRect;
@@ -27,16 +27,57 @@ const GiftModal = ({
                        onClose,
                    }: GiftPortalProps) => {
     const [buyGiftReq] = useBuyGiftMutation()
+    const [checkGiftPaymentReq] = useCheckGiftPaymentMutation()
     const navigate = useNavigate();
     const [hideBackButtonOnClose, setHideBackButtonOnClose] = useState(true);
     const [isButtonVisible, setIsButtonVisible] = useState(true);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
 
-    const handleBuyClick = async () => {
-        const res = await buyGiftReq({id: gift._id}).unwrap()
-        console.log(res)
+    const success = (gift) => {
+        if (intervalId) {
+            clearInterval(intervalId);
+            setIntervalId(null);
+        }
         onClose();
         setHideBackButtonOnClose(false);
-        navigate('/gift-bought-success');
+        navigate('/gift-bought-success', {state: {gift}});
+    }
+
+    const handleBuyClick = async () => {
+        try {
+            const res = await buyGiftReq(gift?._id).unwrap()
+            const id = res?._id
+
+            const newInterval = setInterval(async () => {
+                try {
+                    const paymentResult = await checkGiftPaymentReq(id).unwrap()
+
+                    if (paymentResult && paymentResult._id) {
+                        clearInterval(newInterval);
+                        setIntervalId(null);
+                        success(paymentResult);
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Payment check failed, will retry in 1 second:', error);
+                }
+            }, 1000);
+
+            setIntervalId(newInterval);
+
+            setTimeout(() => {
+                if (intervalId === newInterval) {
+                    clearInterval(newInterval);
+                    setIntervalId(null);
+                    window.Telegram?.WebApp.showAlert('Payment check timeout reached. Please check your payment status in the profile.');
+                }
+            }, 60000);
+
+            window.Telegram?.WebApp.openTelegramLink(res?.invoice?.miniAppInvoiceUrl);
+        } catch (error) {
+            console.error('Error in handleBuyClick:', error);
+            window.Telegram?.WebApp.showAlert('Error processing payment. Please try again.');
+        }
     };
 
     const { show, hide } = useTelegramButton({
