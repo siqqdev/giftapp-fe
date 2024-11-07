@@ -6,6 +6,7 @@ import UserProfileModal from "@/pages/leaderboard/components/UserProfileModal.ts
 import LeaderboardItem from "@/pages/leaderboard/components/LeaderboardItem.tsx";
 import {useGetLeaderboardQuery} from "@/api/endpoints/leaderBoardApi.ts";
 import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
+import LeaderboardItemSkeleton from "@/shared/skeletons/LeaderboardItemSkeleton.tsx";
 
 const Leaderboard = () => {
     const {data: leaderboard, isLoading, isFetching} = useGetLeaderboardQuery()
@@ -25,6 +26,11 @@ const Leaderboard = () => {
     return (
         <div className="flex flex-col gap-2 px-4 pt-4 pb-20">
             <SearchInput />
+            {isLoading || isFetching && (
+                Array.from({length: 10}).map((_) => (
+                    <LeaderboardItemSkeleton />
+                ))
+            )}
             {leaderboard?.users?.map((user) => (
                 <LeaderboardItem
                     user={user}

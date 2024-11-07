@@ -5,6 +5,7 @@ import { getPlaceEmoji } from "@/shared/consts.ts";
 import {IUserWithTg} from "@/inerfaces/interfaces.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import {useGetUserTgInfoQuery} from "@/api/endpoints/userApi.ts";
+import LeaderboardItemSkeleton from "@/shared/skeletons/LeaderboardItemSkeleton.tsx";
 
 interface props {
     user: IUserWithTg
@@ -13,7 +14,9 @@ interface props {
 
 const LeaderboardItem = ({ user, onSelect }: props) => {
     const avatarRef = useRef<HTMLImageElement | null>(null);
-    const {data: tgInfo} = useGetUserTgInfoQuery(user?.id);
+    const {data: tgInfo, isLoading, isFetching} = useGetUserTgInfoQuery(user?.id);
+
+    if (isLoading || isFetching) return <LeaderboardItemSkeleton />
 
     const handleClick = () => {
         if (avatarRef.current) {
@@ -42,7 +45,7 @@ const LeaderboardItem = ({ user, onSelect }: props) => {
                         className="w-14 h-14"
                     />
                     <div className="flex flex-col items-start">
-                        <p className="font-semibold text-lg">{user?.id}</p>
+                        <p className="font-semibold text-lg">{tgInfo?.firstName} {tgInfo?.lastName}</p>
                         <span className="font-medium text-blue flex gap-2 items-center">
                             {user?.giftsReceived} gifts
                             <GiftIcon className="w-4 h-4" />

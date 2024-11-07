@@ -1,4 +1,4 @@
-import React, { useMemo, forwardRef } from 'react';
+import React, { useMemo, forwardRef, useState } from 'react';
 import { getPfpUrl } from "@/shared/utils.ts";
 
 interface Props {
@@ -16,6 +16,7 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
                                                       lastName,
                                                       place
                                                   }, ref) => {
+    const [isImageLoading, setIsImageLoading] = useState(!!file);
     const colors = ['bg-cyan', 'bg-blue', 'bg-gold', 'bg-green', 'bg-red'];
 
     const initials = useMemo(() => {
@@ -29,14 +30,24 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
         return colors[randomIndex];
     }, []);
 
+    const handleImageLoad = () => {
+        setIsImageLoading(false);
+    };
+
     return (
         <div ref={ref} className="flex flex-col items-center">
             {file ? (
-                <img
-                    className={`rounded-full ${className}`}
-                    src={getPfpUrl(file)}
-                    alt='avatar'
-                />
+                <div className="relative">
+                    {isImageLoading && (
+                        <div className={`absolute inset-0 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse ${className}`} />
+                    )}
+                    <img
+                        className={`rounded-full ${className} ${isImageLoading ? 'invisible' : 'visible'}`}
+                        src={getPfpUrl(file)}
+                        alt='avatar'
+                        onLoad={handleImageLoad}
+                    />
+                </div>
             ) : (
                 <div
                     className={`rounded-full flex items-center justify-center ${randomColor} bg-opacity-70 hover:bg-opacity-100 transition-all ${className || 'w-12 h-12'}`}
@@ -54,6 +65,5 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
         </div>
     );
 });
-
 
 export default Avatar;

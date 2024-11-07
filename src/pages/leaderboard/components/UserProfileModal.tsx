@@ -7,7 +7,7 @@ import Avatar from "@/shared/ui/Avatar.tsx";
 import PremiumStar from '@/assets/icons/premiumStar.svg?react';
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";
 import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
-import {getGiftsText} from "@/shared/utils.ts";
+import {getGiftsWord} from "@/shared/utils.ts";
 
 const PortalBackground = () => (
     <motion.div
@@ -63,7 +63,7 @@ const ProfileContent = ({ user, tgInfo }: {user: IUser, tgInfo: ITgUser}) => (
             {tgInfo?.isPremium && <PremiumStar className="w-4 h-4"/>}
         </div>
         <p className="text-lg tracking-tighter text-label-secondary">
-            {user?.giftsReceived} {getGiftsText(user?.giftsReceived)} received
+            {user?.giftsReceived} {getGiftsWord(user?.giftsReceived)} received
         </p>
     </motion.div>
 );
@@ -136,7 +136,7 @@ const UserProfileModal = ({
                         transition={{ delay: 0.3 }}
                         className="px-2 w-full mt-4"
                     >
-                        <ProfileGiftList id={user?.id}/>
+                        <ProfileGiftList id={user?.id} isProfile/>
                     </motion.div>
                 </motion.div>
             </div>

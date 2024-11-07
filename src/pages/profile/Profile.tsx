@@ -9,12 +9,15 @@ import LanguageSwitch from "@/pages/profile/components/LanguageSwitch.tsx";
 import Clock from '@/assets/icons/clock.svg?react';
 import {useNavigate} from "react-router-dom";
 import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
-import {getGiftsText} from "@/shared/utils.ts";
+import {getGiftsWord} from "@/shared/utils.ts";
+import ProfileSkeleton from "@/shared/skeletons/ProfileSkeleton.tsx";
 
 const Profile = () => {
-    const {data: user, isLoading, isFetching} = useGetMeQuery()
-    console.log(user)
     const navigate = useNavigate()
+    const {data: user, isLoading, isFetching} = useGetMeQuery()
+
+    if (isLoading || isFetching) return <ProfileSkeleton />
+
     return (
         <AnimatePresence>
             <div className='flex flex-col gap-4 items-center pt-4 pb-20 text-black dark:text-white'>
@@ -40,7 +43,7 @@ const Profile = () => {
                         <p className='text-2xl font-semibold'>{user?.telegram?.firstName} {user?.telegram?.lastName}</p>
                         {user?.telegram?.is_premium && <PremiumStar className='w-4 h-4'/>}
                     </div>
-                    <p className='text-lg tracking-tighter text-label-secondary'>{user?.giftsReceived} {getGiftsText(user?.giftsReceived)} received</p>
+                    <p className='text-lg tracking-tighter text-label-secondary'>{user?.giftsReceived} {getGiftsWord(user?.giftsReceived)} received</p>
                     <button className='text-blue flex items-center gap-1 mt-2' onClick={() => navigate('/recent-actions')}>
                         <Clock className='w-4 h-4 font-medium' />
                         Recent Actions ›

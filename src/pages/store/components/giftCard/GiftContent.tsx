@@ -17,7 +17,6 @@ export const GiftContent = React.memo(({
                                            currency,
                                             soldOut
                                        }: props) => {
-    console.log('Render Gift Content with lottie inside', Date.now())
     const Icon = TransparentCurrencyIcon[currency] as React.FC<SVGProps>;
 
     return (

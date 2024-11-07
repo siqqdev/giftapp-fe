@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 const Sparkles = () => {
     const sparklePositions = useMemo(() => {
         const positions = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 150; i++) {
             const angle = (Math.PI * 2 * i) / 60 + (Math.random() * 0.5 - 0.25);
 
             let distance;

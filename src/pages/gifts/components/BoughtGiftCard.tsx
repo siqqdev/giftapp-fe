@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Cake from '@/assets/gifts/delicious-cake.png'
 import Button from "@/shared/ui/Button.tsx";
-import GiftDrawer from "@/pages/gifts/components/GiftDrawer.tsx";
+import GiftDrawer from "@/shared/components/GiftDrawer.tsx";
 
 const BoughtGiftCard = () => {
     const [isOpen, setIsOpen] = useState(false);

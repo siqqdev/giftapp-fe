@@ -40,11 +40,11 @@ export interface IUser {
 export interface IReceivedGift {
     _id: string;
     name: GiftAnimationName;
-    sendedDate: string;
+    receivedDate: string;
     totalAmount: number;
     gift: IGift;
     owner: string;
-    sendedBy: IUser;
+    receivedBy: IUser
 }
 
 interface IPhotoPaths {
@@ -76,6 +76,6 @@ export interface IUserGift extends IGift{
 
 export interface IGiftAction {
     type: 'BuyAction' | 'SendAction';
-    user: string
+    user: IUser
 }
 
