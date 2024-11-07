@@ -9,6 +9,7 @@ import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
 
 const Store = () => {
+    console.log('Render Store', Date.now())
     const {data: gifts, isLoading, isFetching} = useGetGiftsQuery()
     const dispatch = useAppDispatch();
     const [selectedGift, setSelectedGift] = useState<{ gift: IGift; rect: DOMRect }>(null);
@@ -31,7 +32,7 @@ const Store = () => {
             <GiftIcon className='fill-blue w-12 h-12' />
             <p className='font-semibold text-center text-2xl tracking-tighter'>Buy and Send Gifts</p>
             <p className='text-label-secondary'>Unique gifts for everyone by Crypto Pay.</p>
-            <GiftsList onSelectGift={handleSelectGift} gifts={gifts}/>
+            <GiftsList onSelectGift={handleSelectGift} gifts={gifts} isLoading={isLoading || isFetching}/>
             <AnimatePresence mode="wait">
                 {selectedGift && (
                     <GiftModal

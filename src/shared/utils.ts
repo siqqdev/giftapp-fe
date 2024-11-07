@@ -19,4 +19,23 @@ export const getGiftsText = (gifts: number): string => {
     }
 };
 
-export const getPfpUrl : (id: string) => string = (id: string)  => `${config.backend_url}/telegram/user/pfp/${id}`
+export const getPfpUrl : (file: string) => string = (file: string)  => `${config.backend_url}/telegram/image/${file}`
+
+import blueStarImg from '@/assets/gifts/blue-star.png';
+import deliciousCakeImg from '@/assets/gifts/delicious-cake.png';
+import greenStarImg from '@/assets/gifts/green-star.png';
+import redStarImg from '@/assets/gifts/red-star.png';
+import {GiftAnimationName} from "@/inerfaces/interfaces.ts";
+
+type ImageType = typeof blueStarImg;
+
+export const getGiftImage = (giftName: GiftAnimationName): ImageType => {
+    const nameToImage: Record<GiftAnimationName, ImageType> = {
+        'Blue Star': blueStarImg,
+        'Delicious Cake': deliciousCakeImg,
+        'Green Star': greenStarImg,
+        'Red Star': redStarImg
+    };
+
+    return nameToImage[giftName];
+};

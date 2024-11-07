@@ -1,21 +1,16 @@
 import React, {memo, useRef, useEffect, useState} from 'react';
 import Lottie, {LottieRefCurrentProps} from "lottie-react";
 
-import effectGiftPurchased from '@/assets/animations/effect-gift-purchased.json';
-import giftBlueStar from '@/assets/animations/gift-blue-star.json';
-import giftDeliciousCake from '@/assets/animations/gift-delicious-cake.json';
-import giftGreenStar from '@/assets/animations/gift-green-star.json';
-import giftRedStar from '@/assets/animations/gift-red-star.json';
-import emojiBalloons from '@/assets/animations/emoji-balloons.json';
-
 const ANIMATIONS = {
-    'effect-gift-purchased': effectGiftPurchased,
-    'Blue Star': giftBlueStar,
-    'Delicious Cake': giftDeliciousCake,
-    'Green Star': giftGreenStar,
-    'Red Star': giftRedStar,
-    'emoji-balloons': emojiBalloons,
+    'effect-gift-purchased': () => import('@/assets/animations/effect-gift-purchased.json'),
+    'Blue Star': () => import('@/assets/animations/gift-blue-star.json'),
+    'Delicious Cake': () => import('@/assets/animations/gift-delicious-cake.json'),
+    'Green Star': () => import('@/assets/animations/gift-green-star.json'),
+    'Red Star': () => import('@/assets/animations/gift-red-star.json'),
+    'emoji-balloons': () => import('@/assets/animations/emoji-balloons.json'),
 } as const;
+
+const animationCache = new Map<string, any>();
 
 export type AnimationNameType = keyof typeof ANIMATIONS;
 
@@ -47,7 +42,44 @@ export const AnimatedLottie = memo(({ animationName, className, ...props }: Anim
     const lottieRef = useRef<LottieRefCurrentProps | null>(null);
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const [playDirection, setPlayDirection] = useState<1 | -1>(1);
+    const [animationData, setAnimationData] = useState<any>(null);
     const isStarAnimation = animationName.includes('Star');
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadAnimation = async () => {
+            try {
+                if (animationCache.has(animationName)) {
+                    if (isMounted) {
+                        setAnimationData(animationCache.get(animationName));
+                    }
+                    return;
+                }
+
+                const module = await ANIMATIONS[animationName]();
+                const data = module.default;
+
+                animationCache.set(animationName, data);
+
+                if (isMounted) {
+                    setAnimationData(data);
+                }
+            } catch (error) {
+                console.error('Failed to load animation:', error);
+            }
+        };
+
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => loadAnimation());
+        } else {
+            loadAnimation();
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [animationName]);
 
     useEffect(() => {
         if (isIOS && containerRef.current) {
@@ -70,12 +102,12 @@ export const AnimatedLottie = memo(({ animationName, className, ...props }: Anim
     };
 
     const lottieOptions: LottieOptions = {
-        animationData: ANIMATIONS[animationName],
+        animationData,
         loop: !isStarAnimation,
         renderer: 'canvas',
         rendererSettings: {
             clearCanvas: true,
-            progressiveLoad: false,
+            progressiveLoad: true,
             hideOnTransparent: true,
             preserveAspectRatio: 'xMidYMid slice',
             context: {

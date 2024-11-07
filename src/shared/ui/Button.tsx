@@ -1,10 +1,16 @@
 import React from 'react';
 
-const Button = ({className ,children, ...props}) => {
+interface props {
+    className?: string
+    children: React.ReactNode
+    soldOut?: boolean
+}
+
+const Button = ({className, children, soldOut,...props}) => {
     return (
         <button
             {...props}
-            className={`bg-blue rounded-full py-1.5 gap-2 font-semibold text-white flex justify-center items-center px-5 ${className}`}
+            className={`${soldOut ? 'bg-bg-secondary text-label-secondary' : 'bg-blue text-white'} rounded-full py-1.5 gap-2 font-semibold flex justify-center items-center px-5 ${className}`}
         >
             {children}
         </button>

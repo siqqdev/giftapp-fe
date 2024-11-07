@@ -33,12 +33,37 @@ export interface IGift {
 
 export interface IUser {
     id: string;
-    name: string;
     giftsReceived: number;
-    pfp: string;
-    place: number;
-    is_premium: boolean;
     rank: number;
+}
+
+export interface IReceivedGift {
+    _id: string;
+    name: GiftAnimationName;
+    sendedDate: string;
+    totalAmount: number;
+    gift: IGift;
+    owner: string;
+    sendedBy: IUser;
+}
+
+interface IPhotoPaths {
+    small?: string
+    large?: string
+}
+
+export interface ITgUser {
+    id: string;
+    firstName: string;
+    lastName?: string;
+    username?: string;
+    photosPath: IPhotoPaths
+    isPremium: boolean;
+}
+
+
+export interface IUserWithTg extends IUser {
+    telegram?: ITgUser;
 }
 
 export interface IUserGift extends IGift{
@@ -53,3 +78,4 @@ export interface IGiftAction {
     type: 'BuyAction' | 'SendAction';
     user: string
 }
+

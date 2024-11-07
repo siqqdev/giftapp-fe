@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import {Navigate, Route, useLocation, useNavigate} from 'react-router-dom'
+import {Navigate, Route, useLocation} from 'react-router-dom'
 import { TelegramProvider } from './TelegramProvider.ts'
 import AnimatedRoutes from "./AnimatedRoutes.tsx";
 import useBackButton from "../hooks/useBackButton.ts";
-import Home from "../pages/Home.tsx";
 import TabBar from "@/shared/TabBar.tsx";
 import Store from "@/pages/store/Store.tsx";
 import Gifts from "@/pages/gifts/Gifts.tsx";
@@ -54,7 +53,6 @@ function Layout() {
                 <AnimatedRoutes >
                     <Route path="/" element={<Navigate to="/store" replace />} />
                     <Route path='/store' element={<Store />} />
-                    <Route path='/store/gift' element={<Store />} />
                     <Route path='/gifts' element={<Gifts />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />

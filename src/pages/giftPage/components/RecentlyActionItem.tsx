@@ -14,11 +14,12 @@ const RecentlyActionItem = ({action}: props) => {
     const {data: user} = useGetUserByIdQuery(action.user, {
         skip: !action?.user
     })
+    console.log(user)
     return (
         <div className='flex gap-2 items-center'>
             <div className="relative">
                 <Avatar
-                    pfp={action?.user || ''}
+                    file={action?.user || ''}
                     className="w-12 h-12 p-1 rounded-full"
                 />
                 <span className={`absolute -bottom-0 -right-1 bg-blue rounded-full p-1 border-2 border-white dark:border-bg-dark`}>

@@ -5,11 +5,11 @@ import { mockLeaderboardData } from "@/shared/consts.ts";
 import UserProfileModal from "@/pages/leaderboard/components/UserProfileModal.tsx";
 import LeaderboardItem from "@/pages/leaderboard/components/LeaderboardItem.tsx";
 import {useGetLeaderboardQuery} from "@/api/endpoints/leaderBoardApi.ts";
-import {IUser} from "@/inerfaces/interfaces.ts";
+import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
 
 const Leaderboard = () => {
     const {data: leaderboard, isLoading, isFetching} = useGetLeaderboardQuery()
-    const [selectedItem, setSelectedItem] = useState<{user: IUser, rect: DOMRect}>(null);
+    const [selectedItem, setSelectedItem] = useState<{user: IUser, rect: DOMRect, tgInfo: ITgUser}>(null);
     const [isClosing, setIsClosing] = useState(false);
 
     const handleSelectItem = (item) => {
@@ -34,6 +34,7 @@ const Leaderboard = () => {
             <AnimatePresence mode="wait">
                 {selectedItem && (
                     <UserProfileModal
+                        tgInfo={selectedItem.tgInfo}
                         from={selectedItem.rect}
                         onComplete={() => {
                             if (isClosing) {

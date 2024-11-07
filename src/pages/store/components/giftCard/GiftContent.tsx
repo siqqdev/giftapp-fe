@@ -8,13 +8,16 @@ interface props {
     name: string;
     price: string;
     currency: CurrencyType
+    soldOut: boolean
 }
 
 export const GiftContent = React.memo(({
                                            name,
                                            price,
-                                           currency
+                                           currency,
+                                            soldOut
                                        }: props) => {
+    console.log('Render Gift Content with lottie inside', Date.now())
     const Icon = TransparentCurrencyIcon[currency] as React.FC<SVGProps>;
 
     return (
@@ -26,9 +29,15 @@ export const GiftContent = React.memo(({
                 />
             </div>
             <p className="font-bold text-center text-lg">{name}</p>
-            <Button>
-                <Icon className="w-4 h-4"/>
-                {price} {currency}
+            <Button soldOut={soldOut}>
+                {soldOut ? (
+                    <p className='font-semibold'>Sold Out</p>
+                ) : (
+                    <>
+                        <Icon className="w-4 h-4"/>
+                        {price} {currency}
+                    </>
+                )}
             </Button>
         </div>
     );

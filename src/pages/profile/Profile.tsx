@@ -13,6 +13,7 @@ import {getGiftsText} from "@/shared/utils.ts";
 
 const Profile = () => {
     const {data: user, isLoading, isFetching} = useGetMeQuery()
+    console.log(user)
     const navigate = useNavigate()
     return (
         <AnimatePresence>
@@ -22,7 +23,12 @@ const Profile = () => {
                         <ThemeSwitch />
                     </div>
 
-                    <Avatar className='w-28 h-28' pfp={user?.id} place={1}/>
+                    <Avatar
+                        firstName={user?.telegram?.firstName}
+                        lastName={user?.telegram?.lastName}
+                        className='w-28 h-28'
+                        file={user?.telegram?.photosPath?.large || user?.telegram?.photosPath?.small || ''}
+                        place={1}/>
 
                     <div className='absolute right-4 top-0'>
                         <LanguageSwitch />
@@ -31,8 +37,8 @@ const Profile = () => {
 
                 <div className='flex flex-col gap-1 items-center justify-center'>
                     <div className='flex gap-2 items-center'>
-                        <p className='text-2xl font-semibold'>{user?.id}</p>
-                        <PremiumStar className='w-4 h-4'/>
+                        <p className='text-2xl font-semibold'>{user?.telegram?.firstName} {user?.telegram?.lastName}</p>
+                        {user?.telegram?.is_premium && <PremiumStar className='w-4 h-4'/>}
                     </div>
                     <p className='text-lg tracking-tighter text-label-secondary'>{user?.giftsReceived} {getGiftsText(user?.giftsReceived)} received</p>
                     <button className='text-blue flex items-center gap-1 mt-2' onClick={() => navigate('/recent-actions')}>
@@ -42,7 +48,9 @@ const Profile = () => {
                 </div>
 
                 <div className='px-2 w-full'>
-                    <ProfileGiftList />
+                    <ProfileGiftList
+                        id={user?.id}
+                    />
                 </div>
             </div>
         </AnimatePresence>

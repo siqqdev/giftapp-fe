@@ -1,5 +1,5 @@
 import { baseApi } from "@/api/api.ts";
-import {IActionHistoryItem, IGift, IUserGift} from "@/inerfaces/interfaces.ts";
+import {IActionHistoryItem, IGift, IReceivedGift, IUserGift} from "@/inerfaces/interfaces.ts";
 
 interface BuyGiftRequest {
     giftId: string;
@@ -43,7 +43,7 @@ export const giftApi = baseApi.injectEndpoints({
                 body
             })
         }),
-        getReceivedGifts: build.query<IUserGift[], void>({
+        getReceivedGifts: build.query<IReceivedGift[], void>({
             query: (id) => ({
                 url: `users/${id}/received-gifts`,
             })

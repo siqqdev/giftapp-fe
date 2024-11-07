@@ -6,7 +6,7 @@ import useBackButton from "@/hooks/useBackButton.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import PremiumStar from '@/assets/icons/premiumStar.svg?react';
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";
-import {IUser} from "@/inerfaces/interfaces.ts";
+import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
 import {getGiftsText} from "@/shared/utils.ts";
 
 const PortalBackground = () => (
@@ -19,7 +19,7 @@ const PortalBackground = () => (
     />
 );
 
-const FlyingAvatar = ({ from, pfp, place }) => (
+const FlyingAvatar = ({ from, file, place, fn, ln }) => (
     <motion.div
         initial={{
             position: 'absolute',
@@ -42,14 +42,16 @@ const FlyingAvatar = ({ from, pfp, place }) => (
         style={{ willChange: 'transform' }}
     >
         <Avatar
-            pfp={pfp}
+            firstName={fn}
+            lastName={ln}
+            file={file}
             place={place}
             className="w-full h-full"
         />
     </motion.div>
 );
 
-const ProfileContent = ({ user }: {user: IUser}) => (
+const ProfileContent = ({ user, tgInfo }: {user: IUser, tgInfo: ITgUser}) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -57,8 +59,8 @@ const ProfileContent = ({ user }: {user: IUser}) => (
         className="flex flex-col gap-1 items-center justify-center"
     >
         <div className="flex gap-2 items-center mt-4">
-            <p className="text-2xl font-semibold">{user?.id}</p>
-            <PremiumStar className="w-4 h-4"/>
+            <p className="text-2xl font-semibold">{tgInfo?.firstName} {tgInfo?.lastName}</p>
+            {tgInfo?.isPremium && <PremiumStar className="w-4 h-4"/>}
         </div>
         <p className="text-lg tracking-tighter text-label-secondary">
             {user?.giftsReceived} {getGiftsText(user?.giftsReceived)} received
@@ -66,13 +68,28 @@ const ProfileContent = ({ user }: {user: IUser}) => (
     </motion.div>
 );
 
+interface props {
+    from: {
+        left: string;
+        top: string;
+        width: string;
+        height: string;
+    };
+    user: IUser;
+    tgInfo: any;
+    isClosing: boolean;
+    onClose: () => void;
+    onComplete: () => void;
+}
+
 const UserProfileModal = ({
                               from,
                               user,
+                                tgInfo,
                               isClosing,
                               onClose,
                               onComplete,
-                          }) => {
+                          }: props) => {
     const [hideBackButtonOnClose, setHideBackButtonOnClose] = useState(true);
 
     useBackButton({
@@ -98,8 +115,10 @@ const UserProfileModal = ({
                 <div className="h-28" />
 
                 <FlyingAvatar
+                    fn={tgInfo?.firstName}
+                    ln={tgInfo?.lastName}
                     from={from}
-                    pfp={user?.id}
+                    file={tgInfo?.photosPath?.large || tgInfo?.photosPath?.small || ''}
                     place={user?.rank}
                 />
 
@@ -109,7 +128,7 @@ const UserProfileModal = ({
                     transition={{ duration: 0.3 }}
                     className="relative w-full h-full pt-4"
                 >
-                    <ProfileContent user={user} />
+                    <ProfileContent user={user} tgInfo={tgInfo}/>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -117,7 +136,7 @@ const UserProfileModal = ({
                         transition={{ delay: 0.3 }}
                         className="px-2 w-full mt-4"
                     >
-                        <ProfileGiftList gifts={user?.gifts}/>
+                        <ProfileGiftList id={user?.id}/>
                     </motion.div>
                 </motion.div>
             </div>

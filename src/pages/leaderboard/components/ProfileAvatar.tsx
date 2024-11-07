@@ -2,11 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Avatar from "@/shared/ui/Avatar.tsx";
 
-interface ProfileAvatarProps {
-    animationData: string;
+interface props {
+    file: string
+    place: number
+    firstName: string
+    lastName: string
 }
 
-const ProfileAvatar = ({ pfp, place }) => (
+const ProfileAvatar = ({ file, place, firstName, lastName }: props) => (
     <motion.div
         variants={{
             initial: { width: '3.5rem', height: '3.5rem' },
@@ -17,7 +20,9 @@ const ProfileAvatar = ({ pfp, place }) => (
         className="will-change-transform"
     >
         <Avatar
-            pfp={pfp}
+            firstName={firstName}
+            lastName={lastName}
+            file={file}
             place={place}
             className="w-full h-full"
         />

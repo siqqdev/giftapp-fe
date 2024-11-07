@@ -91,24 +91,21 @@ const mockGifts = [
     }
 ];
 
-const ProfileGiftList = () => {
-    const id = window.Telegram?.WebApp.initDataUnsafe.user?.id || '272324534'
+const ProfileGiftList = ({id}: {id: string}) => {
     const {data: gifts, isLoading, isFetching} = useGetReceivedGiftsQuery(id)
+    console.log(gifts)
 
-    if (gifts?.length === 0 || gifts?.items?.length === 0) return (
+    if (gifts?.length === 0) return (
         <BalloonsPlaceholder>
             There are no received gifts here.
         </BalloonsPlaceholder>
     )
     return (
         <div className="grid grid-cols-3 gap-3 w-full">
-            {gifts?.items?.length > 0 && gifts.items.map((gift) => (
+            {gifts?.length > 0 && gifts.map((gift) => (
                 <ProfileGiftCard
-                    avatar={gift.avatar}
-                    amountMin={gift.amountMin}
-                    amountMax={gift.amountMax}
-                    img={gift.img}
-                    name={gift.name}
+                    senderId={gift?.sendedBy?.id}
+                    gift={gift?.gift}
                 />
             ))}
         </div>

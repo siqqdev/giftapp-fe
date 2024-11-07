@@ -27,7 +27,7 @@ const GiftInfoTable = ({ giftName, user, date, price, availability }: props) => 
                             giftName
                         ) : (
                             <span className='flex items-center gap-2 text-blue'>
-                                <Avatar pfp={user.pfp} className='w-4 h-4'/>
+                                <Avatar file={user.pfp} className='w-4 h-4'/>
                                 {user.name}
                             </span>
                         )}

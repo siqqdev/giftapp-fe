@@ -11,6 +11,7 @@ interface props {
 }
 
 const GiftCard = ({gift, onSelect}: props) => {
+    console.log('Render Gift Card with GiftContent inside', Date.now())
     const dispatch = useAppDispatch();
     const cardRef = useRef<HTMLDivElement | null>(null);
     const rectRef = useRef<DOMRect | null>(null);
@@ -35,6 +36,8 @@ const GiftCard = ({gift, onSelect}: props) => {
     }, []);
 
     const handleClick = useCallback((e: React.MouseEvent) => {
+        const soldOut = gift.soldAmount === gift.totalAmount;
+        if (soldOut) return
         e.stopPropagation();
         if (!rectRef.current) return;
 
@@ -56,6 +59,7 @@ const GiftCard = ({gift, onSelect}: props) => {
             </div>
             <Background animationName={gift.name}/>
             <GiftContent
+                soldOut={gift.soldAmount === gift.totalAmount}
                 name={gift.name}
                 price={gift.price}
                 currency={gift.asset}

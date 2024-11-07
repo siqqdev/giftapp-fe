@@ -2,16 +2,18 @@ import React, { useRef, useEffect } from 'react';
 import MockAvatar from '@/assets/mockAvatar.png';
 import GiftIcon from '@/assets/icons/giftIcon.svg?react';
 import { getPlaceEmoji } from "@/shared/consts.ts";
-import {IUser} from "@/inerfaces/interfaces.ts";
+import {IUserWithTg} from "@/inerfaces/interfaces.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
+import {useGetUserTgInfoQuery} from "@/api/endpoints/userApi.ts";
 
 interface props {
-    user: IUser
+    user: IUserWithTg
     onSelect: ({user: IUser, rect: DOMRect}) => void
 }
 
 const LeaderboardItem = ({ user, onSelect }: props) => {
-    const avatarRef = useRef<HTMLImageElement>(null);
+    const avatarRef = useRef<HTMLImageElement | null>(null);
+    const {data: tgInfo} = useGetUserTgInfoQuery(user?.id);
 
     const handleClick = () => {
         if (avatarRef.current) {
@@ -19,6 +21,7 @@ const LeaderboardItem = ({ user, onSelect }: props) => {
             const rect = avatarRef.current.getBoundingClientRect();
             onSelect({
                 user,
+                tgInfo,
                 rect
             });
         }
@@ -31,11 +34,12 @@ const LeaderboardItem = ({ user, onSelect }: props) => {
         >
             <div className="flex gap-4 items-center justify-between w-full">
                 <div className="flex gap-4 items-center">
-                    <img
+                    <Avatar
+                        firstName={tgInfo?.firstName}
+                        lastName={tgInfo?.lastName}
+                        file={tgInfo?.photosPath?.small || tgInfo?.photosPath?.small || ''}
                         ref={avatarRef}
-                        src={MockAvatar}
-                        alt=""
-                        className="w-14 h-14 p-1 rounded-full"
+                        className="w-14 h-14"
                     />
                     <div className="flex flex-col items-start">
                         <p className="font-semibold text-lg">{user?.id}</p>
