@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/store/hooks.ts";
 import GiftModal from "@/pages/store/components/giftModal/GiftModal.tsx";
 import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
+import Logo from '@/assets/logo.png'
 
 const Store = () => {
     console.log('Render Store', Date.now())
@@ -50,6 +51,7 @@ const Store = () => {
                     />
                 )}
             </AnimatePresence>
+            <img src={Logo} alt=""/>
         </div>
     );
 };

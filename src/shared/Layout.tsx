@@ -53,7 +53,6 @@ function Layout() {
 
             if (startParamMatch && startParamMatch[1]) {
                 console.log('REDIRECTING TO RECEIVE GIFT SUCCESS');
-                // Кодируем ID перед добавлением в URL
                 const giftId = encodeURIComponent(startParamMatch[1]);
                 navigate(`/receive-gift-success/${giftId}`);
                 redirected.current = true;
