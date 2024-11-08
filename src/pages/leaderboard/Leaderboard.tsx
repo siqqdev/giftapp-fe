@@ -7,9 +7,11 @@ import LeaderboardItem from "@/pages/leaderboard/components/LeaderboardItem.tsx"
 import {useGetLeaderboardQuery} from "@/api/endpoints/leaderBoardApi.ts";
 import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
 import LeaderboardItemSkeleton from "@/shared/skeletons/LeaderboardItemSkeleton.tsx";
+import ListPaginator from "@/shared/components/ListPaginator.tsx";
 
 const Leaderboard = () => {
-    const {data: leaderboard, isLoading, isFetching} = useGetLeaderboardQuery()
+    const [page, setPage] = useState(1)
+    const {data: leaderboard, isLoading, isFetching} = useGetLeaderboardQuery({page, limit: 10})
     const [selectedItem, setSelectedItem] = useState<{user: IUser, rect: DOMRect, tgInfo: ITgUser}>(null);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -24,37 +26,39 @@ const Leaderboard = () => {
     }, []);
 
     return (
-        <div className="flex flex-col gap-2 px-4 pt-4 pb-20">
-            <SearchInput />
-            {isLoading || isFetching && (
-                Array.from({length: 10}).map((_) => (
-                    <LeaderboardItemSkeleton />
-                ))
-            )}
-            {leaderboard?.users?.map((user) => (
-                <LeaderboardItem
-                    user={user}
-                    onSelect={handleSelectItem}
-                />
-            ))}
-            <AnimatePresence mode="wait">
-                {selectedItem && (
-                    <UserProfileModal
-                        tgInfo={selectedItem.tgInfo}
-                        from={selectedItem.rect}
-                        onComplete={() => {
-                            if (isClosing) {
-                                setSelectedItem(null);
-                                setIsClosing(false);
-                            }
-                        }}
-                        user={selectedItem.user}
-                        isClosing={isClosing}
-                        onClose={closeModal}
-                    />
+        <ListPaginator className='h-screen' onBottomReached={() => setPage(prevState => prevState + 1)}>
+            <div className="flex flex-col gap-2 px-4 pt-4 pb-20">
+                <SearchInput/>
+                {isLoading && (
+                    Array.from({length: 10}).map((_) => (
+                        <LeaderboardItemSkeleton/>
+                    ))
                 )}
-            </AnimatePresence>
-        </div>
+                {leaderboard?.users?.map((user) => (
+                    <LeaderboardItem
+                        user={user}
+                        onSelect={handleSelectItem}
+                    />
+                ))}
+                <AnimatePresence mode="wait">
+                    {selectedItem && (
+                        <UserProfileModal
+                            tgInfo={selectedItem.tgInfo}
+                            from={selectedItem.rect}
+                            onComplete={() => {
+                                if (isClosing) {
+                                    setSelectedItem(null);
+                                    setIsClosing(false);
+                                }
+                            }}
+                            user={selectedItem.user}
+                            isClosing={isClosing}
+                            onClose={closeModal}
+                        />
+                    )}
+                </AnimatePresence>
+            </div>
+        </ListPaginator>
     );
 };
 

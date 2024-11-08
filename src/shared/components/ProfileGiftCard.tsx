@@ -4,6 +4,8 @@ import {IGift, IReceivedGift} from "@/inerfaces/interfaces.ts";
 import {useGetUserTgInfoQuery} from "@/api/endpoints/userApi.ts";
 import {formatDate, getGiftImage} from "@/shared/utils.ts";
 import GiftDrawer from "@/shared/components/GiftDrawer.tsx";
+import GiftCardSkeleton from "@/shared/skeletons/GiftCardSkeleton.tsx";
+import GiftItemSkeleton from "@/shared/skeletons/GiftItemSkeleton.tsx";
 
 interface props {
     senderId: string;
@@ -12,7 +14,9 @@ interface props {
 }
 
 const ProfileGiftCard = ({senderId, gift, isProfile}: props) => {
-    const {data: userTgInfo} = useGetUserTgInfoQuery(senderId);
+    const {data: userTgInfo, isLoading} = useGetUserTgInfoQuery(senderId);
+
+    if (isLoading) return <GiftItemSkeleton />
 
     const [isOpen, setIsOpen] = useState(false);
     return (
@@ -27,7 +31,7 @@ const ProfileGiftCard = ({senderId, gift, isProfile}: props) => {
                             file={userTgInfo?.photosPath?.small || userTgInfo?.photosPath?.large || ''}
                             className="h-6 w-6"
                         />
-                        <span className="text-xs text-label-secondary">{gift?.soldAmount} of {gift?.totalAmount}</span>
+                        <span className="text-xs text-label-secondary">{gift?.gift?.soldAmount} of {gift?.totalAmount}</span>
                     </div>
 
                     <div className="relative flex h-16 w-20 items-center justify-center mt-10">
@@ -49,7 +53,7 @@ const ProfileGiftCard = ({senderId, gift, isProfile}: props) => {
                 date={formatDate(gift?.receivedDate)}
                 callback={() => setIsOpen(false)}
                 price={gift?.gift?.price}
-                receivedAmount={gift?.totalAmount!}
+                receivedAmount={gift?.totalAmount}
                 asset={gift?.gift?.asset}
                 isProfile={isProfile}
             />

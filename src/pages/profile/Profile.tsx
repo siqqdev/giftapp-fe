@@ -52,6 +52,7 @@ const Profile = () => {
 
                 <div className='px-2 w-full'>
                     <ProfileGiftList
+                        isProfile
                         id={user?.id}
                     />
                 </div>

@@ -5,12 +5,12 @@ import {useGetBoughtGiftsQuery, useGetGiftsQuery} from "@/api/endpoints/giftApi.
 import BoughtGiftsList from "@/pages/gifts/components/BoughtGiftsList.tsx";
 
 const Gifts = () => {
-    const {data: gifts, isLoading, isFetching} = useGetBoughtGiftsQuery()
+    const {data: gifts, isLoading} = useGetBoughtGiftsQuery()
     const navigate = useNavigate();
     const hasItems = gifts?.length > 0;
 
     return (
-        <div className='flex flex-col gap-6 pt-10 px-4 text-black dark:text-white'>
+        <div className='flex flex-col gap-6 pt-10 px-4 text-black dark:text-white pb-20'>
             <div className='flex flex-col gap-2'>
                 <p className='tracking-tighter font-semibold text-2xl text-center'>Send Gifts in Telegram</p>
                 <p className='text-label-secondary text-center text-lg'>Send gifts to users that can be stored <br/> in their app profile.</p>
@@ -26,8 +26,8 @@ const Gifts = () => {
                     </>
                 </BalloonsPlaceholder>
             ) : (
-                <div className='pb-20'>
-                    {/*<BoughtGiftsList gifts={gifts} />*/}
+                <div>
+                    <BoughtGiftsList gifts={gifts} />
                 </div>
             )}
         </div>

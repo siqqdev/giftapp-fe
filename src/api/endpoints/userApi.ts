@@ -76,11 +76,38 @@ export const userApi = baseApi.injectEndpoints({
                 }
             },
         }),
-
         getUserActions: build.query({
-            query: () => ({
-                url: `actions/user`,
-            })
+            query: ({ page, limit }) => {
+                const queryParams = new URLSearchParams({
+                    page: page.toString(),
+                    limit: limit.toString()
+                });
+
+                return {
+                    url: `actions/user?${queryParams.toString()}`
+                };
+            },
+            serializeQueryArgs: ({ endpointName, queryArgs }) => {
+                const { page, ...rest } = queryArgs;
+                return { endpointName, ...rest };
+            },
+            merge: (currentCache, newItems) => {
+                if (currentCache) {
+                    const existingIds = new Set(currentCache.items.map(item => item._id));
+
+                    const newUniqueItems = newItems.items.filter(item => !existingIds.has(item._id));
+
+                    return {
+                        ...currentCache,
+                        items: [...currentCache.items, ...newUniqueItems],
+                        total: newItems.total
+                    };
+                }
+                return newItems;
+            },
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg?.page !== previousArg?.page;
+            }
         }),
     }),
 });

@@ -2,60 +2,62 @@ import React from 'react';
 import BoughtIcon from '@/assets/icons/actions/bought.svg?react'
 import ReceivedIcon from '@/assets/icons/actions/received.svg?react'
 import SentIcon from '@/assets/icons/actions/sent.svg?react'
-import {IActionHistoryItem} from "@/inerfaces/interfaces.ts";
+import {IActionHistoryItem, IUserRecentAction, SVGProps} from "@/inerfaces/interfaces.ts";
+import {
+    ActionType,
+    getActionColor,
+    getActionHistoryWord,
+    getActionIcon,
+    getActionWord,
+    getGiftImage
+} from "@/shared/utils.ts";
 
-const ActionHistoryItem: React.FC<IActionHistoryItem> = ({ action, amount, user, giftName, giftImg }) => {
-    const getActionIcon = () => {
-        switch (action) {
-            case 'bought':
-                return {
-                    icon: <BoughtIcon className="w-3 h-3 text-white" />,
-                    bgColor: 'bg-blue'
-                }
-            case 'received':
-                return {
-                    icon: <ReceivedIcon className="w-3 h-3 text-white" />,
-                    bgColor: 'bg-green'
-                }
-            case 'sent':
-                return {
-                    icon: <SentIcon className="w-3 h-3 text-white" />,
-                    bgColor: 'bg-purple'
-                }
+interface props {
+    action: IUserRecentAction;
+}
+
+const ActionHistoryItem = ({ action }: props) => {
+
+    const actionType = (): ActionType => {
+        const myId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || '5417816708'
+
+        if (action?.type === 'BuyAction') {
+            return 'BuyAction';
         }
+
+        if (action?.type === 'TransferAction') {
+            if (action?.user?.id === myId) {
+                return 'TransferAction';
+            }
+            if (action?.toUser?.id === myId) {
+                return 'ReceivedAction';
+            }
+            return 'TransferAction';
+        }
+
+        return 'BuyAction';
     }
 
-    const getActionText = () => {
-        switch (action) {
-            case 'bought':
-                return 'Buy'
-            case 'received':
-                return 'Receive'
-            case 'sent':
-                return 'Sent'
-        }
-    }
+    const Icon = getActionIcon(actionType()) as React.FC<SVGProps>
 
     const renderActionInfo = () => {
-        switch (action) {
-            case 'bought':
-                return amount && <span className='font-medium flex gap-1'>-{amount} USDT</span>
-            case 'sent':
-                return user && (
+        switch (actionType()) {
+            case 'BuyAction':
+                return <span className='font-medium flex gap-1'>-{action?.gift?.price} USDT</span>
+            case 'TransferAction':
+                return (
                     <span className='font-medium flex gap-1'>
-                        to <p className='text-blue'>{user}</p>
+                        to <p className='text-blue'>{action?.toUser?.firstLastName}</p>
                     </span>
                 )
-            case 'received':
-                return user && (
+            case 'ReceivedAction':
+                return (
                     <span className='font-medium flex gap-1'>
-                        from <p className='text-blue'>{user}</p>
+                        from <p className='text-blue'>{action?.user?.firstLastName}</p>
                     </span>
                 )
         }
     }
-
-    const { icon, bgColor } = getActionIcon()
 
     return (
         <div className="flex flex-col gap-2 items-start">
@@ -63,18 +65,18 @@ const ActionHistoryItem: React.FC<IActionHistoryItem> = ({ action, amount, user,
                 <div className='flex gap-4 items-center'>
                     <div className="relative">
                         <img
-                            src={giftImg}
+                            src={getGiftImage(action?.gift?.name)}
                             alt=""
                             className="w-12 h-12 bg-bg-secondary dark:bg-bg-dark-placeholder p-1 rounded-xl"
                         />
-                        <span className={`absolute -bottom-1 -right-1 ${bgColor} rounded-full p-1 border-2 border-white dark:border-bg-dark`}>
-                            {icon}
+                        <span className={`absolute -bottom-1 -right-1 ${getActionColor(actionType())} rounded-full p-1 border-2 border-white dark:border-bg-dark`}>
+                            {<Icon />}
                         </span>
                     </div>
 
                     <div className='flex flex-col items-start'>
-                        <p className='text-label-secondary'>{getActionText()}</p>
-                        <p className='font-medium'>{giftName}</p>
+                        <p className='text-label-secondary'>{getActionHistoryWord(actionType())}</p>
+                        <p className='font-medium'>{action?.gift?.name}</p>
                     </div>
                 </div>
 

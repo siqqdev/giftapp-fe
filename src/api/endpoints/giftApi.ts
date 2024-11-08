@@ -52,7 +52,10 @@ export const giftApi = baseApi.injectEndpoints({
         getReceivedGifts: build.query<IReceivedGift[], void>({
             query: (id) => ({
                 url: `users/${id}/received-gifts`,
-            })
+            }),
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg;
+            }
         }),
         receiveGift: build.mutation<{ success: boolean }, string>({
             query: (id) => ({

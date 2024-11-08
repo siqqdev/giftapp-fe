@@ -35,6 +35,7 @@ export interface IUser {
     id: string;
     giftsReceived: number;
     rank: number;
+    firstLastName: string;
 }
 
 export interface IReceivedGift {
@@ -79,3 +80,20 @@ export interface IGiftAction {
     user: IUser
 }
 
+export interface IBoughtGift {
+    _id: string;
+    name: string;
+    purchaseDate: string;
+    user: ITgUser;
+    gift: string;
+}
+
+export interface IUserRecentAction {
+    _id: string;
+    type: 'BuyAction' | 'TransferAction';
+    user: IUser,
+    gift: IGift;
+    giftName: GiftAnimationName;
+    date: string;
+    toUser: IUser;
+}

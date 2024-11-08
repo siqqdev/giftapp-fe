@@ -11,12 +11,14 @@ export const getActionText = (action?: 'BuyAction' | 'TransferAction' ):string =
     }
 };
 
-export const getActionWord = (action?: 'BuyAction' | 'TransferAction'): string => {
+export const getActionWord = (action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
     switch (action) {
         case 'BuyAction':
             return 'bought';
         case 'TransferAction':
             return 'sent';
+        case 'ReceivedAction':
+            return 'received';
         default:
             return action || '';
     }
@@ -56,7 +58,7 @@ import ReceivedIcon from '@/assets/icons/actions/received.svg?react';
 import SentIcon from '@/assets/icons/actions/sent.svg?react';
 import {format} from "date-fns";
 
-type ActionType = 'BuyAction' | 'TransferAction' | 'ReceivedAction';
+export type ActionType = 'BuyAction' | 'TransferAction' | 'ReceivedAction';
 
 export const getActionIcon = (action?: ActionType) => {
     switch (action) {
@@ -89,3 +91,16 @@ export const formatDate = (dateString?: string, pattern = 'MM.dd.yyyy \'at\' HH:
     const date = new Date(dateString);
     return format(date, pattern);
 };
+
+export const getActionHistoryWord = (action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
+    switch (action) {
+        case 'BuyAction':
+            return 'Buy';
+        case 'TransferAction':
+            return 'Send';
+        case 'ReceivedAction':
+            return 'Receive';
+        default:
+            return action || '';
+    }
+}

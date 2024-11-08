@@ -1,16 +1,19 @@
 import React from 'react';
 import BoughtGiftCard from "@/pages/gifts/components/BoughtGiftCard.tsx";
+import {IBoughtGift} from "@/inerfaces/interfaces.ts";
 
-const BoughtGiftsList = () => {
+interface props {
+    gifts: IBoughtGift[]
+}
+
+const BoughtGiftsList = ({ gifts }: props) => {
     return (
         <div className='grid grid-cols-3 gap-2'>
-            <BoughtGiftCard />
-            <BoughtGiftCard />
-            <BoughtGiftCard />
-            <BoughtGiftCard />
-            <BoughtGiftCard />
-            <BoughtGiftCard />
-            <BoughtGiftCard />
+            {gifts?.map((gift: any) => (
+                <BoughtGiftCard
+                    gift={gift}
+                />
+            ))}
         </div>
     );
 };

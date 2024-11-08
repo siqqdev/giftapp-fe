@@ -11,11 +11,10 @@ const BuyGiftSuccess = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const gift = location.state?.gift;
-    console.log( gift)
     const [sendGiftReq] = useSendGiftMutation()
+
     const handleSendGift = async () => {
         const res = await sendGiftReq(gift?._id).unwrap()
-        console.log(res)
         window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users'])
     }
 
