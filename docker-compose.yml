@@ -1,0 +1,14 @@
+version: '3'
+services:
+  giftapp-frontend:
+    build: .
+    container_name: giftapp-frontend
+    ports:
+      - "3001:80"
+    restart: unless-stopped
+    networks:
+      - fluxs-landing_app_network
+
+networks:
+  fluxs-landing_app_network:
+    external: true
