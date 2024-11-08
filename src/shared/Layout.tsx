@@ -44,20 +44,16 @@ function Layout() {
         const checkRedirect = () => {
             if (redirected.current) return;
 
-            // const fake = 'DvIo/ISVld+L9muJeWJiyis42LVWWuj2EQaHXZg2Zic='
-            // const fakeInitData = 'user=%7B%22id%22%3A5417816708%2C%22first_name%22%3A%22sssssss%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22ayosiqq%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-5864444131071715272&chat_type=private&auth_date=1730941794&hash=9c46fa60b357dc1f6c7fe4737a4165cf7a83865fad04eb652ae652f25fbded39&startapp=' + fake;
-
             const initData = window.Telegram.WebApp.initData;
-            const startappMatch = initData.match(/startapp=([^&]+)/);
-            console.log('Startapp match:', startappMatch);
+            const startParamMatch = initData.match(/start_param=([^&]+)/);
+            console.log('Start param match:', startParamMatch);
 
-            if (startappMatch && startappMatch[1]) {
-                const fullParam = startappMatch[1];
-                const giftIdMatch = fullParam.match(/redirect_received_gift_(\d+)/);
+            if (startParamMatch && startParamMatch[1]) {
+                const fullParam = startParamMatch[1];
 
-                if (giftIdMatch && giftIdMatch[1]) {
+                if (fullParam.startsWith('redirect_received_gift_')) {
                     console.log('REDIRECTING TO RECEIVE GIFT SUCCESS');
-                    const giftId = giftIdMatch[1];
+                    const giftId = fullParam.replace('redirect_received_gift_', '');
                     navigate(`/receive-gift-success/${giftId}`);
                     redirected.current = true;
 
