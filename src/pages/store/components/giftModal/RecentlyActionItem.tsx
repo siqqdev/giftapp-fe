@@ -1,16 +1,19 @@
 import React from 'react';
-import MockAvatar from "@/assets/mockAvatar.png";
-import Bought from '@/assets/icons/actions/bought.svg?react'
 import {IGiftAction, SVGProps} from "@/inerfaces/interfaces.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import {useGetUserByIdQuery} from "@/api/endpoints/userApi.ts";
-import {getActionColor, getActionIcon, getActionText, getActionWord} from "@/shared/utils.ts";
+import {getActionColor, getActionIcon} from "@/shared/utils.ts";
+import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
+import {useTranslation} from "react-i18next";
 
 interface props {
     action: IGiftAction
 }
 
 const RecentlyActionItem = ({action}: props) => {
+    const {t} = useTranslation()
+    const { getActionText, getActionWord } = useDynamicTranslations();
+
     const {data: user} = useGetUserByIdQuery(action?.user?.id, {
         skip: !action?.user
     })
@@ -33,7 +36,7 @@ const RecentlyActionItem = ({action}: props) => {
 
             <div className='flex flex-col'>
                 <p className='text-label-secondary text-xs'>{getActionText(action?.type)}</p>
-                <p className='font-medium'>{user?.telegram?.firstName} {user?.telegram?.lastName} {getActionWord(action?.type)} a Gift</p>
+                <p className='font-medium'>{user?.telegram?.firstName} {user?.telegram?.lastName} {getActionWord(action?.type)} {t('actions.endWord')}</p>
             </div>
         </div>
     );

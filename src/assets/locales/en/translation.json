@@ -1,0 +1,94 @@
+{
+ "home": {
+   "title": "Buy and Send Gifts",
+   "description": "Unique gifts for everyone by Crypto Pay."
+ },
+  "giftInfo": {
+    "description": "Purchase this gift for the opportunity to give it to another user."
+  },
+  "placeholder": {
+    "recentActions": "There are no recent actions here.",
+    "giftsPage": "You dont have any gifts yet.",
+    "recentActionsProfile": {
+      "title": "History is Empty",
+      "subtitle": "Give and receive gifts so there's something here."
+    }
+  },
+  "actions": {
+    "buyGift": "Buy Gift",
+    "sendGift": "Send Gift",
+    "bought": "bought",
+    "sent": "sent",
+    "received": "received",
+    "endWord": "a Gift"
+  },
+  "common": {
+    "gifts_one": "gift",
+    "gifts_other": "gifts",
+    "gifts_zero": "gifts"
+  },
+  "giftsPage": {
+    "title": "Send Gifts in Telegram",
+    "description": "Send gifts to users that can be stored in their app profile."
+  },
+  "drawer": {
+    "title": "Send Gift to Contact",
+    "tgButtonTextProfile": "Close",
+    "tgButtonText": "Send Gift to Contact",
+    "table": {
+     "from": "From",
+      "gift": "Gift",
+      "date": "Date",
+      "price": "Price",
+      "availability": "Availability"
+    }
+  },
+  "actionHistory": {
+    "buy": "Buy",
+    "send": "Send",
+    "receive": "Receive"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "buySuccess": {
+    "purchaseInfo": "The {{giftName}} gift was purchased <br/> for {{price}} {{asset}}",
+    "notification": {
+      "title": "Gift Purchased",
+      "subtitle": "Now send it tou your friend"
+    },
+    "button": {
+      "secondary": "Open Store",
+      "primary": "Send Gift"
+    },
+    "giftPurchased": "Gift Purchased"
+  },
+  "receiveSuccess": {
+    "purchaseInfo": "You have received the gift",
+    "giftReceived": "Gift Received",
+    "button": "Open Profile"
+  },
+  "view": "view",
+  "to": "to",
+  "from": "from",
+  "of": "of",
+  "send": "send",
+  "recentlyActions": "Recently Actions",
+  "recentActions": "Recent Actions",
+  "openStore": "open store",
+  "search": "Search",
+  "received": "received",
+  "hereIsYourActionsHistory": "Here is your actions history.",
+  "modalPurchaseSubtitle": "Purchase this gift for the opportunity to give it to another user."
+}

@@ -6,8 +6,10 @@ import { useTelegramButton } from "@/hooks/useTelegramButton.ts";
 import useNotification from "@/hooks/useNotification.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
+import {useTranslation} from "react-i18next";
 
 const BuyGiftSuccess = () => {
+    const {t} = useTranslation()
     const navigate = useNavigate();
     const location = useLocation();
     const gift = location.state?.gift;
@@ -21,7 +23,7 @@ const BuyGiftSuccess = () => {
     const mainButton = useTelegramButton({
         type: 'main',
         initialParams: {
-            text: 'Send Gift',
+            text: t('buySuccess.button.primary'),
             color: '#007AFF',
             textColor: 'white',
         },
@@ -33,7 +35,7 @@ const BuyGiftSuccess = () => {
     const secondaryButton = useTelegramButton({
         type: 'secondary',
         initialParams: {
-            text: 'Open Store',
+            text: t('buySuccess.button.secondary'),
             textColor: '#007AFF',
         },
         onClick: () => {
@@ -50,7 +52,7 @@ const BuyGiftSuccess = () => {
     useEffect(() => {
         mainButton.show();
         secondaryButton.show();
-        showNotification("Gift Purchased", "Now send it tou your friend");
+        showNotification( t('buySuccess.notification.title'), t('buySuccess.notification.subtitle'));
 
         return () => {
             mainButton.hide();
@@ -77,11 +79,18 @@ const BuyGiftSuccess = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 -mt-16'>
-                    <p className='font-semibold text-2xl text-center'>Gift Purchased</p>
-                    <p className='font-medium text-center text-md'>The {gift?.gift?.name} gift was purchased <br/> for {gift?.gift?.price} {gift?.gift?.asset}.</p>
+                    <p className='font-semibold text-2xl text-center'>{t('buySuccess.giftPurchased')}</p>
+                    <p className='font-medium text-center text-md'>
+                        {t('gifts.purchaseInfo', {
+                            giftName: gift?.gift?.name,
+                            price: gift?.gift?.price,
+                            asset: gift?.gift?.asset,
+                            interpolation: {escapeValue: false}
+                        })}
+                    </p>
                 </div>
             </div>
-            <NotificationComponent />
+            <NotificationComponent/>
         </>
     );
 };

@@ -15,10 +15,10 @@ interface props {
 
 const ProfileGiftCard = ({senderId, gift, isProfile}: props) => {
     const {data: userTgInfo, isLoading} = useGetUserTgInfoQuery(senderId);
+    const [isOpen, setIsOpen] = useState(false);
 
     if (isLoading) return <GiftItemSkeleton />
 
-    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             <div className="w-auto rounded-2xl bg-bg-secondary dark:bg-bg-dark-placeholder p-3" onClick={() => setIsOpen(true)}>

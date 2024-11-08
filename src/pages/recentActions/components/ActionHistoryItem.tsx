@@ -6,17 +6,19 @@ import {IActionHistoryItem, IUserRecentAction, SVGProps} from "@/inerfaces/inter
 import {
     ActionType,
     getActionColor,
-    getActionHistoryWord,
     getActionIcon,
-    getActionWord,
     getGiftImage
 } from "@/shared/utils.ts";
+import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
+import {useTranslation} from "react-i18next";
 
 interface props {
     action: IUserRecentAction;
 }
 
 const ActionHistoryItem = ({ action }: props) => {
+    const {t} = useTranslation()
+    const {getActionHistoryWord, getActionWord} = useDynamicTranslations()
 
     const actionType = (): ActionType => {
         const myId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || '5417816708'
@@ -47,13 +49,13 @@ const ActionHistoryItem = ({ action }: props) => {
             case 'TransferAction':
                 return (
                     <span className='font-medium flex gap-1'>
-                        to <p className='text-blue'>{action?.toUser?.firstLastName}</p>
+                        {t('to')} <p className='text-blue'>{action?.toUser?.firstLastName}</p>
                     </span>
                 )
             case 'ReceivedAction':
                 return (
                     <span className='font-medium flex gap-1'>
-                        from <p className='text-blue'>{action?.user?.firstLastName}</p>
+                        {t('from')} <p className='text-blue'>{action?.user?.firstLastName}</p>
                     </span>
                 )
         }

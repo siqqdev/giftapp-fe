@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 import ActionHistoryItem from "@/pages/recentActions/components/ActionHistoryItem.tsx";
 import { useGetUserActionsQuery } from "@/api/endpoints/userApi.ts";
-import { formatDate } from '@/shared/utils';
 import { RecentActionsSkeleton } from "@/shared/skeletons/RecentActionsSkeleton.tsx";
 import ListPaginator from "@/shared/components/ListPaginator.tsx";
+import {useTranslation} from "react-i18next";
 
 const RecentActions = () => {
+    const {t} = useTranslation()
     const [page, setPage] = useState<number>(1)
     const { data: actionsData, isLoading, isFetching } = useGetUserActionsQuery({ page, limit: 10 });
 
@@ -17,10 +18,16 @@ const RecentActions = () => {
 
         const groupedActions = backendActions.items.reduce((groups, action) => {
             const date = new Date(action.date);
-            const formattedDate = date.toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'long'
-            });
+            const month = date.getMonth();
+            const day = date.getDate();
+
+            const monthKey = [
+                'january', 'february', 'march', 'april',
+                'may', 'june', 'july', 'august',
+                'september', 'october', 'november', 'december'
+            ][month];
+
+            const formattedDate = `${t(`months.${monthKey}`)} ${day}`;
 
             if (!groups[formattedDate]) {
                 groups[formattedDate] = [];
@@ -36,19 +43,15 @@ const RecentActions = () => {
     const hasItems = actionsData?.items?.length > 0;
     const groupedActions = groupActions(actionsData);
 
-    if (isLoading) {
-        return <div className="flex justify-center items-center h-full">Loading...</div>;
-    }
-
     if (!hasItems) {
         return (
             <BalloonsPlaceholder className="text-black dark:text-white">
                 <>
                     <p className="font-semibold text-2xl tracking-tighter text-center mt-2">
-                        History is Empty
+                        {t('placeholder.recentActionsProfile.title')}
                     </p>
                     <p className="text-xl tracking-tighter text-center mt-1">
-                        Give and receive gifts so there's<br/>something here.
+                        {t('placeholder.recentActionsProfile.subtitle')}
                     </p>
                 </>
             </BalloonsPlaceholder>
@@ -60,10 +63,10 @@ const RecentActions = () => {
             <div className="flex flex-col gap-6 pt-10 px-4 pb-4 text-black dark:text-white">
                 <div className="flex flex-col gap-4">
                     <p className="tracking-tighter font-semibold text-2xl text-center">
-                        Recent actions
+                        {t('recentActions')}
                     </p>
                     <p className="text-label-secondary text-center text-xl">
-                        Here is your actions history.
+                        {t('hereIsYourActionsHistory')}
                     </p>
                 </div>
 

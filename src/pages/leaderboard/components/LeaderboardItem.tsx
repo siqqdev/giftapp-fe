@@ -6,6 +6,7 @@ import {IUserWithTg} from "@/inerfaces/interfaces.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import {useGetUserTgInfoQuery} from "@/api/endpoints/userApi.ts";
 import LeaderboardItemSkeleton from "@/shared/skeletons/LeaderboardItemSkeleton.tsx";
+import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
 
 interface props {
     user: IUserWithTg
@@ -13,6 +14,7 @@ interface props {
 }
 
 const LeaderboardItem = ({ user, onSelect }: props) => {
+    const {getGiftsWord} = useDynamicTranslations()
     const avatarRef = useRef<HTMLImageElement | null>(null);
     const {data: tgInfo, isLoading, isFetching} = useGetUserTgInfoQuery(user?.id);
 
@@ -47,7 +49,7 @@ const LeaderboardItem = ({ user, onSelect }: props) => {
                     <div className="flex flex-col items-start">
                         <p className="font-semibold text-lg">{tgInfo?.firstName} {tgInfo?.lastName}</p>
                         <span className="font-medium text-blue flex gap-2 items-center">
-                            {user?.giftsReceived} gifts
+                            {user?.giftsReceived} {getGiftsWord(user?.giftsReceived)}
                             <GiftIcon className="w-4 h-4" />
                         </span>
                     </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Avatar from "@/shared/ui/Avatar.tsx";
 import PremiumStar from '@/assets/icons/premiumStar.svg?react'
-import MockAvatar from '@/assets/mockAvatar.png'
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";
 import {AnimatePresence} from "framer-motion";
 import ThemeSwitch from "@/pages/profile/components/ThemeSwitch.tsx";
@@ -9,14 +8,17 @@ import LanguageSwitch from "@/pages/profile/components/LanguageSwitch.tsx";
 import Clock from '@/assets/icons/clock.svg?react';
 import {useNavigate} from "react-router-dom";
 import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
-import {getGiftsWord} from "@/shared/utils.ts";
 import ProfileSkeleton from "@/shared/skeletons/ProfileSkeleton.tsx";
+import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
+import {useTranslation} from "react-i18next";
 
 const Profile = () => {
+    const {t} = useTranslation()
+    const { getGiftsWord } = useDynamicTranslations();
     const navigate = useNavigate()
     const {data: user, isLoading, isFetching} = useGetMeQuery()
 
-    if (isLoading || isFetching) return <ProfileSkeleton />
+    if (isLoading) return <ProfileSkeleton />
 
     return (
         <AnimatePresence>
@@ -43,10 +45,10 @@ const Profile = () => {
                         <p className='text-2xl font-semibold'>{user?.telegram?.firstName} {user?.telegram?.lastName}</p>
                         {user?.telegram?.is_premium && <PremiumStar className='w-4 h-4'/>}
                     </div>
-                    <p className='text-lg tracking-tighter text-label-secondary'>{user?.giftsReceived} {getGiftsWord(user?.giftsReceived)} received</p>
+                    <p className='text-lg tracking-tighter text-label-secondary'>{user?.giftsReceived} {getGiftsWord(user?.giftsReceived)} {t('received')}</p>
                     <button className='text-blue flex items-center gap-1 mt-2' onClick={() => navigate('/recent-actions')}>
                         <Clock className='w-4 h-4 font-medium' />
-                        Recent Actions ›
+                        {t('recentActions')} ›
                     </button>
                 </div>
 

@@ -7,9 +7,10 @@ import { useAppDispatch } from "@/store/hooks.ts";
 import GiftModal from "@/pages/store/components/giftModal/GiftModal.tsx";
 import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
+import {useTranslation} from "react-i18next";
 
 const Store = () => {
-    console.log('Render Store', Date.now())
+    const {t} = useTranslation()
     const {data: gifts, isLoading, isFetching} = useGetGiftsQuery()
     const dispatch = useAppDispatch();
     const [selectedGift, setSelectedGift] = useState<{ gift: IGift; rect: DOMRect }>(null);
@@ -30,8 +31,8 @@ const Store = () => {
     return (
         <div className='flex flex-col gap-3 justify-center items-center pt-10 pb-28 text-black dark:text-white'>
             <GiftIcon className='fill-blue w-12 h-12' />
-            <p className='font-semibold text-center text-2xl tracking-tighter'>Buy and Send Gifts</p>
-            <p className='text-label-secondary'>Unique gifts for everyone by Crypto Pay.</p>
+            <p className='font-semibold text-center text-2xl tracking-tighter'>{t('home.title')}</p>
+            <p className='text-label-secondary'>{t('home.description')}</p>
             <GiftsList onSelectGift={handleSelectGift} gifts={gifts} isLoading={isLoading || isFetching}/>
             <AnimatePresence mode="wait">
                 {selectedGift && (

@@ -6,8 +6,10 @@ import { useTelegramButton } from "@/hooks/useTelegramButton.ts";
 import useNotification from "@/hooks/useNotification.tsx";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useReceiveGiftMutation, useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
+import {useTranslation} from "react-i18next";
 
 const ReceiveGiftSuccess = () => {
+    const {t} = useTranslation()
     const {id} = useParams()
     const [receiveGift] = useReceiveGiftMutation()
     const [gift, setGift] = useState(null)
@@ -30,7 +32,7 @@ const ReceiveGiftSuccess = () => {
     const mainButton = useTelegramButton({
         type: 'main',
         initialParams: {
-            text: 'Open Profile',
+            text: t('receiveSuccess.button'),
             color: '#007AFF',
             textColor: 'white',
         },
@@ -47,7 +49,7 @@ const ReceiveGiftSuccess = () => {
 
     useEffect(() => {
         mainButton.show();
-        showNotification("Gift Received", `${gift?.name} from ${gift?.receivedBy?.firstLastName}`, 'View', gift?.name);
+        showNotification(t('receiveSuccess.giftReceived'), `${gift?.name} ${t('from')} ${gift?.receivedBy?.firstLastName}`, t('view'), gift?.name);
 
         return () => {
             mainButton.hide();
@@ -73,8 +75,8 @@ const ReceiveGiftSuccess = () => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 -mt-16'>
-                    <p className='font-semibold text-2xl text-center'>Gift Received</p>
-                    <p className='font-medium text-center text-md'>You have received the gift {gift?.name}</p>
+                    <p className='font-semibold text-2xl text-center'>{t('receiveSuccess.giftReceived')}</p>
+                    <p className='font-medium text-center text-md'>{t('receiveSuccess.purchaseInfo')} {gift?.name}</p>
                 </div>
             </div>
             <NotificationComponent />

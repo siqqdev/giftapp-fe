@@ -90,7 +90,6 @@ function Layout() {
                     <Route path='/gifts' element={<Gifts />} />
                     <Route path='/leaderboard' element={<Leaderboard />} />
                     <Route path='/profile' element={<Profile />} />
-                    <Route path='/product/:id' element={<GiftPage />} />
                     <Route path='/recent-actions' element={<RecentActions />} />
                     <Route path='/gift-bought-success' element={<BuyGiftSuccess />} />
                     <Route path='/receive-gift-success/:id' element={<ReceiveGiftSuccess />} />

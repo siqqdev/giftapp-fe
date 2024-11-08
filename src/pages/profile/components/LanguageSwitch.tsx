@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import i18n from "i18next";
 
 const LanguageSwitch = () => {
     const [isEn, setIsEn] = React.useState(false);
 
     const toggleLanguage = () => {
         setIsEn(!isEn);
+        i18n.changeLanguage('ru')
     };
 
     return (

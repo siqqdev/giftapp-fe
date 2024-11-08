@@ -4,6 +4,7 @@ import { setTabBarVisibility } from "@/store/slices/tabBarSlice.ts";
 import {GiftContent} from "@/pages/store/components/giftCard/GiftContent.tsx";
 import {IGift} from "@/inerfaces/interfaces.ts";
 import {Background} from "@/pages/store/components/giftCard/BackGround.tsx";
+import {useTranslation} from "react-i18next";
 
 interface props {
     gift: IGift
@@ -11,6 +12,7 @@ interface props {
 }
 
 const GiftCard = ({gift, onSelect}: props) => {
+    const {t} = useTranslation()
     console.log('Render Gift Card with GiftContent inside', Date.now())
     const dispatch = useAppDispatch();
     const cardRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +57,7 @@ const GiftCard = ({gift, onSelect}: props) => {
             className="relative w-full overflow-hidden rounded-2xl py-8 cursor-pointer"
         >
             <div className="absolute top-4 right-4 text-black opacity-50 text-sm z-10 dark:text-white">
-                {gift.soldAmount} of {gift.totalAmount}
+                {gift.soldAmount} {t('of')} {gift.totalAmount}
             </div>
             <Background animationName={gift.name}/>
             <GiftContent

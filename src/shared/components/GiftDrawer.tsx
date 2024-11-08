@@ -5,6 +5,8 @@ import Sparkles from "@/pages/gifts/components/Sparkles.tsx";
 import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 import {useEffect, useCallback} from "react";
 import {CurrencyType, ITgUser} from "@/inerfaces/interfaces.ts";
+import {useTranslation} from "react-i18next";
+import {formatDate} from "@/shared/utils.ts";
 
 type props = {
     isProfile?: boolean;
@@ -20,11 +22,11 @@ type props = {
 } & ({ user: number } | { giftName: string });
 
 const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
-    console.log(date, price, asset)
+    const {t} = useTranslation()
     const {show, hide} = useTelegramButton({
         onClick: callback,
         initialParams: {
-            text: isProfile ? 'Close' : 'Send Gift to Contact',
+            text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
     });
 
@@ -45,12 +47,13 @@ const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName
                         className="w-full h-full relative z-10"
                     />
                 </div>
-                <h2 className="text-xl font-semibold">{isProfile ? giftName : 'Send Gift to Contact'}</h2>
+                <h2 className="text-xl font-semibold">{isProfile ? giftName : t('drawer.title')}</h2>
                 <GiftInfoTable
+                    giftName={!isProfile && giftName}
                     user={user}
                     date={date}
                     price={price}
-                    availability={`${receivedAmount} of 10K`}
+                    availability={`${receivedAmount} ${t('of')} 10K`}
                     asset={asset}
                     receivedAmount={receivedAmount}
                     isProfile={isProfile}

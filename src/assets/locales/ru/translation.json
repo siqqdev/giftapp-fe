@@ -1,0 +1,95 @@
+{
+  "home": {
+    "title": "Покупайте и отправляйте подарки",
+    "description": "Уникальные подарки для каждого от Crypto Pay."
+  },
+  "giftInfo": {
+    "description": "Купите этот подарок, чтобы отправить его другому пользователю."
+  },
+  "placeholder": {
+    "recentActions": "Здесь пока нет недавних действий.",
+    "giftsPage": "У вас пока нет подарков.",
+    "recentActionsProfile": {
+      "title": "История пуста",
+      "subtitle": "Дарите и получайте подарки, чтобы здесь что-то появилось."
+    }
+  },
+  "actions": {
+    "buyGift": "Купил подарок",
+    "sendGift": "Отправил подарок",
+    "bought": "купил",
+    "sent": "отправил",
+    "received": "получил",
+    "endWord": "подарок"
+  },
+  "common": {
+    "gifts_zero": "подарков",
+    "gifts_one": "подарок",
+    "gifts_few": "подарка",
+    "gifts_many": "подарков"
+  },
+  "giftsPage": {
+    "title": "Отправляйте подарки в Telegram",
+    "description": "Отправляйте подарки пользователям, которые будут храниться в их профиле."
+  },
+  "drawer": {
+    "title": "Отправить подарок контакту",
+    "tgButtonTextProfile": "Закрыть",
+    "tgButtonText": "Отправить подарок контакту",
+    "table": {
+      "from": "От",
+      "gift": "Подарок",
+      "date": "Дата",
+      "price": "Цена",
+      "availability": "Доступность"
+    }
+  },
+  "actionHistory": {
+    "buy": "Покупка",
+    "send": "Отправка",
+    "receive": "Получение"
+  },
+  "months": {
+    "january": "Января",
+    "february": "Февраля",
+    "march": "Марта",
+    "april": "Апреля",
+    "may": "Мая",
+    "june": "Июня",
+    "july": "Июля",
+    "august": "Августа",
+    "september": "Сентября",
+    "october": "Октября",
+    "november": "Ноября",
+    "december": "Декабря"
+  },
+  "buySuccess": {
+    "purchaseInfo": "Подарок {{giftName}} куплен <br/> за {{price}} {{asset}}",
+    "notification": {
+      "title": "Подарок куплен",
+      "subtitle": "Теперь отправьте его другу"
+    },
+    "button": {
+      "secondary": "Открыть магазин",
+      "primary": "Отправить подарок"
+    },
+    "giftPurchased": "Подарок куплен"
+  },
+  "receiveSuccess": {
+    "purchaseInfo": "Вы получили подарок",
+    "giftReceived": "Подарок получен",
+    "button": "Открыть профиль"
+  },
+  "view": "посмотреть",
+  "to": "для",
+  "from": "от",
+  "of": "из",
+  "send": "отпр.",
+  "recentlyActions": "Недавние действия",
+  "recentActions": "История действий",
+  "openStore": "открыть магазин",
+  "search": "Поиск",
+  "received": "получено",
+  "hereIsYourActionsHistory": "Здесь показана история ваших действий.",
+  "modalPurchaseSubtitle": "Купите подарок, чтобы отправить его другому пользователю."
+}

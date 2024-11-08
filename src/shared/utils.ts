@@ -1,35 +1,33 @@
 import {config} from "@/config/config.ts";
 
-export const getActionText = (action?: 'BuyAction' | 'TransferAction' ):string => {
+import { i18n } from 'i18next';
+
+export const getActionText = (t: (key: string) => string, action?: 'BuyAction' | 'TransferAction'): string => {
     switch (action) {
         case 'BuyAction':
-            return 'Buy Gift';
+            return t('actions.buyGift');
         case 'TransferAction':
-            return 'Send Gift';
+            return t('actions.sendGift');
         default:
             return action || '';
     }
 };
 
-export const getActionWord = (action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
+export const getActionWord = (t: (key: string) => string, action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
     switch (action) {
         case 'BuyAction':
-            return 'bought';
+            return t('actions.bought');
         case 'TransferAction':
-            return 'sent';
+            return t('actions.sent');
         case 'ReceivedAction':
-            return 'received';
+            return t('actions.received');
         default:
             return action || '';
     }
 }
 
-export const getGiftsWord = (gifts: number): string => {
-    if (gifts > 1 || gifts === 0) {
-        return `gifts`;
-    } else {
-        return `gift`;
-    }
+export const getGiftsWord = (t: (key: string) => string, gifts: number): string => {
+    return t('common.gifts', { count: gifts });
 };
 
 export const getPfpUrl : (file: string) => string = (file: string)  => `${config.backend_url}/telegram/image/${file}`
@@ -92,14 +90,14 @@ export const formatDate = (dateString?: string, pattern = 'MM.dd.yyyy \'at\' HH:
     return format(date, pattern);
 };
 
-export const getActionHistoryWord = (action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
+export const getActionHistoryWord = (t, action?: 'BuyAction' | 'TransferAction' | 'ReceivedAction'): string => {
     switch (action) {
         case 'BuyAction':
-            return 'Buy';
+            return t('actionHistory.buy');
         case 'TransferAction':
-            return 'Send';
+            return t('actionHistory.send');
         case 'ReceivedAction':
-            return 'Receive';
+            return t('actionHistory.receive');
         default:
             return action || '';
     }

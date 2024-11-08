@@ -85,7 +85,7 @@ export interface IBoughtGift {
     name: string;
     purchaseDate: string;
     user: ITgUser;
-    gift: string;
+    gift: IGift;
 }
 
 export interface IUserRecentAction {

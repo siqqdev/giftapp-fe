@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Search from '@/assets/icons/search.svg?react';
+import {useTranslation} from "react-i18next";
 
 const SearchInput = () => {
+    const {t} = useTranslation()
     const [isFocused, setIsFocused] = useState(false);
     const [value, setValue] = useState('');
 
@@ -13,7 +15,7 @@ const SearchInput = () => {
                 onChange={(e) => setValue(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder="Search"
+                placeholder={t('search')}
                 className={`
                     bg-bg-secondary dark:bg-black/50
                     w-full rounded-lg py-2 px-4 outline-none ring-0 
