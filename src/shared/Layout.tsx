@@ -52,7 +52,7 @@ function Layout() {
             console.log('Startapp match:', startappMatch);
 
             if (startappMatch && startappMatch[1]) {
-                const fullParam = decodeURIComponent(startappMatch[1]);
+                const fullParam = startappMatch[1];
                 const giftIdMatch = fullParam.match(/redirect_received_gift_(\d+)/);
 
                 if (giftIdMatch && giftIdMatch[1]) {
