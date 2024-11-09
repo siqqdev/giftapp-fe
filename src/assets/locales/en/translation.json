@@ -90,5 +90,9 @@
   "search": "Search",
   "received": "received",
   "hereIsYourActionsHistory": "Here is your actions history.",
-  "modalPurchaseSubtitle": "Purchase this gift for the opportunity to give it to another user."
+  "modalPurchaseSubtitle": "Purchase this gift for the opportunity to give it to another user.",
+  "alreadyReceived": {
+    "title": "Gift Already Received",
+    "button": "Return to Store"
+  }
 }

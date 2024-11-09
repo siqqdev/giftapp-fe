@@ -7,26 +7,17 @@ import useNotification from "@/hooks/useNotification.tsx";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useReceiveGiftMutation, useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
 import {useTranslation} from "react-i18next";
+import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
+import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
 
 const ReceiveGiftSuccess = () => {
-    const {t} = useTranslation()
-    const {id} = useParams()
-    const [receiveGift] = useReceiveGiftMutation()
-    const [gift, setGift] = useState(null)
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const decodedId = decodeURIComponent(id);
-                const res = await receiveGift(decodedId).unwrap();
-                console.log('Received gift response:', res);
-                setGift(res);
-            } catch (error) {
-                console.error('Error receiving gift:', error);
-            }
-        })();
-    }, []);
-
+    const {t} = useTranslation();
+    const {data: user} = useGetMeQuery()
+    const {id} = useParams();
+    const [receiveGift] = useReceiveGiftMutation();
+    const [gift, setGift] = useState(null);
+    const [isAlreadyReceived, setIsAlreadyReceived] = useState(false);
+    const [requestSent, setRequestSent] = useState(false);
     const navigate = useNavigate();
 
     const mainButton = useTelegramButton({
@@ -37,24 +28,59 @@ const ReceiveGiftSuccess = () => {
             textColor: 'white',
         },
         onClick: () => {
-            navigate('/profile')
+            navigate('/profile');
         }
     });
 
     const { showNotification, NotificationComponent } = useNotification({
         onClose: () => {
-            navigate('/profile')
+            navigate('/profile');
         }
     });
 
     useEffect(() => {
-        mainButton.show();
-        showNotification(t('receiveSuccess.giftReceived'), `${gift?.name} ${t('from')} ${gift?.receivedBy?.firstLastName}`, t('view'), gift?.name);
+        const fetchGift = async () => {
+            if (requestSent) return;
+
+            setRequestSent(true);
+            try {
+                const decodedId = decodeURIComponent(id);
+                const res = await receiveGift(decodedId).unwrap();
+                console.log('Received gift response:', res);
+                setGift(res);
+                setIsAlreadyReceived(false);
+            } catch (error) {
+                setIsAlreadyReceived(true);
+            }
+        };
+
+        fetchGift();
+    }, [id]);
+
+    useEffect(() => {
+        if (gift) {
+            mainButton.show();
+            showNotification(
+                t('receiveSuccess.giftReceived'),
+                `${gift?.name} ${t('from')} ${gift?.receivedBy?.firstLastName}`,
+                t('view'),
+                gift?.name
+            );
+        }
 
         return () => {
             mainButton.hide();
         };
     }, [gift]);
+
+    if (isAlreadyReceived) return (
+        <div className='h-screen flex justify-center items-center'>
+            <BalloonsPlaceholder>
+                <p>{t('alreadyReceived.title')}</p>
+                <button className='text-cyan' onClick={() => navigate('/store')}>{t('alreadyReceived.button')}</button>
+            </BalloonsPlaceholder>
+        </div>
+    )
 
     return (
         <>
