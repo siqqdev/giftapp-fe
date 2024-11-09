@@ -6,7 +6,6 @@ import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 import {useEffect, useCallback} from "react";
 import {CurrencyType, ITgUser} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
-import {formatDate} from "@/shared/utils.ts";
 
 type props = {
     isProfile?: boolean;
@@ -24,15 +23,25 @@ type props = {
 const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
     const {t} = useTranslation()
     const {show, hide} = useTelegramButton({
-        onClick: callback,
+        onClick: useCallback(() => {
+            callback();
+        }, [callback]),
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
     });
 
     useEffect(() => {
-        if (isOpen) show();
-        return () => hide();
+        let mounted = true;
+
+        if (isOpen && mounted) {
+            show();
+        }
+
+        return () => {
+            mounted = false;
+            hide();
+        };
     }, [isOpen, show, hide]);
 
     return (
