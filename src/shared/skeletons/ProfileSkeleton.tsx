@@ -25,19 +25,6 @@ const ProfileSkeleton = () => {
 
                 <div className='h-6 w-32 bg-neutral-200 dark:bg-neutral-800 rounded-lg animate-pulse mt-2' />
             </div>
-
-            <div className='px-2 w-full'>
-                <div className="flex flex-col gap-3">
-                    <div className="h-8 w-full bg-neutral-200 dark:bg-neutral-800 rounded-lg animate-pulse" />
-
-                    {Array(3).fill(null).map((_, index) => (
-                        <div
-                            key={index}
-                            className="h-20 w-full bg-neutral-200 dark:bg-neutral-800 rounded-lg animate-pulse"
-                        />
-                    ))}
-                </div>
-            </div>
         </div>
     );
 };

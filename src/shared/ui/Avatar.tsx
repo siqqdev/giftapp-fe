@@ -4,7 +4,7 @@ import { getPfpUrl } from "@/shared/utils.ts";
 interface Props {
     className?: string;
     file?: string;
-    firstName: string;
+    firstName?: string;
     lastName?: string;
     place?: number;
 }
@@ -20,7 +20,8 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
     const colors = ['bg-cyan', 'bg-blue', 'bg-gold', 'bg-green', 'bg-red'];
 
     const initials = useMemo(() => {
-        const first = firstName?.charAt(0).toUpperCase();
+        if (!firstName) return '';
+        const first = firstName.charAt(0).toUpperCase();
         const last = lastName ? lastName.charAt(0).toUpperCase() : '';
         return `${first}${last}`;
     }, [firstName, lastName]);
@@ -52,9 +53,11 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
                 <div
                     className={`rounded-full flex items-center justify-center ${randomColor} bg-opacity-70 hover:bg-opacity-100 transition-all ${className || 'w-12 h-12'}`}
                 >
-                    <span className="text-white text-5xl font-semibold">
-                        {initials}
-                    </span>
+                    {initials && (
+                        <span className="text-white text-5xl font-semibold">
+                            {initials}
+                        </span>
+                    )}
                 </div>
             )}
             {place && (

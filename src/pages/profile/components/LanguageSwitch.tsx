@@ -1,13 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import i18n from "i18next";
+import {STORAGE_KEYS} from "@/shared/consts.ts";
 
 const LanguageSwitch = () => {
-    const [isEn, setIsEn] = React.useState(false);
+    const [isEn, setIsEn] = React.useState(() => {
+        const language = localStorage.getItem(STORAGE_KEYS.LANGUAGE);
+        return language === 'en';
+    });
 
-    const toggleLanguage = () => {
+    const toggleLanguage = async () => {
+        const newLanguage = isEn ? 'ru' : 'en';
+        localStorage.setItem(STORAGE_KEYS.LANGUAGE, newLanguage);
+        await i18n.changeLanguage(newLanguage);
         setIsEn(!isEn);
-        i18n.changeLanguage('ru')
     };
 
     return (

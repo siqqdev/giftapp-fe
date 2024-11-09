@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { AnimatePresence } from "framer-motion";
 import SearchInput from "@/shared/ui/Input.tsx";
-import { mockLeaderboardData } from "@/shared/consts.ts";
 import UserProfileModal from "@/pages/leaderboard/components/UserProfileModal.tsx";
 import LeaderboardItem from "@/pages/leaderboard/components/LeaderboardItem.tsx";
 import {useGetLeaderboardQuery} from "@/api/endpoints/leaderBoardApi.ts";

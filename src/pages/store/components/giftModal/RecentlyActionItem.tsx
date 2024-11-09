@@ -5,6 +5,7 @@ import {useGetUserByIdQuery} from "@/api/endpoints/userApi.ts";
 import {getActionColor, getActionIcon} from "@/shared/utils.ts";
 import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
 import {useTranslation} from "react-i18next";
+import GiftRecentlyActionSkeleton from "@/shared/skeletons/GiftRecentlyActionSkeleton.tsx";
 
 interface props {
     action: IGiftAction
@@ -14,9 +15,11 @@ const RecentlyActionItem = ({action}: props) => {
     const {t} = useTranslation()
     const { getActionText, getActionWord } = useDynamicTranslations();
 
-    const {data: user} = useGetUserByIdQuery(action?.user?.id, {
+    const {data: user, isLoading, isFetching} = useGetUserByIdQuery(action?.user?.id, {
         skip: !action?.user
     })
+
+    if (isLoading) return <GiftRecentlyActionSkeleton />
 
     const Icon = getActionIcon(action?.type) as React.FC<SVGProps>
 

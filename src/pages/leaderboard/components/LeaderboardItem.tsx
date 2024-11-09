@@ -1,12 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import MockAvatar from '@/assets/mockAvatar.png';
+import React, { useRef } from 'react';
 import GiftIcon from '@/assets/icons/giftIcon.svg?react';
-import { getPlaceEmoji } from "@/shared/consts.ts";
 import {IUserWithTg} from "@/inerfaces/interfaces.ts";
 import Avatar from "@/shared/ui/Avatar.tsx";
 import {useGetUserTgInfoQuery} from "@/api/endpoints/userApi.ts";
 import LeaderboardItemSkeleton from "@/shared/skeletons/LeaderboardItemSkeleton.tsx";
 import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
+import {getPlaceEmoji} from "@/shared/utils.ts";
 
 interface props {
     user: IUserWithTg

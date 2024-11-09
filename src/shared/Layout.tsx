@@ -8,11 +8,12 @@ import Store from "@/pages/store/Store.tsx"
 import Gifts from "@/pages/gifts/Gifts.tsx"
 import Leaderboard from "@/pages/leaderboard/Leaderboard.tsx"
 import Profile from "@/pages/profile/Profile.tsx"
-import GiftPage from "@/pages/giftPage/GiftPage.tsx"
 import RecentActions from "@/pages/recentActions/RecentActions.tsx"
 import BuyGiftSuccess from "@/pages/StatusPages/Success/BuyGiftSuccess.tsx"
 import { useAppSelector } from "@/store/hooks.ts"
 import ReceiveGiftSuccess from "@/pages/StatusPages/Success/ReceiveGiftSuccess.tsx"
+import {STORAGE_KEYS} from "@/shared/consts.ts";
+import i18n from "i18next";
 
 const ROUTES_WITHOUT_TAB_BAR = [
     '/product',
@@ -23,22 +24,38 @@ const ROUTES_WITHOUT_TAB_BAR = [
 ];
 
 function Layout() {
-    const location = useLocation()
-    const navigate = useNavigate()
-    const redirected = useRef(false)
-    const isTabBarVisible = useAppSelector(state => state.tabBar.isVisible)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const redirected = useRef(false);
+    const isTabBarVisible = useAppSelector(state => state.tabBar.isVisible);
+    const initialized = useRef(false);
 
-    const setThemeBasedOnPreference = () => {
-        const isTelegramDarkTheme = window.Telegram.WebApp.colorScheme === 'dark'
+    const initializeSettings = async () => {
+        if (initialized.current) return;
 
-        if (isTelegramDarkTheme) {
-            document.documentElement.classList.add('dark')
-            TelegramProvider.setDarkTheme()
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+        const telegramTheme = window.Telegram.WebApp.colorScheme;
+
+        const theme = savedTheme || telegramTheme;
+        localStorage.setItem(STORAGE_KEYS.THEME, theme);
+
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            TelegramProvider.setDarkTheme();
         } else {
-            document.documentElement.classList.remove('dark')
-            TelegramProvider.setLightTheme()
+            document.documentElement.classList.remove('dark');
+            TelegramProvider.setLightTheme();
         }
-    }
+
+        const savedLanguage = localStorage.getItem(STORAGE_KEYS.LANGUAGE);
+        const telegramLanguage = window.Telegram.WebApp.initDataUnsafe?.user?.language_code || 'ru';
+
+        const language = savedLanguage || telegramLanguage;
+        localStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
+        await i18n.changeLanguage(language);
+
+        initialized.current = true;
+    };
 
     useEffect(() => {
         const checkRedirect = () => {
@@ -68,7 +85,7 @@ function Layout() {
         }
 
         TelegramProvider.initializeApp()
-        setThemeBasedOnPreference()
+        initializeSettings()
 
         return () => {
             redirected.current = false;

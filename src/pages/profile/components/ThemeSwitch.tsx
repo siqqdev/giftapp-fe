@@ -3,23 +3,27 @@ import { motion } from 'framer-motion';
 import Sun from '@/assets/icons/theme/sun.svg?react';
 import Moon from '@/assets/icons/theme/moon.svg?react';
 import {TelegramProvider} from "@/shared/TelegramProvider.ts";
+import {STORAGE_KEYS} from "@/shared/consts.ts";
 
 const ThemeSwitch = () => {
     const [isDark, setIsDark] = React.useState(() => {
-        if (typeof window !== 'undefined') {
-            return document.documentElement.classList.contains('dark');
-        }
-        return false;
+        const theme = localStorage.getItem(STORAGE_KEYS.THEME);
+        return theme === 'dark';
     });
 
     const toggleTheme = () => {
-        if (isDark) {
-            TelegramProvider.setLightTheme();
-        } else {
+        const newTheme = isDark ? 'light' : 'dark';
+        localStorage.setItem(STORAGE_KEYS.THEME, newTheme);
+
+        if (newTheme === 'dark') {
             TelegramProvider.setDarkTheme();
+            document.documentElement.classList.add('dark');
+        } else {
+            TelegramProvider.setLightTheme();
+            document.documentElement.classList.remove('dark');
         }
+
         setIsDark(!isDark);
-        document.documentElement.classList.toggle('dark');
     };
 
     return (
