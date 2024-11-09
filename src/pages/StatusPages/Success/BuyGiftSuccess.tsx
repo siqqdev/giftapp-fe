@@ -52,7 +52,7 @@ const BuyGiftSuccess = () => {
     useEffect(() => {
         mainButton.show();
         secondaryButton.show();
-        showNotification( t('buySuccess.notification.title'), t('buySuccess.notification.subtitle'));
+        showNotification( t('buySuccess.notification.title'), t('buySuccess.notification.subtitle'), t('buySuccess.notification.buttonText'), gift?.gift?.name);
 
         return () => {
             mainButton.hide();
@@ -81,11 +81,13 @@ const BuyGiftSuccess = () => {
                 <div className='flex flex-col gap-2 -mt-16'>
                     <p className='font-semibold text-2xl text-center'>{t('buySuccess.giftPurchased')}</p>
                     <p className='font-medium text-center text-md'>
-                        {t('gifts.purchaseInfo', {
+                        {t('buySuccess.purchaseInfo.part1', {
                             giftName: gift?.gift?.name,
+                        })}
+                        <br/>
+                        {t('buySuccess.purchaseInfo.part2', {
                             price: gift?.gift?.price,
-                            asset: gift?.gift?.asset,
-                            interpolation: {escapeValue: false}
+                            asset: gift?.gift?.asset
                         })}
                     </p>
                 </div>

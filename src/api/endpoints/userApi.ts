@@ -109,6 +109,12 @@ export const userApi = baseApi.injectEndpoints({
                 return currentArg?.page !== previousArg?.page;
             }
         }),
+        verifyPayments: build.mutation({
+            query: (id) => ({
+                url: `buy/check-pending`,
+                method: 'POST',
+            })
+        })
     }),
 });
 

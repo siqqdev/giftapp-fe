@@ -63,10 +63,14 @@
     "december": "December"
   },
   "buySuccess": {
-    "purchaseInfo": "The {{giftName}} gift was purchased <br/> for {{price}} {{asset}}",
+    "purchaseInfo": {
+      "part1": "The {{giftName}} gift was purchased",
+      "part2": "for {{price}} {{asset}}"
+    },
     "notification": {
       "title": "Gift Purchased",
-      "subtitle": "Now send it tou your friend"
+      "subtitle": "Now send it to your friend",
+      "buttonText": "Send"
     },
     "button": {
       "secondary": "Open Store",
@@ -94,5 +98,11 @@
   "alreadyReceived": {
     "title": "Gift Already Received",
     "button": "Return to Store"
-  }
+  },
+  "payment": {
+    "title": "Payment Processing",
+    "subtitle": " Please keep this window open while we verify your payment",
+    "timeLeft": "Seconds left:"
+  },
+  "cancel": "Cancel"
 }

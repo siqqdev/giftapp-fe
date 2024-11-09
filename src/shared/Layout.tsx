@@ -69,11 +69,13 @@ function Layout() {
                 const fullParam = startParamMatch[1];
 
                 if (fullParam.startsWith('redirect_received_gift_')) {
-                    console.log('REDIRECTING TO RECEIVE GIFT SUCCESS');
                     const giftId = fullParam.replace('redirect_received_gift_', '');
                     navigate(`/receive-gift-success/${giftId}`);
                     redirected.current = true;
-
+                    sessionStorage.setItem('gift_redirected', 'true');
+                } else if (fullParam === 'redirect_gifts') {
+                    navigate('/gifts');
+                    redirected.current = true;
                     sessionStorage.setItem('gift_redirected', 'true');
                 }
             }

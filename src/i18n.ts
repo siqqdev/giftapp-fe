@@ -15,7 +15,7 @@ i18n
             enabled: false,
         },
         backend: {
-            loadPath: '/src/assets/locales/{{lng}}/{{ns}}.json?v=1',
+            loadPath: '/src/assets/locales/{{lng}}/{{ns}}.json?v=2',
         },
     })
 
