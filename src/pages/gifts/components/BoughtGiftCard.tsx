@@ -16,16 +16,6 @@ const BoughtGiftCard = ({gift}: props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [sendGiftReq] = useSendGiftMutation()
 
-    const handleSendGift = async () => {
-        try {
-            const res = await sendGiftReq(gift?._id).unwrap();
-            setIsOpen(false);
-            window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
-        } catch (error) {
-            console.error('Error sending gift:', error);
-        }
-    }
-
     return (
         <>
             <div
@@ -45,7 +35,7 @@ const BoughtGiftCard = ({gift}: props) => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 date={formatDate(gift?.purchaseDate)}
-                callback={handleSendGift}
+                giftId={gift?._id}
                 price={gift?.gift?.price}
                 receivedAmount={gift?.gift?.soldAmount}
                 user={gift?.user}

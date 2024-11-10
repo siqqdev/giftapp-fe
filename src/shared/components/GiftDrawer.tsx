@@ -6,6 +6,7 @@ import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 import {useEffect, useCallback} from "react";
 import {CurrencyType, ITgUser} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
+import {useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
 
 type props = {
     isProfile?: boolean;
@@ -13,18 +14,30 @@ type props = {
     isOpen: boolean;
     onClose: () => void;
     date: string;
-    callback: () => void;
+    callback?: () => void;
     price: string;
     receivedAmount: number;
     user: ITgUser;
     asset: CurrencyType;
+    giftId?: string;
 } & ({ user: number } | { giftName: string });
 
-const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
+const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
     const {t} = useTranslation()
+    const [sendGiftReq] = useSendGiftMutation()
+
+    const handleSendGift = async () => {
+        try {
+            const res = await sendGiftReq(giftId).unwrap();
+            window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
+        } catch (error) {
+            console.error('Error sending gift:', error);
+        }
+    }
+
     const {show, hide} = useTelegramButton({
-        onClick: () => {
-            callback();
+        onClick: async () => {
+            callback() || await handleSendGift()
         },
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
