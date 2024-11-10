@@ -32,9 +32,11 @@ const Store = () => {
         <div className='flex flex-col gap-3 justify-center items-center pt-10 pb-28 text-black dark:text-white'>
             <GiftIcon className='fill-blue w-12 h-12' />
             <button onClick={() => {
-                window.Telegram?.WebApp?.switchInlineQuery('test', ['users'])
-                window.Telegram?.WebApp?.close()
-            }}>Switch inline query</button>
+                window.Telegram?.WebApp?.switchInlineQuery('test')
+                // setTimeout(() => {
+                //     window.Telegram?.WebApp?.close()
+                // }, 1000)
+            }}>Switch inline query2</button>
             <p className='font-semibold text-center text-2xl tracking-tighter'>{t('home.title')}</p>
             <p className='text-label-secondary'>{t('home.description')}</p>
             <GiftsList onSelectGift={handleSelectGift} gifts={gifts} isLoading={isLoading || isFetching}/>
