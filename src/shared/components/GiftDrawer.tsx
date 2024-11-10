@@ -26,7 +26,7 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
     const {t} = useTranslation()
     const [sendGiftReq] = useSendGiftMutation()
 
-    const handleSendGift = async () => {
+    const handleSendGift = useCallback(async () => {
         try {
             const res = await sendGiftReq(giftId).unwrap();
             onClose();
@@ -36,16 +36,18 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
         } catch (error) {
             console.error('Error sending gift:', error);
         }
-    }
+    }, [giftId, sendGiftReq, onClose]);
+
+    const handleClick = useCallback(async () => {
+        if (giftId) {
+            await handleSendGift();
+        } else if (callback) {
+            await callback();
+        }
+    }, [giftId, callback, handleSendGift]);
 
     const {show, hide} = useTelegramButton({
-        onClick: async () => {
-            if (giftId) {
-                await handleSendGift();
-            } else if (callback) {
-                await callback();
-            }
-        },
+        onClick: handleClick,
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
@@ -59,7 +61,7 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
         return () => {
             hide();
         };
-    }, [isOpen]);
+    }, [isOpen, show, hide]);
 
     return (
         <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white">
