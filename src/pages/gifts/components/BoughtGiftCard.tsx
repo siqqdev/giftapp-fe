@@ -14,26 +14,15 @@ interface props {
 const BoughtGiftCard = ({gift}: props) => {
     const {t} = useTranslation()
     const [isOpen, setIsOpen] = useState(false);
-    const [isProcessing, setIsProcessing] = useState(false);
     const [sendGiftReq] = useSendGiftMutation()
 
     const handleSendGift = async () => {
-        if (isProcessing) return;
-
         try {
-            setIsProcessing(true);
             const res = await sendGiftReq(gift?._id).unwrap();
-
-            setIsOpen(false);
-
-            setTimeout(() => {
-                window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
-            }, 100);
+            window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
 
         } catch (error) {
             console.error('Error sending gift:', error);
-        } finally {
-            setIsProcessing(false);
         }
     }
 
