@@ -29,7 +29,10 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
     const handleSendGift = async () => {
         try {
             const res = await sendGiftReq(giftId).unwrap();
-            window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
+            onClose();
+            setTimeout(() => {
+                window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
+            }, 100);
         } catch (error) {
             console.error('Error sending gift:', error);
         }
@@ -37,7 +40,11 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
 
     const {show, hide} = useTelegramButton({
         onClick: async () => {
-            giftId ? await handleSendGift() : callback()
+            if (giftId) {
+                await handleSendGift();
+            } else if (callback) {
+                await callback();
+            }
         },
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
