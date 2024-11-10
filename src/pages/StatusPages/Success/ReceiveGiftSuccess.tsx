@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import SuccessGift from '@/assets/animations/effect-gift-purchased.json';
-import Cake from '@/assets/animations/gift-delicious-cake.json';
 import { AnimatedLottie } from "@/shared/components/AnimatedLottie.tsx";
 import { useTelegramButton } from "@/hooks/useTelegramButton.ts";
 import useNotification from "@/hooks/useNotification.tsx";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {useReceiveGiftMutation, useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
+import {useReceiveGiftMutation} from "@/api/endpoints/giftApi.ts";
 import {useTranslation} from "react-i18next";
 import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
 import BalloonsPlaceholder from "@/shared/components/BalloonsPlaceholder.tsx";
@@ -18,6 +16,7 @@ const ReceiveGiftSuccess = () => {
     const [gift, setGift] = useState(null);
     const [isAlreadyReceived, setIsAlreadyReceived] = useState(false);
     const [requestSent, setRequestSent] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     const mainButton = useTelegramButton({
@@ -51,6 +50,8 @@ const ReceiveGiftSuccess = () => {
                 setIsAlreadyReceived(false);
             } catch (error) {
                 setIsAlreadyReceived(true);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -73,14 +74,20 @@ const ReceiveGiftSuccess = () => {
         };
     }, [gift]);
 
-    if (isAlreadyReceived) return (
-        <div className='h-screen flex justify-center items-center'>
-            <BalloonsPlaceholder>
-                <p>{t('alreadyReceived.title')}</p>
-                <button className='text-cyan' onClick={() => navigate('/store')}>{t('alreadyReceived.button')}</button>
-            </BalloonsPlaceholder>
-        </div>
-    )
+    if (isLoading) {
+        return null;
+    }
+
+    if (isAlreadyReceived) {
+        return (
+            <div className='h-screen flex justify-center items-center'>
+                <BalloonsPlaceholder>
+                    <p className='text-black dark:text-swhite'>{t('alreadyReceived.title')}</p>
+                    <button className='text-cyan' onClick={() => navigate('/store')}>{t('alreadyReceived.button')}</button>
+                </BalloonsPlaceholder>
+            </div>
+        );
+    }
 
     return (
         <>
