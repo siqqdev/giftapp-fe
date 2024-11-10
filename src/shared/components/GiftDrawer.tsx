@@ -37,7 +37,7 @@ const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, 
 
     const {show, hide} = useTelegramButton({
         onClick: async () => {
-            callback() || await handleSendGift()
+            giftId ? await handleSendGift() : callback()
         },
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
