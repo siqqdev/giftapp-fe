@@ -24,8 +24,9 @@ const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName
     const {t} = useTranslation()
     const {show, hide} = useTelegramButton({
         onClick: useCallback(() => {
+            hide()
             callback();
-        }, [callback]),
+        }, [hide, callback]),
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
