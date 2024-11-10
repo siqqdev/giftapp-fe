@@ -19,8 +19,8 @@ const BoughtGiftCard = ({gift}: props) => {
     const handleSendGift = async () => {
         try {
             const res = await sendGiftReq(gift?._id).unwrap();
+            setIsOpen(false);
             window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
-
         } catch (error) {
             console.error('Error sending gift:', error);
         }
