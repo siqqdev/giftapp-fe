@@ -23,26 +23,26 @@ type props = {
 const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
     const {t} = useTranslation()
     const {show, hide} = useTelegramButton({
-        onClick: useCallback(() => {
-            callback();
-        }, [callback]),
+        onClick: () => {
+            onClose();
+            setTimeout(() => {
+                callback();
+            }, 100);
+        },
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
     });
 
     useEffect(() => {
-        let mounted = true;
-
-        if (isOpen && mounted) {
+        if (isOpen) {
             show();
         }
 
         return () => {
-            mounted = false;
             hide();
         };
-    }, [isOpen, show, hide]);
+    }, [isOpen]);
 
     return (
         <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white">
