@@ -59,7 +59,6 @@ const GiftModal = ({
             const res = await buyGiftReq(gift?._id).unwrap();
             const id = res?._id;
 
-            // Отдельный интервал для таймера
             const newTimerInterval = setInterval(() => {
                 setSecondsLeft(prev => {
                     if (prev <= 1) {
@@ -79,7 +78,6 @@ const GiftModal = ({
 
             setTimerIntervalId(newTimerInterval);
 
-            // Интервал для проверки платежа
             const newInterval = setInterval(async () => {
                 try {
                     const paymentResult = await checkGiftPaymentReq(id).unwrap();
@@ -118,7 +116,6 @@ const GiftModal = ({
         }
     }, [isButtonVisible, show, hide]);
 
-    // Очистка интервалов при размонтировании
     useEffect(() => {
         return () => {
             if (intervalId) {

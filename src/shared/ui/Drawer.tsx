@@ -14,7 +14,7 @@ const drawerVariants = {
         transition: {
             type: "tween",
             duration: 0.2,
-            ease: [0.4, 0, 1, 1], // быстрый старт, плавное окончание
+            ease: [0.4, 0, 1, 1],
         }
     },
     visible: {
@@ -22,7 +22,7 @@ const drawerVariants = {
         transition: {
             type: "tween",
             duration: 0.35,
-            ease: [0.2, 0, 0, 1], // плавное ускорение и очень плавное замедление
+            ease: [0.2, 0, 0, 1],
         }
     }
 };
@@ -35,11 +35,14 @@ export const Drawer = memo(({ isOpen, onClose, className, children }) => {
     }, [onClose]);
 
     const dragConfig = useMemo(() => ({
-        constraints: { top: 0 },
-        dragElastic: 0.05,
-        dragTransition: {
-            bounceStiffness: 400,
-            bounceDamping: 40
+        dragConstraints: { top: 0, bottom: 0 },
+        dragElastic: { top: 0, bottom: 0.05 },
+        dragDirectionLock: true,
+        dragMomentum: false,
+        onDrag: (_, info) => {
+            if (info.offset.y < 0) {
+                return false;
+            }
         }
     }), []);
 
@@ -82,7 +85,6 @@ export const Drawer = memo(({ isOpen, onClose, className, children }) => {
                         animate="visible"
                         exit="hidden"
                         drag="y"
-                        dragDirectionLock
                         {...dragConfig}
                         onDragEnd={handleDragEnd}
                         className={`fixed bottom-0 left-0 right-0 rounded-t-xl bg-white dark:bg-bg-dark shadow-lg outline-none ${className}`}

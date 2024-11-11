@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Cake from '@/assets/gifts/delicious-cake.png'
 import Button from "@/shared/ui/Button.tsx";
 import GiftDrawer from "@/shared/components/GiftDrawer.tsx";
 import {IBoughtGift} from "@/inerfaces/interfaces.ts";
@@ -15,6 +14,12 @@ const BoughtGiftCard = ({gift}: props) => {
     const {t} = useTranslation()
     const [isOpen, setIsOpen] = useState(false);
     const [sendGiftReq] = useSendGiftMutation()
+
+    const handleSendGift = async () => {
+        const res = await sendGiftReq(gift?._id).unwrap()
+        window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users'])
+        setIsOpen(false)
+    }
 
     return (
         <>
@@ -35,7 +40,7 @@ const BoughtGiftCard = ({gift}: props) => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 date={formatDate(gift?.purchaseDate)}
-                giftId={gift?._id}
+                callback={handleSendGift}
                 price={gift?.gift?.price}
                 receivedAmount={gift?.gift?.soldAmount}
                 user={gift?.user}

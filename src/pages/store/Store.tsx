@@ -8,9 +8,11 @@ import GiftModal from "@/pages/store/components/giftModal/GiftModal.tsx";
 import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
+import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
 
 const Store = () => {
     const {t} = useTranslation()
+    const {data: user} = useGetMeQuery()
     const {data: gifts, isLoading, isFetching} = useGetGiftsQuery()
     const dispatch = useAppDispatch();
     const [selectedGift, setSelectedGift] = useState<{ gift: IGift; rect: DOMRect }>(null);

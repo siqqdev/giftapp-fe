@@ -6,7 +6,6 @@ import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
 import {useEffect, useCallback} from "react";
 import {CurrencyType, ITgUser} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
-import {useSendGiftMutation} from "@/api/endpoints/giftApi.ts";
 
 type props = {
     isProfile?: boolean;
@@ -14,51 +13,33 @@ type props = {
     isOpen: boolean;
     onClose: () => void;
     date: string;
-    callback?: () => void;
+    callback: () => void;
     price: string;
     receivedAmount: number;
     user: ITgUser;
     asset: CurrencyType;
-    giftId?: string;
 } & ({ user: number } | { giftName: string });
 
-const GiftDrawer = ({ giftId, isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
+const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
     const {t} = useTranslation()
-    const [sendGiftReq] = useSendGiftMutation()
-
-    const handleSendGift = useCallback(async () => {
-        try {
-            const res = await sendGiftReq(giftId).unwrap();
-            onClose();
-            setTimeout(() => {
-                window.Telegram.WebApp.switchInlineQuery(res?.hash, ['users']);
-            }, 100);
-        } catch (error) {
-            console.error('Error sending gift:', error);
-        }
-    }, [giftId, sendGiftReq, onClose]);
-
-    const handleClick = useCallback(async () => {
-        if (giftId) {
-            await handleSendGift();
-        } else if (callback) {
-            await callback();
-        }
-    }, [giftId, callback, handleSendGift]);
-
     const {show, hide} = useTelegramButton({
-        onClick: handleClick,
+        onClick: useCallback(() => {
+            callback();
+        }, [callback]),
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
     });
 
     useEffect(() => {
-        if (isOpen) {
+        let mounted = true;
+
+        if (isOpen && mounted) {
             show();
         }
 
         return () => {
+            mounted = false;
             hide();
         };
     }, [isOpen, show, hide]);
