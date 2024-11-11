@@ -9,7 +9,6 @@ import {useGetGiftsQuery} from "@/api/endpoints/giftApi.ts";
 import {IGift} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
 import {useGetMeQuery} from "@/api/endpoints/userApi.ts";
-import Logo from '@/assets/logo.png'
 
 const Store = () => {
     const {t} = useTranslation()
@@ -34,7 +33,6 @@ const Store = () => {
     return (
         <div className='flex flex-col gap-3 justify-center items-center pt-10 pb-28 text-black dark:text-white'>
             <GiftIcon className='fill-blue w-12 h-12' />
-            <img src={Logo} alt=""/>
             <p className='font-semibold text-center text-2xl tracking-tighter'>{t('home.title')}</p>
             <p className='text-label-secondary'>{t('home.description')}</p>
             <GiftsList onSelectGift={handleSelectGift} gifts={gifts} isLoading={isLoading || isFetching}/>
