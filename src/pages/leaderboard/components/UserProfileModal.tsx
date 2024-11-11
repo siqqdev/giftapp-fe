@@ -1,78 +1,12 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion';
 import useBackButton from "@/hooks/useBackButton.ts";
-import Avatar from "@/shared/ui/Avatar.tsx";
-import PremiumStar from '@/assets/icons/premiumStar.svg?react';
 import ProfileGiftList from "@/pages/profile/components/ProfileGiftList.tsx";
-import {ITgUser, IUser} from "@/inerfaces/interfaces.ts";
-import {getGiftsWord} from "@/shared/utils.ts";
-import {useDynamicTranslations} from "@/hooks/useDynamicTranslations.ts";
-import {useTranslation} from "react-i18next";
-
-const PortalBackground = () => (
-    <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        className="fixed inset-0 bg-white dark:bg-bg-dark"
-    />
-);
-
-const FlyingAvatar = ({ from, file, place, fn, ln }) => (
-    <motion.div
-        initial={{
-            position: 'absolute',
-            left: from.left,
-            top: from.top,
-            width: from.width,
-            height: from.height,
-            borderRadius: '50%',
-            zIndex: 60,
-        }}
-        animate={{
-            left: '50%',
-            top: '1rem',
-            width: '7rem',
-            height: '7rem',
-            x: '-50%',
-            y: 0,
-        }}
-        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-        style={{ willChange: 'transform' }}
-    >
-        <Avatar
-            firstName={fn}
-            lastName={ln}
-            file={file}
-            place={place}
-            className="w-full h-full"
-        />
-    </motion.div>
-);
-
-const ProfileContent = ({ user, tgInfo }: {user: IUser, tgInfo: ITgUser}) => {
-    const {t} = useTranslation()
-    const {getGiftsWord} = useDynamicTranslations()
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col gap-1 items-center justify-center"
-        >
-            <div className="flex gap-2 items-center mt-4">
-                <p className="text-2xl font-semibold">{tgInfo?.firstName} {tgInfo?.lastName}</p>
-                {tgInfo?.isPremium && <PremiumStar className="w-4 h-4"/>}
-            </div>
-            <p className="text-lg tracking-tighter text-label-secondary">
-                {user?.giftsReceived} {getGiftsWord(user?.giftsReceived)} {t('received')}
-            </p>
-        </motion.div>
-    )
-}
+import {IUser} from "@/inerfaces/interfaces.ts";
+import PortalBackground from "@/pages/leaderboard/components/PortalBackground.tsx";
+import FlyingAvatar from "@/pages/leaderboard/components/FlyingAvatar.tsx";
+import ProfileContent from "@/pages/leaderboard/components/ProfileContent.tsx";
 
 interface props {
     from: {

@@ -87,7 +87,7 @@ export const Drawer = memo(({ isOpen, onClose, className, children }) => {
                         drag="y"
                         {...dragConfig}
                         onDragEnd={handleDragEnd}
-                        className={`fixed bottom-0 left-0 right-0 rounded-t-xl bg-white dark:bg-bg-dark shadow-lg outline-none ${className}`}
+                        className={`fixed bottom-0 left-0 right-0 rounded-t-xl dark:bg-bg-dark shadow-lg outline-none ${className}`}
                         style={{
                             maxHeight: '70vh',
                             touchAction: 'none',

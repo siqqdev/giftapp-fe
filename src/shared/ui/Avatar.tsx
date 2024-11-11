@@ -51,7 +51,7 @@ const Avatar = forwardRef<HTMLDivElement, Props>(({
                 </div>
             ) : (
                 <div
-                    className={`rounded-full flex items-center justify-center ${randomColor} bg-opacity-70 hover:bg-opacity-100 transition-all ${className || 'w-12 h-12'}`}
+                    className={`rounded-full flex items-center justify-center ${randomColor} bg-opacity-70 ${className || 'w-12 h-12'}`}
                 >
                     {initials && (
                         <span className="text-white text-5xl font-semibold">

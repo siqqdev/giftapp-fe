@@ -3,7 +3,7 @@ import GiftInfoTable from "@/pages/gifts/components/GiftInfoTable.tsx";
 import {AnimatedLottie} from "@/shared/components/AnimatedLottie.tsx";
 import Sparkles from "@/pages/gifts/components/Sparkles.tsx";
 import {useTelegramButton} from "@/hooks/useTelegramButton.ts";
-import {useEffect, useCallback} from "react";
+import {useEffect, useCallback, useRef} from "react";
 import {CurrencyType, ITgUser} from "@/inerfaces/interfaces.ts";
 import {useTranslation} from "react-i18next";
 
@@ -21,31 +21,46 @@ type props = {
 } & ({ user: number } | { giftName: string });
 
 const GiftDrawer = ({ isProfile, isOpen, onClose, date, callback, user, giftName, price, receivedAmount, asset }: props) => {
-    const {t} = useTranslation()
+    const {t} = useTranslation();
+    const buttonShownRef = useRef(false);
+
+    const handleButtonClick = useCallback(() => {
+        if (!buttonShownRef.current) return;
+        callback();
+    }, [callback]);
+
     const {show, hide} = useTelegramButton({
-        onClick: useCallback(() => {
-            callback();
-        }, [callback]),
+        onClick: handleButtonClick,
         initialParams: {
             text: isProfile ? t('drawer.tgButtonTextProfile') : t('drawer.tgButtonText'),
         }
     });
 
     useEffect(() => {
-        let mounted = true;
-
-        if (isOpen && mounted) {
+        if (isOpen && !buttonShownRef.current) {
+            buttonShownRef.current = true;
             show();
         }
 
         return () => {
-            mounted = false;
-            hide();
+            if (buttonShownRef.current) {
+                buttonShownRef.current = false;
+                hide();
+            }
         };
     }, [isOpen, show, hide]);
 
+    const handleClose = useCallback(() => {
+        buttonShownRef.current = false;
+        onClose();
+    }, [onClose]);
+
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white">
+        <Drawer
+            isOpen={isOpen}
+            onClose={handleClose}
+            className="bg-bg-secondary dark:bg-bg-dark text-black dark:text-white"
+        >
             <div className="flex flex-col items-center gap-4">
                 <div className="relative w-40 h-40">
                     <div className="absolute inset-0">
